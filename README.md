@@ -1,3 +1,3 @@
-# Joel Vandiver's Blog
+# Devstopian Blog
 
-> This repo is the source for joelvandiver.com.
+> This repo is the source for devstopian.com.

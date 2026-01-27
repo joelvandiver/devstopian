@@ -1,0 +1,123 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>devstopian.com</title>
+    <meta name="description" content="devstopian: essays and notes about software development, tooling and ops.">
+    <style>
+        :root {
+            --bg: #0f1724;
+            --card: #0b1220;
+            --muted: #9aa4b2;
+            --accent: #7dd3fc
+        }
+
+        html,
+        body {
+            height: 100%;
+            margin: 0;
+            font-family: Inter, system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial
+        }
+
+        body {
+            background: linear-gradient(180deg, #071021 0%, #071824 100%);
+            color: #e6eef6;
+            line-height: 1.45
+        }
+
+        .wrap {
+            max-width: 880px;
+            margin: 48px auto;
+            padding: 24px
+        }
+
+        header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 16px
+        }
+
+        .brand {
+            display: flex;
+            flex-direction: column
+        }
+
+        .site-title {
+            font-size: 1.6rem;
+            font-weight: 700;
+            margin: 0
+        }
+
+        .tag {
+            color: var(--muted);
+            font-size: .9rem
+        }
+
+        nav a {
+            color: var(--muted);
+            text-decoration: none;
+            margin-left: 14px
+        }
+
+        .hero {
+            margin: 28px 0;
+            padding: 18px;
+            border-radius: 10px;
+            background: rgba(255, 255, 255, 0.02)
+        }
+
+        .posts {
+            display: grid;
+            gap: 12px;
+            margin-top: 18px
+        }
+
+        .post {
+            background: var(--card);
+            padding: 14px;
+            border-radius: 8px;
+            color: #dfe9f2
+        }
+
+        .post small {
+            color: var(--muted)
+        }
+
+        footer {
+            margin-top: 36px;
+            color: var(--muted);
+            font-size: .9rem
+        }
+
+        @media (max-width:540px) {
+            .wrap {
+                padding: 16px;
+                margin: 24px auto
+            }
+
+            .site-title {
+                font-size: 1.2rem
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="wrap">
+        <header>
+            <div class="brand">
+                <h1 class="site-title">devstopian.com</h1>
+            </div>
+        </header>
+
+        <footer>
+            © devstopian • <span id="year"></span>
+        </footer>
+    </div>
+    <script>document.getElementById('year').textContent = new Date().getFullYear()</script>
+</body>
+
+</html>
