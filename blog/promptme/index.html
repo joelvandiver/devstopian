@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>PROMPTME | Dev·stopian</title>
+    
+    
+    <meta name="description" content="Introducing PROMPTME">
+    
+    
+    <meta name="keywords" content="AI">
+    
+    
+    <link rel="canonical" href="https:&#x2F;&#x2F;devstopian.com&#x2F;blog&#x2F;promptme&#x2F;" />
+    
+    <link rel="stylesheet" href="https://devstopian.com/style.css">
+    
+  </head>
+  <body class="theme-tokiostopian">
+    
+    <header>
+      <nav>
+        <a href="/">/home/</a>
+
+        
+        
+        
+        <a href="https:&#x2F;&#x2F;devstopian.com&#x2F;blog&#x2F;">&#x2F;blog&#x2F;</a>
+        
+
+        
+        
+        <a href="https:&#x2F;&#x2F;devstopian.com&#x2F;about&#x2F;">&#x2F;about&#x2F;</a>
+        
+      </nav>
+    </header>
+    <hr>
+    <main>
+      
+<section>
+  <h1>PROMPTME</h1>
+  
+  <p>published: <time>2026-02-11</time></p>
+  
+  
+  <p class="tags">
+  tags: [
+  
+  <a href="https://devstopian.com/tags/ai/">#AI</a>
+  
+  ]
+  </p>
+  
+  <div>
+    <blockquote>
+<p>Shift <code>README</code> left to <code>PROMPTME</code></p>
+</blockquote>
+<h2 id="problem">Problem</h2>
+<blockquote>
+<p>07/2024 Chatbot AI</p>
+</blockquote>
+<p>I find informal chats with GenAI sometimes tedious and repetitive. They loose context, pull in the wrong context, or I have to restate my questions. To get out of this loop, I formalized my prompts into an external text file. In this file, I added my main objective, the facts I knew about the current state of the system, the things I needed to do, and the questions I still had. I realized by doing this, I effectively had created a <code>README</code> for prompts. So, I called it a <code>PROMPTME</code>.</p>
+<p>In software development, a <code>README</code> is a declaration of what the system does, describes the system's purpose, how to install it, and how to use it. A <code>PROMPTME</code>, however, is a plan for what the system will do. It is a document that describes the system's goals, what needs to be done, and what questions need to be answered. As an added bonus, since it's a text file, it can be committed to source!</p>
+<blockquote>
+<p>02/2026 Agentic AI Update</p>
+</blockquote>
+<p>With agentic AI, I use a <code>PROMPTME</code> to specify to the agent the plan for what to do. The agent is usually a helpful collaborator in creating a <code>PROMPTME</code>. I commit the <code>PROMPTME</code> to a feature branch and send the agent off to make changes to source on that branch.</p>
+<p>As a prototype, the agent can solutions that you don't fully understand. Ask questions about your prototype. Have the agent refactor the prototype into a better structured solution. But, <em>you must be disciplined</em> in setting that code aside after you have gained some understanding in the process. Formalize your thoughts. Write your <code>PROMPTME</code>.</p>
+<h2 id="example-promptme-template">Example <code>PROMPTME</code> Template</h2>
+<p>The following is an example template to get you going, but any formal structure will do.</p>
+<pre class="giallo" style="color: #CDD6F4; background-color: #1E1E2E;"><code data-lang="markdown"><span class="giallo-l"><span style="color: #F38BA8;"># {TITLE}</span></span>
+<span class="giallo-l"></span>
+<span class="giallo-l"><span style="color: #F5C2E7;">&gt; {DESCRIPTION}</span></span>
+<span class="giallo-l"></span>
+<span class="giallo-l"><span style="color: #FAB387;">## Facts</span></span>
+<span class="giallo-l"></span>
+<span class="giallo-l"><span style="color: #9399B2;font-style: italic;">&lt;!-- Describe the relevant facts. --&gt;</span></span>
+<span class="giallo-l"><span style="color: #94E2D5;">-</span><span> ...</span></span>
+<span class="giallo-l"></span>
+<span class="giallo-l"><span style="color: #FAB387;">## Requirements</span></span>
+<span class="giallo-l"></span>
+<span class="giallo-l"><span style="color: #9399B2;font-style: italic;">&lt;!-- Describe the requirements you are trying to meet. --&gt;</span></span>
+<span class="giallo-l"><span style="color: #94E2D5;">-</span><span> ...</span></span>
+<span class="giallo-l"></span>
+<span class="giallo-l"><span style="color: #FAB387;">## Tasks</span></span>
+<span class="giallo-l"></span>
+<span class="giallo-l"><span style="color: #9399B2;font-style: italic;">&lt;!-- Describe what needs to be done. --&gt;</span></span>
+<span class="giallo-l"><span style="color: #94E2D5;">-</span><span> ...</span></span>
+<span class="giallo-l"></span>
+<span class="giallo-l"><span style="color: #FAB387;">## Questions</span></span>
+<span class="giallo-l"></span>
+<span class="giallo-l"><span style="color: #9399B2;font-style: italic;">&lt;!-- Describe any open questions. --&gt;</span></span>
+<span class="giallo-l"><span style="color: #94E2D5;">-</span><span> ...</span></span>
+<span class="giallo-l"></span></code></pre><h3 id="example">Example</h3>
+<blockquote>
+<p>Try it out for yourself!  Post the contents of the following <code>PROMPTME.md</code> in your favorite
+chatbot and see how it goes.</p>
+</blockquote>
+<pre class="giallo" style="color: #CDD6F4; background-color: #1E1E2E;"><code data-lang="markdown"><span class="giallo-l"><span style="color: #F38BA8;"># Kubernetes Log Viewer</span></span>
+<span class="giallo-l"></span>
+<span class="giallo-l"><span style="color: #F5C2E7;">&gt; As a kube developer, I want to have a single-pane-of-glass for viewing the logs of the </span></span>
+<span class="giallo-l"><span style="color: #F5C2E7;">&gt; pods running in a Kubernetes cluster.</span></span>
+<span class="giallo-l"></span>
+<span class="giallo-l"><span style="color: #FAB387;">## Facts</span></span>
+<span class="giallo-l"></span>
+<span class="giallo-l"><span style="color: #94E2D5;">-</span><span> The cluster is running in Azure with the Azure Kubernetes Service (AKS).</span></span>
+<span class="giallo-l"><span style="color: #94E2D5;">-</span><span> The infrastructure-as-code platform is Ansible.</span></span>
+<span class="giallo-l"><span style="color: #94E2D5;">-</span><span> The deployment code runs in a GitLab CI/CD pipeline.</span></span>
+<span class="giallo-l"><span style="color: #94E2D5;">-</span><span> The service in the cluster uses Azure Entra ID for authentication.</span></span>
+<span class="giallo-l"><span style="color: #94E2D5;">-</span><span> I am already familiar with Prometheus and Grafana.</span></span>
+<span class="giallo-l"></span>
+<span class="giallo-l"><span style="color: #FAB387;">## Requirements</span></span>
+<span class="giallo-l"></span>
+<span class="giallo-l"><span style="color: #94E2D5;">-</span><span> The application should provide a user interface to view the logs of pods running in a namespace.</span></span>
+<span class="giallo-l"><span style="color: #94E2D5;">-</span><span> The infrastructure manifest for deploying the log viewer should be defined in Ansible tasks.</span></span>
+<span class="giallo-l"><span style="color: #94E2D5;">-</span><span> The log viewer should be deployed in the same namespace as the pods it is monitoring.</span></span>
+<span class="giallo-l"><span style="color: #94E2D5;">-</span><span> The log viewer should be open source and not require any payments to use.</span></span>
+<span class="giallo-l"><span style="color: #94E2D5;">-</span><span> The log viewer should be route-able from the ingress controller.</span></span>
+<span class="giallo-l"><span style="color: #94E2D5;">-</span><span> The log viewer should be authenticated with Microsoft Entra ID by role.</span></span>
+<span class="giallo-l"></span>
+<span class="giallo-l"><span style="color: #FAB387;">## Options</span></span>
+<span class="giallo-l"></span>
+<span class="giallo-l"><span style="color: #94E2D5;">-</span><span> Grafana Loki</span></span>
+<span class="giallo-l"><span style="color: #94E2D5;">-</span><span> Prometheus</span></span>
+<span class="giallo-l"></span>
+<span class="giallo-l"><span style="color: #FAB387;">## Preferences</span></span>
+<span class="giallo-l"></span>
+<span class="giallo-l"><span style="color: #94E2D5;">-</span><span> Use the </span><span style="color: #B4BEFE;">[Cloud Native Computing Foundation]</span><span style="color: #9399B2;">(</span><span style="color: #89B4FA;">https://www.cncf.io/</span><span style="color: #9399B2;">)</span><span> as </span></span>
+<span class="giallo-l"><span>the authoritative source of options.</span></span>
+<span class="giallo-l"></span>
+<span class="giallo-l"><span style="color: #FAB387;">## Questions</span></span>
+<span class="giallo-l"></span>
+<span class="giallo-l"><span style="color: #94E2D5;">-</span><span> Can you walk me through how to setup a log viewer?  I would like the full </span></span>
+<span class="giallo-l"><span>implementation details; not just a plan for implementation.</span></span></code></pre>
+  </div>
+</section>
+
+    </main>
+    <hr>
+    <footer>
+      <!-- <p>Powered by <a href="https://www.getzola.org/">Zola</a> and inspired by the <a href="https://github.com/mxaddict/zolanight">ZolaNight Theme</a></p>
+       -->
+    </footer>
+  </body>
+</html>

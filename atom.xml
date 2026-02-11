@@ -5,12 +5,12 @@
     <link rel="self" type="application/atom+xml" href="https://devstopian.com/atom.xml"/>
     <link rel="alternate" type="text/html" href="https://devstopian.com"/>
     <generator uri="https://www.getzola.org/">Zola</generator>
-    <updated>2026-01-28T00:00:00+00:00</updated>
+    <updated>2026-02-11T00:00:00+00:00</updated>
     <id>https://devstopian.com/atom.xml</id>
     <entry xml:lang="en">
-        <title>Sample Post 1</title>
-        <published>2026-01-28T00:00:00+00:00</published>
-        <updated>2026-01-28T00:00:00+00:00</updated>
+        <title>PROMPTME</title>
+        <published>2026-02-11T00:00:00+00:00</published>
+        <updated>2026-02-11T00:00:00+00:00</updated>
         
         <author>
           <name>
@@ -20,11 +20,89 @@
           </name>
         </author>
         
-        <link rel="alternate" type="text/html" href="https://devstopian.com/blog/sample-post-1/"/>
-        <id>https://devstopian.com/blog/sample-post-1/</id>
+        <link rel="alternate" type="text/html" href="https://devstopian.com/blog/promptme/"/>
+        <id>https://devstopian.com/blog/promptme/</id>
         
-        <content type="html" xml:base="https://devstopian.com/blog/sample-post-1/">&lt;p&gt;This is the content of sample post 1.&lt;&#x2F;p&gt;
-</content>
+        <content type="html" xml:base="https://devstopian.com/blog/promptme/">&lt;blockquote&gt;
+&lt;p&gt;Shift &lt;code&gt;README&lt;&#x2F;code&gt; left to &lt;code&gt;PROMPTME&lt;&#x2F;code&gt;&lt;&#x2F;p&gt;
+&lt;&#x2F;blockquote&gt;
+&lt;h2 id=&quot;problem&quot;&gt;Problem&lt;&#x2F;h2&gt;
+&lt;blockquote&gt;
+&lt;p&gt;07&#x2F;2024 Chatbot AI&lt;&#x2F;p&gt;
+&lt;&#x2F;blockquote&gt;
+&lt;p&gt;I find informal chats with GenAI sometimes tedious and repetitive. They loose context, pull in the wrong context, or I have to restate my questions. To get out of this loop, I formalized my prompts into an external text file. In this file, I added my main objective, the facts I knew about the current state of the system, the things I needed to do, and the questions I still had. I realized by doing this, I effectively had created a &lt;code&gt;README&lt;&#x2F;code&gt; for prompts. So, I called it a &lt;code&gt;PROMPTME&lt;&#x2F;code&gt;.&lt;&#x2F;p&gt;
+&lt;p&gt;In software development, a &lt;code&gt;README&lt;&#x2F;code&gt; is a declaration of what the system does, describes the system&#x27;s purpose, how to install it, and how to use it. A &lt;code&gt;PROMPTME&lt;&#x2F;code&gt;, however, is a plan for what the system will do. It is a document that describes the system&#x27;s goals, what needs to be done, and what questions need to be answered. As an added bonus, since it&#x27;s a text file, it can be committed to source!&lt;&#x2F;p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;02&#x2F;2026 Agentic AI Update&lt;&#x2F;p&gt;
+&lt;&#x2F;blockquote&gt;
+&lt;p&gt;With agentic AI, I use a &lt;code&gt;PROMPTME&lt;&#x2F;code&gt; to specify to the agent the plan for what to do. The agent is usually a helpful collaborator in creating a &lt;code&gt;PROMPTME&lt;&#x2F;code&gt;. I commit the &lt;code&gt;PROMPTME&lt;&#x2F;code&gt; to a feature branch and send the agent off to make changes to source on that branch.&lt;&#x2F;p&gt;
+&lt;p&gt;As a prototype, the agent can solutions that you don&#x27;t fully understand. Ask questions about your prototype. Have the agent refactor the prototype into a better structured solution. But, &lt;em&gt;you must be disciplined&lt;&#x2F;em&gt; in setting that code aside after you have gained some understanding in the process. Formalize your thoughts. Write your &lt;code&gt;PROMPTME&lt;&#x2F;code&gt;.&lt;&#x2F;p&gt;
+&lt;h2 id=&quot;example-promptme-template&quot;&gt;Example &lt;code&gt;PROMPTME&lt;&#x2F;code&gt; Template&lt;&#x2F;h2&gt;
+&lt;p&gt;The following is an example template to get you going, but any formal structure will do.&lt;&#x2F;p&gt;
+&lt;pre class=&quot;giallo&quot; style=&quot;color: #CDD6F4; background-color: #1E1E2E;&quot;&gt;&lt;code data-lang=&quot;markdown&quot;&gt;&lt;span class=&quot;giallo-l&quot;&gt;&lt;span style=&quot;color: #F38BA8;&quot;&gt;# {TITLE}&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span style=&quot;color: #F5C2E7;&quot;&gt;&amp;gt; {DESCRIPTION}&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span style=&quot;color: #FAB387;&quot;&gt;## Facts&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span style=&quot;color: #9399B2;font-style: italic;&quot;&gt;&amp;lt;!-- Describe the relevant facts. --&amp;gt;&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span style=&quot;color: #94E2D5;&quot;&gt;-&lt;&#x2F;span&gt;&lt;span&gt; ...&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span style=&quot;color: #FAB387;&quot;&gt;## Requirements&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span style=&quot;color: #9399B2;font-style: italic;&quot;&gt;&amp;lt;!-- Describe the requirements you are trying to meet. --&amp;gt;&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span style=&quot;color: #94E2D5;&quot;&gt;-&lt;&#x2F;span&gt;&lt;span&gt; ...&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span style=&quot;color: #FAB387;&quot;&gt;## Tasks&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span style=&quot;color: #9399B2;font-style: italic;&quot;&gt;&amp;lt;!-- Describe what needs to be done. --&amp;gt;&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span style=&quot;color: #94E2D5;&quot;&gt;-&lt;&#x2F;span&gt;&lt;span&gt; ...&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span style=&quot;color: #FAB387;&quot;&gt;## Questions&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span style=&quot;color: #9399B2;font-style: italic;&quot;&gt;&amp;lt;!-- Describe any open questions. --&amp;gt;&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span style=&quot;color: #94E2D5;&quot;&gt;-&lt;&#x2F;span&gt;&lt;span&gt; ...&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;&lt;h3 id=&quot;example&quot;&gt;Example&lt;&#x2F;h3&gt;
+&lt;blockquote&gt;
+&lt;p&gt;Try it out for yourself!  Post the contents of the following &lt;code&gt;PROMPTME.md&lt;&#x2F;code&gt; in your favorite
+chatbot and see how it goes.&lt;&#x2F;p&gt;
+&lt;&#x2F;blockquote&gt;
+&lt;pre class=&quot;giallo&quot; style=&quot;color: #CDD6F4; background-color: #1E1E2E;&quot;&gt;&lt;code data-lang=&quot;markdown&quot;&gt;&lt;span class=&quot;giallo-l&quot;&gt;&lt;span style=&quot;color: #F38BA8;&quot;&gt;# Kubernetes Log Viewer&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span style=&quot;color: #F5C2E7;&quot;&gt;&amp;gt; As a kube developer, I want to have a single-pane-of-glass for viewing the logs of the &lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span style=&quot;color: #F5C2E7;&quot;&gt;&amp;gt; pods running in a Kubernetes cluster.&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span style=&quot;color: #FAB387;&quot;&gt;## Facts&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span style=&quot;color: #94E2D5;&quot;&gt;-&lt;&#x2F;span&gt;&lt;span&gt; The cluster is running in Azure with the Azure Kubernetes Service (AKS).&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span style=&quot;color: #94E2D5;&quot;&gt;-&lt;&#x2F;span&gt;&lt;span&gt; The infrastructure-as-code platform is Ansible.&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span style=&quot;color: #94E2D5;&quot;&gt;-&lt;&#x2F;span&gt;&lt;span&gt; The deployment code runs in a GitLab CI&#x2F;CD pipeline.&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span style=&quot;color: #94E2D5;&quot;&gt;-&lt;&#x2F;span&gt;&lt;span&gt; The service in the cluster uses Azure Entra ID for authentication.&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span style=&quot;color: #94E2D5;&quot;&gt;-&lt;&#x2F;span&gt;&lt;span&gt; I am already familiar with Prometheus and Grafana.&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span style=&quot;color: #FAB387;&quot;&gt;## Requirements&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span style=&quot;color: #94E2D5;&quot;&gt;-&lt;&#x2F;span&gt;&lt;span&gt; The application should provide a user interface to view the logs of pods running in a namespace.&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span style=&quot;color: #94E2D5;&quot;&gt;-&lt;&#x2F;span&gt;&lt;span&gt; The infrastructure manifest for deploying the log viewer should be defined in Ansible tasks.&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span style=&quot;color: #94E2D5;&quot;&gt;-&lt;&#x2F;span&gt;&lt;span&gt; The log viewer should be deployed in the same namespace as the pods it is monitoring.&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span style=&quot;color: #94E2D5;&quot;&gt;-&lt;&#x2F;span&gt;&lt;span&gt; The log viewer should be open source and not require any payments to use.&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span style=&quot;color: #94E2D5;&quot;&gt;-&lt;&#x2F;span&gt;&lt;span&gt; The log viewer should be route-able from the ingress controller.&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span style=&quot;color: #94E2D5;&quot;&gt;-&lt;&#x2F;span&gt;&lt;span&gt; The log viewer should be authenticated with Microsoft Entra ID by role.&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span style=&quot;color: #FAB387;&quot;&gt;## Options&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span style=&quot;color: #94E2D5;&quot;&gt;-&lt;&#x2F;span&gt;&lt;span&gt; Grafana Loki&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span style=&quot;color: #94E2D5;&quot;&gt;-&lt;&#x2F;span&gt;&lt;span&gt; Prometheus&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span style=&quot;color: #FAB387;&quot;&gt;## Preferences&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span style=&quot;color: #94E2D5;&quot;&gt;-&lt;&#x2F;span&gt;&lt;span&gt; Use the &lt;&#x2F;span&gt;&lt;span style=&quot;color: #B4BEFE;&quot;&gt;[Cloud Native Computing Foundation]&lt;&#x2F;span&gt;&lt;span style=&quot;color: #9399B2;&quot;&gt;(&lt;&#x2F;span&gt;&lt;span style=&quot;color: #89B4FA;&quot;&gt;https:&#x2F;&#x2F;www.cncf.io&#x2F;&lt;&#x2F;span&gt;&lt;span style=&quot;color: #9399B2;&quot;&gt;)&lt;&#x2F;span&gt;&lt;span&gt; as &lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;the authoritative source of options.&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span style=&quot;color: #FAB387;&quot;&gt;## Questions&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span style=&quot;color: #94E2D5;&quot;&gt;-&lt;&#x2F;span&gt;&lt;span&gt; Can you walk me through how to setup a log viewer?  I would like the full &lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;implementation details; not just a plan for implementation.&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;</content>
         
     </entry>
 </feed>
