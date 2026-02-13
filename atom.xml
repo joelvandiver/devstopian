@@ -464,6 +464,162 @@ chatbot and see how it goes.&lt;&#x2F;p&gt;
         
     </entry>
     <entry xml:lang="en">
+        <title>Dockerized Dev</title>
+        <published>2021-12-07T00:00:00+00:00</published>
+        <updated>2021-12-07T00:00:00+00:00</updated>
+        
+        <author>
+          <name>
+            
+              Unknown
+            
+          </name>
+        </author>
+        
+        <link rel="alternate" type="text/html" href="https://devstopian.com/blog/2021-12-07-dockerized-dev/"/>
+        <id>https://devstopian.com/blog/2021-12-07-dockerized-dev/</id>
+        
+        <content type="html" xml:base="https://devstopian.com/blog/2021-12-07-dockerized-dev/">&lt;h2 id=&quot;docker-toolchains&quot;&gt;Docker Toolchains&lt;&#x2F;h2&gt;
+&lt;p&gt;I&#x27;m sure that you&#x27;ve heard of Docker, but have you considered running your development toolchains in Docker?&lt;&#x2F;p&gt;
+&lt;p&gt;Docker is great for containerizing your application tools that run in production, but it&#x27;s also great at containerizing your development environment. Using docker during development allows more freedom to explore different languages and tech stacks without worrying about maintaining the tools on my system over time. When I&#x27;m done running a development container, I simply throw it away and spin it back up when I&#x27;m ready to get back at it.&lt;&#x2F;p&gt;
+&lt;p&gt;First, let&#x27;s lay down some useful &lt;code&gt;docker&lt;&#x2F;code&gt; commands to get you going:&lt;&#x2F;p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;&lt;code&gt;docker run -it --rm --entrypoint &#x2F;bin&#x2F;bash $TOOL&lt;&#x2F;code&gt;&lt;&#x2F;p&gt;
+&lt;&#x2F;blockquote&gt;
+&lt;p&gt;That command will drop you into an integrated terminal &lt;code&gt;-it&lt;&#x2F;code&gt;, remove it when you stop the container &lt;code&gt;--rm&lt;&#x2F;code&gt; and open the shell &lt;code&gt;--entrypoint &#x2F;bin&#x2F;sh&lt;&#x2F;code&gt;. The &lt;code&gt;$TOOL&lt;&#x2F;code&gt; can be any image on your system or on &lt;a rel=&quot;external&quot; href=&quot;https:&#x2F;&#x2F;hub.docker.com&#x2F;&quot;&gt;Docker Hub&lt;&#x2F;a&gt;.&lt;&#x2F;p&gt;
+&lt;p&gt;For example, you could spin up the &lt;code&gt;alpine&lt;&#x2F;code&gt; image with the &lt;code&gt;ash&lt;&#x2F;code&gt; shell:&lt;&#x2F;p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;&lt;code&gt;docker run -it --rm --entrypoint &#x2F;bin&#x2F;ash alpine&lt;&#x2F;code&gt;&lt;&#x2F;p&gt;
+&lt;&#x2F;blockquote&gt;
+&lt;p&gt;&lt;img src=&quot;https:&#x2F;&#x2F;devstopian.com&#x2F;blog&#x2F;2021-12-07-dockerized-dev&#x2F;assets&#x2F;2021-12-07-17-30-23.png&quot; alt=&quot;&quot; &#x2F;&gt;&lt;&#x2F;p&gt;
+&lt;p&gt;Or, I might spin up a &lt;code&gt;python&lt;&#x2F;code&gt; instance to take a look around Python.&lt;&#x2F;p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;&lt;code&gt;docker run -it --rm --entrypoint &#x2F;bin&#x2F;sh python&lt;&#x2F;code&gt;&lt;&#x2F;p&gt;
+&lt;&#x2F;blockquote&gt;
+&lt;p&gt;&lt;img src=&quot;https:&#x2F;&#x2F;devstopian.com&#x2F;blog&#x2F;2021-12-07-dockerized-dev&#x2F;assets&#x2F;2021-12-07-17-29-15.png&quot; alt=&quot;&quot; &#x2F;&gt;&lt;&#x2F;p&gt;
+&lt;p&gt;It&#x27;s also great for other languages you might want to take out for a spin, such as:&lt;&#x2F;p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;&lt;code&gt;docker run -it --rm --entrypoint &#x2F;bin&#x2F;sh haskell&lt;&#x2F;code&gt;&lt;&#x2F;p&gt;
+&lt;&#x2F;blockquote&gt;
+&lt;p&gt;&lt;img src=&quot;https:&#x2F;&#x2F;devstopian.com&#x2F;blog&#x2F;2021-12-07-dockerized-dev&#x2F;assets&#x2F;2021-12-07-17-29-53.png&quot; alt=&quot;&quot; &#x2F;&gt;&lt;&#x2F;p&gt;
+&lt;p&gt;Pretty cool, eh?&lt;&#x2F;p&gt;
+&lt;h2 id=&quot;vscode-dev-containers&quot;&gt;VSCode Dev Containers&lt;&#x2F;h2&gt;
+&lt;p&gt;The &lt;a rel=&quot;external&quot; href=&quot;https:&#x2F;&#x2F;containers.dev&#x2F;&quot;&gt;Dev Containers VSCode Extension&lt;&#x2F;a&gt; provides a great way to share an identical dev environment for a given repository. You can use the default images provided by Microsoft, or you can build your with a Dockerfile right there in your project!&lt;&#x2F;p&gt;
+&lt;h3 id=&quot;example-setup&quot;&gt;Example Setup&lt;&#x2F;h3&gt;
+&lt;p&gt;The following steps are useful for demonstrating using the dev containers with a NodeJS repository.&lt;&#x2F;p&gt;
+&lt;ol&gt;
+&lt;li&gt;Create a &lt;code&gt;.devcontainer&#x2F;&lt;&#x2F;code&gt; folder at the root of your repository.&lt;&#x2F;li&gt;
+&lt;li&gt;Install the &lt;a rel=&quot;external&quot; href=&quot;https:&#x2F;&#x2F;containers.dev&#x2F;&quot;&gt;Dev Containers VSCode Extension&lt;&#x2F;a&gt;.&lt;&#x2F;li&gt;
+&lt;li&gt;Add the following &lt;code&gt;.devcontainer&#x2F;devcontainer.json&lt;&#x2F;code&gt; file. Note the configuration can include other extension to be installed in the dev container.&lt;&#x2F;li&gt;
+&lt;&#x2F;ol&gt;
+&lt;pre class=&quot;giallo&quot; style=&quot;color: #CDD6F4; background-color: #1E1E2E;&quot;&gt;&lt;code data-lang=&quot;json&quot;&gt;&lt;span class=&quot;giallo-l&quot;&gt;&lt;span style=&quot;color: #9399B2;font-style: italic;&quot;&gt;&#x2F;&#x2F; For format details, see https:&#x2F;&#x2F;aka.ms&#x2F;devcontainer.json. For config options, see the&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span style=&quot;color: #9399B2;font-style: italic;&quot;&gt;&#x2F;&#x2F; README at: https:&#x2F;&#x2F;github.com&#x2F;devcontainers&#x2F;templates&#x2F;tree&#x2F;main&#x2F;src&#x2F;typescript-node&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span style=&quot;color: #9399B2;&quot;&gt;{&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span style=&quot;color: #9399B2;&quot;&gt;    &amp;quot;&lt;&#x2F;span&gt;&lt;span style=&quot;color: #89B4FA;&quot;&gt;name&lt;&#x2F;span&gt;&lt;span style=&quot;color: #9399B2;&quot;&gt;&amp;quot;:&lt;&#x2F;span&gt;&lt;span style=&quot;color: #A6E3A1;&quot;&gt; &amp;quot;Dev Build&amp;quot;&lt;&#x2F;span&gt;&lt;span style=&quot;color: #9399B2;&quot;&gt;,&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span style=&quot;color: #9399B2;&quot;&gt;    &amp;quot;&lt;&#x2F;span&gt;&lt;span style=&quot;color: #89B4FA;&quot;&gt;build&lt;&#x2F;span&gt;&lt;span style=&quot;color: #9399B2;&quot;&gt;&amp;quot;: {&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span style=&quot;color: #9399B2;font-style: italic;&quot;&gt;        &#x2F;&#x2F; Path is relative to the devcontainer.json file.&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span style=&quot;color: #9399B2;&quot;&gt;        &amp;quot;&lt;&#x2F;span&gt;&lt;span style=&quot;color: #89B4FA;&quot;&gt;dockerfile&lt;&#x2F;span&gt;&lt;span style=&quot;color: #9399B2;&quot;&gt;&amp;quot;:&lt;&#x2F;span&gt;&lt;span style=&quot;color: #A6E3A1;&quot;&gt; &amp;quot;Dockerfile&amp;quot;&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span style=&quot;color: #9399B2;&quot;&gt;    },&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span style=&quot;color: #9399B2;&quot;&gt;    &amp;quot;&lt;&#x2F;span&gt;&lt;span style=&quot;color: #89B4FA;&quot;&gt;customizations&lt;&#x2F;span&gt;&lt;span style=&quot;color: #9399B2;&quot;&gt;&amp;quot;: {&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span style=&quot;color: #9399B2;&quot;&gt;        &amp;quot;&lt;&#x2F;span&gt;&lt;span style=&quot;color: #89B4FA;&quot;&gt;vscode&lt;&#x2F;span&gt;&lt;span style=&quot;color: #9399B2;&quot;&gt;&amp;quot;: {&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span style=&quot;color: #9399B2;&quot;&gt;            &amp;quot;&lt;&#x2F;span&gt;&lt;span style=&quot;color: #89B4FA;&quot;&gt;extensions&lt;&#x2F;span&gt;&lt;span style=&quot;color: #9399B2;&quot;&gt;&amp;quot;: [&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span style=&quot;color: #A6E3A1;&quot;&gt;                &amp;quot;bradlc.vscode-tailwindcss&amp;quot;&lt;&#x2F;span&gt;&lt;span style=&quot;color: #9399B2;&quot;&gt;,&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span style=&quot;color: #A6E3A1;&quot;&gt;                &amp;quot;esbenp.prettier-vscode&amp;quot;&lt;&#x2F;span&gt;&lt;span style=&quot;color: #9399B2;&quot;&gt;,&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span style=&quot;color: #A6E3A1;&quot;&gt;                &amp;quot;ms-playwright.playwright&amp;quot;&lt;&#x2F;span&gt;&lt;span style=&quot;color: #9399B2;&quot;&gt;,&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span style=&quot;color: #A6E3A1;&quot;&gt;                &amp;quot;vitest.explorer&amp;quot;&lt;&#x2F;span&gt;&lt;span style=&quot;color: #9399B2;&quot;&gt;,&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span style=&quot;color: #A6E3A1;&quot;&gt;                &amp;quot;ms-vscode-remote.remote-containers&amp;quot;&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span style=&quot;color: #9399B2;&quot;&gt;            ]&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span style=&quot;color: #9399B2;&quot;&gt;        }&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span style=&quot;color: #9399B2;&quot;&gt;    }&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span style=&quot;color: #9399B2;&quot;&gt;}&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
+&lt;ol start=&quot;4&quot;&gt;
+&lt;li&gt;Add the following &lt;code&gt;.devcontainer&#x2F;Dockerfile&lt;&#x2F;code&gt;. Install any other tools as necessary.&lt;&#x2F;li&gt;
+&lt;&#x2F;ol&gt;
+&lt;pre class=&quot;giallo&quot; style=&quot;color: #CDD6F4; background-color: #1E1E2E;&quot;&gt;&lt;code data-lang=&quot;shellscript&quot;&gt;&lt;span class=&quot;giallo-l&quot;&gt;&lt;span style=&quot;color: #9399B2;font-style: italic;&quot;&gt;# ref: https:&#x2F;&#x2F;hub.docker.com&#x2F;_&#x2F;node&#x2F;&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span style=&quot;color: #89B4FA;font-style: italic;&quot;&gt;FROM&lt;&#x2F;span&gt;&lt;span style=&quot;color: #A6E3A1;&quot;&gt; node:24-trixie AS devcontainer&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span style=&quot;color: #89B4FA;font-style: italic;&quot;&gt;RUN&lt;&#x2F;span&gt;&lt;span style=&quot;color: #A6E3A1;&quot;&gt; apt-get update&lt;&#x2F;span&gt;&lt;span style=&quot;color: #9399B2;&quot;&gt; &amp;amp;&amp;amp;&lt;&#x2F;span&gt;&lt;span style=&quot;color: #89B4FA;font-style: italic;&quot;&gt; apt-get&lt;&#x2F;span&gt;&lt;span style=&quot;color: #A6E3A1;&quot;&gt; install -y&lt;&#x2F;span&gt;&lt;span style=&quot;color: #F5C2E7;&quot;&gt; \&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span style=&quot;color: #A6E3A1;&quot;&gt;    curl&lt;&#x2F;span&gt;&lt;span style=&quot;color: #F5C2E7;&quot;&gt; \&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span style=&quot;color: #A6E3A1;&quot;&gt;    sudo&lt;&#x2F;span&gt;&lt;span style=&quot;color: #F5C2E7;&quot;&gt; \&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span style=&quot;color: #A6E3A1;&quot;&gt;    vim&lt;&#x2F;span&gt;&lt;span style=&quot;color: #F5C2E7;&quot;&gt; \&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span style=&quot;color: #9399B2;&quot;&gt;    &amp;amp;&amp;amp;&lt;&#x2F;span&gt;&lt;span style=&quot;color: #89B4FA;font-style: italic;&quot;&gt; rm&lt;&#x2F;span&gt;&lt;span style=&quot;color: #A6E3A1;&quot;&gt; -rf &#x2F;var&#x2F;lib&#x2F;apt&#x2F;lists&#x2F;&lt;&#x2F;span&gt;&lt;span&gt;*&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span style=&quot;color: #89B4FA;font-style: italic;&quot;&gt;USER&lt;&#x2F;span&gt;&lt;span style=&quot;color: #A6E3A1;&quot;&gt; node&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span style=&quot;color: #89B4FA;font-style: italic;&quot;&gt;WORKDIR&lt;&#x2F;span&gt;&lt;span style=&quot;color: #A6E3A1;&quot;&gt; &#x2F;workspaces&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
+&lt;ol start=&quot;5&quot;&gt;
+&lt;li&gt;Relaunch vscode in the devcontainer.
+&lt;ul&gt;
+&lt;li&gt;Options:
+&lt;ol&gt;
+&lt;li&gt;Reload vscode &amp;amp; select &quot;Reopen in Container&quot; in the bottom right alert for the newly opened vscode.&lt;&#x2F;li&gt;
+&lt;li&gt;Run &quot;Dev Containers: Rebuild and Reopen in Container&quot; in the command pane in vscode.&lt;&#x2F;li&gt;
+&lt;li&gt;Select the remote action in the very bottom left of the vscode instance.
+&lt;img src=&quot;https:&#x2F;&#x2F;devstopian.com&#x2F;blog&#x2F;2021-12-07-dockerized-dev&#x2F;assets&#x2F;final.png&quot; alt=&quot;Final Dev Container&quot; &#x2F;&gt;&lt;&#x2F;li&gt;
+&lt;&#x2F;ol&gt;
+&lt;&#x2F;li&gt;
+&lt;&#x2F;ul&gt;
+&lt;&#x2F;li&gt;
+&lt;&#x2F;ol&gt;
+&lt;h3 id=&quot;caveats&quot;&gt;Caveats&lt;&#x2F;h3&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;Though &lt;a rel=&quot;external&quot; href=&quot;https:&#x2F;&#x2F;en.wikipedia.org&#x2F;wiki&#x2F;Software_rot&quot;&gt;software rot&lt;&#x2F;a&gt; will likely one day render this dev container unusable, there is at least documentation of the full build process through the &lt;code&gt;.&#x2F;devcontainer&#x2F;Dockerfile&lt;&#x2F;code&gt;.&lt;&#x2F;p&gt;
+&lt;ul&gt;
+&lt;li&gt;A future developer could, therefore, create a new build process from the legacy build file.&lt;&#x2F;li&gt;
+&lt;&#x2F;ul&gt;
+&lt;&#x2F;li&gt;
+&lt;li&gt;
+&lt;p&gt;Switching dev containers across many repositories (30+) can be painful and slow.&lt;&#x2F;p&gt;
+&lt;&#x2F;li&gt;
+&lt;li&gt;
+&lt;p&gt;The file permissions can be tricky. Typically, with many Linux distros, such as &lt;a rel=&quot;external&quot; href=&quot;https:&#x2F;&#x2F;www.debian.org&#x2F;releases&#x2F;trixie&#x2F;&quot;&gt;Debian Trixie&lt;&#x2F;a&gt;, the default user&#x27;s id is &lt;code&gt;1000&lt;&#x2F;code&gt;. So, be careful to create&#x2F;use a user with id 1000 to simplify &lt;code&gt;chown&lt;&#x2F;code&gt;ing with your host files that are volume mounted into your devcontainer.&lt;&#x2F;p&gt;
+&lt;ul&gt;
+&lt;li&gt;If the docker image you are basing your devcontainer on does not have a user with id &lt;code&gt;1000&lt;&#x2F;code&gt; to use, then you will need to add one.&lt;&#x2F;li&gt;
+&lt;li&gt;Fortunately, the &lt;code&gt;node&lt;&#x2F;code&gt; user in the &lt;code&gt;node:24-trixie&lt;&#x2F;code&gt; base image has id &lt;code&gt;1000&lt;&#x2F;code&gt;.&lt;&#x2F;li&gt;
+&lt;li&gt;Technically, the id of the running user in the container just needs to match the user id on your host to avoid permission problems.&lt;&#x2F;li&gt;
+&lt;li&gt;Note how my user on my host system, &lt;code&gt;joel&lt;&#x2F;code&gt;, is different than when mounted in through the dev container &lt;code&gt;node&lt;&#x2F;code&gt;:&lt;&#x2F;li&gt;
+&lt;&#x2F;ul&gt;
+&lt;pre class=&quot;giallo&quot; style=&quot;color: #CDD6F4; background-color: #1E1E2E;&quot;&gt;&lt;code data-lang=&quot;shellscript&quot;&gt;&lt;span class=&quot;giallo-l&quot;&gt;&lt;span style=&quot;color: #9399B2;font-style: italic;&quot;&gt;# From my host OS:&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span style=&quot;color: #89B4FA;font-style: italic;&quot;&gt;joel@jarch&lt;&#x2F;span&gt;&lt;span style=&quot;color: #A6E3A1;&quot;&gt; ~&#x2F;git&#x2F;devstopian&#x2F;blog&lt;&#x2F;span&gt;&lt;span&gt; (feature&#x2F;jv_setup*)$ ls -al&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span style=&quot;color: #89B4FA;font-style: italic;&quot;&gt;total&lt;&#x2F;span&gt;&lt;span style=&quot;color: #FAB387;&quot;&gt; 32&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span style=&quot;color: #89B4FA;font-style: italic;&quot;&gt;drwxr-xr-x&lt;&#x2F;span&gt;&lt;span style=&quot;color: #FAB387;&quot;&gt; 7&lt;&#x2F;span&gt;&lt;span style=&quot;color: #A6E3A1;&quot;&gt; joel joel&lt;&#x2F;span&gt;&lt;span style=&quot;color: #FAB387;&quot;&gt; 4096&lt;&#x2F;span&gt;&lt;span style=&quot;color: #A6E3A1;&quot;&gt; Jan&lt;&#x2F;span&gt;&lt;span style=&quot;color: #FAB387;&quot;&gt; 24&lt;&#x2F;span&gt;&lt;span style=&quot;color: #A6E3A1;&quot;&gt; 11:58 .&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span style=&quot;color: #89B4FA;font-style: italic;&quot;&gt;drwxr-xr-x&lt;&#x2F;span&gt;&lt;span style=&quot;color: #FAB387;&quot;&gt; 7&lt;&#x2F;span&gt;&lt;span style=&quot;color: #A6E3A1;&quot;&gt; joel joel&lt;&#x2F;span&gt;&lt;span style=&quot;color: #FAB387;&quot;&gt; 4096&lt;&#x2F;span&gt;&lt;span style=&quot;color: #A6E3A1;&quot;&gt; Jan&lt;&#x2F;span&gt;&lt;span style=&quot;color: #FAB387;&quot;&gt; 17&lt;&#x2F;span&gt;&lt;span style=&quot;color: #A6E3A1;&quot;&gt; 15:04 ..&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span style=&quot;color: #89B4FA;font-style: italic;&quot;&gt;drwxr-xr-x&lt;&#x2F;span&gt;&lt;span style=&quot;color: #FAB387;&quot;&gt; 2&lt;&#x2F;span&gt;&lt;span style=&quot;color: #A6E3A1;&quot;&gt; joel joel&lt;&#x2F;span&gt;&lt;span style=&quot;color: #FAB387;&quot;&gt; 4096&lt;&#x2F;span&gt;&lt;span style=&quot;color: #A6E3A1;&quot;&gt; Jan&lt;&#x2F;span&gt;&lt;span style=&quot;color: #FAB387;&quot;&gt; 24&lt;&#x2F;span&gt;&lt;span style=&quot;color: #A6E3A1;&quot;&gt; 11:58 .devcontainer&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span style=&quot;color: #89B4FA;font-style: italic;&quot;&gt;drwxr-xr-x&lt;&#x2F;span&gt;&lt;span style=&quot;color: #FAB387;&quot;&gt; 7&lt;&#x2F;span&gt;&lt;span style=&quot;color: #A6E3A1;&quot;&gt; joel joel&lt;&#x2F;span&gt;&lt;span style=&quot;color: #FAB387;&quot;&gt; 4096&lt;&#x2F;span&gt;&lt;span style=&quot;color: #A6E3A1;&quot;&gt; Jan&lt;&#x2F;span&gt;&lt;span style=&quot;color: #FAB387;&quot;&gt; 24&lt;&#x2F;span&gt;&lt;span style=&quot;color: #A6E3A1;&quot;&gt; 11:27 .git&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span style=&quot;color: #89B4FA;font-style: italic;&quot;&gt;drwxr-xr-x&lt;&#x2F;span&gt;&lt;span style=&quot;color: #FAB387;&quot;&gt; 2&lt;&#x2F;span&gt;&lt;span style=&quot;color: #A6E3A1;&quot;&gt; joel joel&lt;&#x2F;span&gt;&lt;span style=&quot;color: #FAB387;&quot;&gt; 4096&lt;&#x2F;span&gt;&lt;span style=&quot;color: #A6E3A1;&quot;&gt; Jan&lt;&#x2F;span&gt;&lt;span style=&quot;color: #FAB387;&quot;&gt; 24&lt;&#x2F;span&gt;&lt;span style=&quot;color: #A6E3A1;&quot;&gt; 11:38 .github&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span style=&quot;color: #89B4FA;font-style: italic;&quot;&gt;drwxr-xr-x&lt;&#x2F;span&gt;&lt;span style=&quot;color: #FAB387;&quot;&gt; 2&lt;&#x2F;span&gt;&lt;span style=&quot;color: #A6E3A1;&quot;&gt; joel joel&lt;&#x2F;span&gt;&lt;span style=&quot;color: #FAB387;&quot;&gt; 4096&lt;&#x2F;span&gt;&lt;span style=&quot;color: #A6E3A1;&quot;&gt; Jan&lt;&#x2F;span&gt;&lt;span style=&quot;color: #FAB387;&quot;&gt; 24&lt;&#x2F;span&gt;&lt;span style=&quot;color: #A6E3A1;&quot;&gt; 11:26 .vscode&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span style=&quot;color: #89B4FA;font-style: italic;&quot;&gt;-rw-r--r--&lt;&#x2F;span&gt;&lt;span style=&quot;color: #FAB387;&quot;&gt; 1&lt;&#x2F;span&gt;&lt;span style=&quot;color: #A6E3A1;&quot;&gt; joel joel&lt;&#x2F;span&gt;&lt;span style=&quot;color: #FAB387;&quot;&gt;  150&lt;&#x2F;span&gt;&lt;span style=&quot;color: #A6E3A1;&quot;&gt; Jan&lt;&#x2F;span&gt;&lt;span style=&quot;color: #FAB387;&quot;&gt; 24&lt;&#x2F;span&gt;&lt;span style=&quot;color: #A6E3A1;&quot;&gt; 11:26 README.md&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span style=&quot;color: #89B4FA;font-style: italic;&quot;&gt;drwxr-xr-x&lt;&#x2F;span&gt;&lt;span style=&quot;color: #FAB387;&quot;&gt; 3&lt;&#x2F;span&gt;&lt;span style=&quot;color: #A6E3A1;&quot;&gt; joel joel&lt;&#x2F;span&gt;&lt;span style=&quot;color: #FAB387;&quot;&gt; 4096&lt;&#x2F;span&gt;&lt;span style=&quot;color: #A6E3A1;&quot;&gt; Jan&lt;&#x2F;span&gt;&lt;span style=&quot;color: #FAB387;&quot;&gt; 24&lt;&#x2F;span&gt;&lt;span style=&quot;color: #A6E3A1;&quot;&gt; 11:26 docs&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span style=&quot;color: #89B4FA;font-style: italic;&quot;&gt;joel@jarch&lt;&#x2F;span&gt;&lt;span style=&quot;color: #A6E3A1;&quot;&gt; ~&#x2F;git&#x2F;devstopian&#x2F;blog&lt;&#x2F;span&gt;&lt;span&gt; (feature&#x2F;jv_setup*)$ id&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;uid&lt;&#x2F;span&gt;&lt;span style=&quot;color: #94E2D5;&quot;&gt;=&lt;&#x2F;span&gt;&lt;span style=&quot;color: #A6E3A1;&quot;&gt;1000&lt;&#x2F;span&gt;&lt;span style=&quot;color: #9399B2;&quot;&gt;(&lt;&#x2F;span&gt;&lt;span style=&quot;color: #89B4FA;font-style: italic;&quot;&gt;joel&lt;&#x2F;span&gt;&lt;span style=&quot;color: #9399B2;&quot;&gt;)&lt;&#x2F;span&gt;&lt;span&gt; gid&lt;&#x2F;span&gt;&lt;span style=&quot;color: #94E2D5;&quot;&gt;=&lt;&#x2F;span&gt;&lt;span style=&quot;color: #A6E3A1;&quot;&gt;1000&lt;&#x2F;span&gt;&lt;span style=&quot;color: #9399B2;&quot;&gt;(&lt;&#x2F;span&gt;&lt;span style=&quot;color: #89B4FA;font-style: italic;&quot;&gt;joel&lt;&#x2F;span&gt;&lt;span style=&quot;color: #9399B2;&quot;&gt;)&lt;&#x2F;span&gt;&lt;span&gt; groups&lt;&#x2F;span&gt;&lt;span style=&quot;color: #94E2D5;&quot;&gt;=&lt;&#x2F;span&gt;&lt;span style=&quot;color: #A6E3A1;&quot;&gt;1000&lt;&#x2F;span&gt;&lt;span style=&quot;color: #9399B2;&quot;&gt;(&lt;&#x2F;span&gt;&lt;span style=&quot;color: #89B4FA;font-style: italic;&quot;&gt;joel&lt;&#x2F;span&gt;&lt;span style=&quot;color: #9399B2;&quot;&gt;)&lt;&#x2F;span&gt;&lt;span style=&quot;color: #A6E3A1;&quot;&gt;,957&lt;&#x2F;span&gt;&lt;span style=&quot;color: #9399B2;&quot;&gt;(&lt;&#x2F;span&gt;&lt;span style=&quot;color: #89B4FA;font-style: italic;&quot;&gt;docker&lt;&#x2F;span&gt;&lt;span style=&quot;color: #9399B2;&quot;&gt;)&lt;&#x2F;span&gt;&lt;span style=&quot;color: #A6E3A1;&quot;&gt;,998&lt;&#x2F;span&gt;&lt;span style=&quot;color: #9399B2;&quot;&gt;(&lt;&#x2F;span&gt;&lt;span style=&quot;color: #89B4FA;font-style: italic;&quot;&gt;wheel&lt;&#x2F;span&gt;&lt;span style=&quot;color: #9399B2;&quot;&gt;)&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span style=&quot;color: #9399B2;font-style: italic;&quot;&gt;# From within the devcontainer:&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span style=&quot;color: #89B4FA;font-style: italic;&quot;&gt;node@a54d80845994:&#x2F;workspaces&#x2F;frontend$&lt;&#x2F;span&gt;&lt;span style=&quot;color: #A6E3A1;&quot;&gt; ls -al&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span style=&quot;color: #89B4FA;font-style: italic;&quot;&gt;total&lt;&#x2F;span&gt;&lt;span style=&quot;color: #FAB387;&quot;&gt; 32&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span style=&quot;color: #89B4FA;font-style: italic;&quot;&gt;drwxr-xr-x&lt;&#x2F;span&gt;&lt;span style=&quot;color: #FAB387;&quot;&gt; 7&lt;&#x2F;span&gt;&lt;span style=&quot;color: #A6E3A1;&quot;&gt; node node&lt;&#x2F;span&gt;&lt;span style=&quot;color: #FAB387;&quot;&gt; 4096&lt;&#x2F;span&gt;&lt;span style=&quot;color: #A6E3A1;&quot;&gt; Jan&lt;&#x2F;span&gt;&lt;span style=&quot;color: #FAB387;&quot;&gt; 24&lt;&#x2F;span&gt;&lt;span style=&quot;color: #A6E3A1;&quot;&gt; 17:58 .&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span style=&quot;color: #89B4FA;font-style: italic;&quot;&gt;drwxr-xr-x&lt;&#x2F;span&gt;&lt;span style=&quot;color: #FAB387;&quot;&gt; 3&lt;&#x2F;span&gt;&lt;span style=&quot;color: #A6E3A1;&quot;&gt; root root&lt;&#x2F;span&gt;&lt;span style=&quot;color: #FAB387;&quot;&gt; 4096&lt;&#x2F;span&gt;&lt;span style=&quot;color: #A6E3A1;&quot;&gt; Jan&lt;&#x2F;span&gt;&lt;span style=&quot;color: #FAB387;&quot;&gt; 24&lt;&#x2F;span&gt;&lt;span style=&quot;color: #A6E3A1;&quot;&gt; 18:11 ..&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span style=&quot;color: #89B4FA;font-style: italic;&quot;&gt;drwxr-xr-x&lt;&#x2F;span&gt;&lt;span style=&quot;color: #FAB387;&quot;&gt; 2&lt;&#x2F;span&gt;&lt;span style=&quot;color: #A6E3A1;&quot;&gt; node node&lt;&#x2F;span&gt;&lt;span style=&quot;color: #FAB387;&quot;&gt; 4096&lt;&#x2F;span&gt;&lt;span style=&quot;color: #A6E3A1;&quot;&gt; Jan&lt;&#x2F;span&gt;&lt;span style=&quot;color: #FAB387;&quot;&gt; 24&lt;&#x2F;span&gt;&lt;span style=&quot;color: #A6E3A1;&quot;&gt; 17:58 .devcontainer&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span style=&quot;color: #89B4FA;font-style: italic;&quot;&gt;drwxr-xr-x&lt;&#x2F;span&gt;&lt;span style=&quot;color: #FAB387;&quot;&gt; 7&lt;&#x2F;span&gt;&lt;span style=&quot;color: #A6E3A1;&quot;&gt; node node&lt;&#x2F;span&gt;&lt;span style=&quot;color: #FAB387;&quot;&gt; 4096&lt;&#x2F;span&gt;&lt;span style=&quot;color: #A6E3A1;&quot;&gt; Jan&lt;&#x2F;span&gt;&lt;span style=&quot;color: #FAB387;&quot;&gt; 24&lt;&#x2F;span&gt;&lt;span style=&quot;color: #A6E3A1;&quot;&gt; 17:27 .git&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span style=&quot;color: #89B4FA;font-style: italic;&quot;&gt;drwxr-xr-x&lt;&#x2F;span&gt;&lt;span style=&quot;color: #FAB387;&quot;&gt; 2&lt;&#x2F;span&gt;&lt;span style=&quot;color: #A6E3A1;&quot;&gt; node node&lt;&#x2F;span&gt;&lt;span style=&quot;color: #FAB387;&quot;&gt; 4096&lt;&#x2F;span&gt;&lt;span style=&quot;color: #A6E3A1;&quot;&gt; Jan&lt;&#x2F;span&gt;&lt;span style=&quot;color: #FAB387;&quot;&gt; 24&lt;&#x2F;span&gt;&lt;span style=&quot;color: #A6E3A1;&quot;&gt; 17:38 .github&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span style=&quot;color: #89B4FA;font-style: italic;&quot;&gt;drwxr-xr-x&lt;&#x2F;span&gt;&lt;span style=&quot;color: #FAB387;&quot;&gt; 2&lt;&#x2F;span&gt;&lt;span style=&quot;color: #A6E3A1;&quot;&gt; node node&lt;&#x2F;span&gt;&lt;span style=&quot;color: #FAB387;&quot;&gt; 4096&lt;&#x2F;span&gt;&lt;span style=&quot;color: #A6E3A1;&quot;&gt; Jan&lt;&#x2F;span&gt;&lt;span style=&quot;color: #FAB387;&quot;&gt; 24&lt;&#x2F;span&gt;&lt;span style=&quot;color: #A6E3A1;&quot;&gt; 17:26 .vscode&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span style=&quot;color: #89B4FA;font-style: italic;&quot;&gt;-rw-r--r--&lt;&#x2F;span&gt;&lt;span style=&quot;color: #FAB387;&quot;&gt; 1&lt;&#x2F;span&gt;&lt;span style=&quot;color: #A6E3A1;&quot;&gt; node node&lt;&#x2F;span&gt;&lt;span style=&quot;color: #FAB387;&quot;&gt;  150&lt;&#x2F;span&gt;&lt;span style=&quot;color: #A6E3A1;&quot;&gt; Jan&lt;&#x2F;span&gt;&lt;span style=&quot;color: #FAB387;&quot;&gt; 24&lt;&#x2F;span&gt;&lt;span style=&quot;color: #A6E3A1;&quot;&gt; 17:26 README.md&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span style=&quot;color: #89B4FA;font-style: italic;&quot;&gt;drwxr-xr-x&lt;&#x2F;span&gt;&lt;span style=&quot;color: #FAB387;&quot;&gt; 3&lt;&#x2F;span&gt;&lt;span style=&quot;color: #A6E3A1;&quot;&gt; node node&lt;&#x2F;span&gt;&lt;span style=&quot;color: #FAB387;&quot;&gt; 4096&lt;&#x2F;span&gt;&lt;span style=&quot;color: #A6E3A1;&quot;&gt; Jan&lt;&#x2F;span&gt;&lt;span style=&quot;color: #FAB387;&quot;&gt; 24&lt;&#x2F;span&gt;&lt;span style=&quot;color: #A6E3A1;&quot;&gt; 17:26 docs&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span style=&quot;color: #89B4FA;font-style: italic;&quot;&gt;joel@jarch&lt;&#x2F;span&gt;&lt;span style=&quot;color: #A6E3A1;&quot;&gt; ~&#x2F;git&#x2F;devstopian&#x2F;blog&lt;&#x2F;span&gt;&lt;span&gt; (feature&#x2F;jv_setup*)$ id&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;uid&lt;&#x2F;span&gt;&lt;span style=&quot;color: #94E2D5;&quot;&gt;=&lt;&#x2F;span&gt;&lt;span style=&quot;color: #A6E3A1;&quot;&gt;1000&lt;&#x2F;span&gt;&lt;span style=&quot;color: #9399B2;&quot;&gt;(&lt;&#x2F;span&gt;&lt;span style=&quot;color: #89B4FA;font-style: italic;&quot;&gt;joel&lt;&#x2F;span&gt;&lt;span style=&quot;color: #9399B2;&quot;&gt;)&lt;&#x2F;span&gt;&lt;span&gt; gid&lt;&#x2F;span&gt;&lt;span style=&quot;color: #94E2D5;&quot;&gt;=&lt;&#x2F;span&gt;&lt;span style=&quot;color: #A6E3A1;&quot;&gt;1000&lt;&#x2F;span&gt;&lt;span style=&quot;color: #9399B2;&quot;&gt;(&lt;&#x2F;span&gt;&lt;span style=&quot;color: #89B4FA;font-style: italic;&quot;&gt;joel&lt;&#x2F;span&gt;&lt;span style=&quot;color: #9399B2;&quot;&gt;)&lt;&#x2F;span&gt;&lt;span&gt; groups&lt;&#x2F;span&gt;&lt;span style=&quot;color: #94E2D5;&quot;&gt;=&lt;&#x2F;span&gt;&lt;span style=&quot;color: #A6E3A1;&quot;&gt;1000&lt;&#x2F;span&gt;&lt;span style=&quot;color: #9399B2;&quot;&gt;(&lt;&#x2F;span&gt;&lt;span style=&quot;color: #89B4FA;font-style: italic;&quot;&gt;joel&lt;&#x2F;span&gt;&lt;span style=&quot;color: #9399B2;&quot;&gt;)&lt;&#x2F;span&gt;&lt;span style=&quot;color: #A6E3A1;&quot;&gt;,957&lt;&#x2F;span&gt;&lt;span style=&quot;color: #9399B2;&quot;&gt;(&lt;&#x2F;span&gt;&lt;span style=&quot;color: #89B4FA;font-style: italic;&quot;&gt;docker&lt;&#x2F;span&gt;&lt;span style=&quot;color: #9399B2;&quot;&gt;)&lt;&#x2F;span&gt;&lt;span style=&quot;color: #A6E3A1;&quot;&gt;,998&lt;&#x2F;span&gt;&lt;span style=&quot;color: #9399B2;&quot;&gt;(&lt;&#x2F;span&gt;&lt;span style=&quot;color: #89B4FA;font-style: italic;&quot;&gt;wheel&lt;&#x2F;span&gt;&lt;span style=&quot;color: #9399B2;&quot;&gt;)&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;&lt;&#x2F;li&gt;
+&lt;li&gt;
+&lt;p&gt;You can, if you prefer, install &lt;code&gt;git&lt;&#x2F;code&gt; within the devcontainer. However, beware of permissions issues to authenticate with the GitHub repos.&lt;&#x2F;p&gt;
+&lt;ul&gt;
+&lt;li&gt;I usually prefer to just run git commands on my host OS&#x27;s terminal.&lt;&#x2F;li&gt;
+&lt;&#x2F;ul&gt;
+&lt;&#x2F;li&gt;
+&lt;&#x2F;ul&gt;
+</content>
+        
+    </entry>
+    <entry xml:lang="en">
         <title>GitFlow</title>
         <published>2021-06-08T00:00:00+00:00</published>
         <updated>2021-06-08T00:00:00+00:00</updated>

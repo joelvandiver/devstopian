@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Dockerized Dev | Dev·stopian</title>
+    
+    
+    <meta name="description" content="Use dev containers to confine your toolchains.">
+    
+    
+    <meta name="keywords" content="DX, Docker">
+    
+    
+    <link rel="canonical" href="https:&#x2F;&#x2F;devstopian.com&#x2F;blog&#x2F;2021-12-07-dockerized-dev&#x2F;" />
+    
+    <link rel="stylesheet" href="https://devstopian.com/style.css">
+    
+  </head>
+  <body class="theme-tokiostopian">
+    
+    <header>
+      <nav>
+        <a href="/">/home/</a>
+
+        
+        
+        
+        <a href="https:&#x2F;&#x2F;devstopian.com&#x2F;blog&#x2F;">&#x2F;blog&#x2F;</a>
+        
+
+        
+        
+        <a href="https:&#x2F;&#x2F;devstopian.com&#x2F;about&#x2F;">&#x2F;about&#x2F;</a>
+        
+      </nav>
+    </header>
+    <hr>
+    <main>
+      
+<section>
+  <h1>Dockerized Dev</h1>
+  
+  <p>Originally Published: <time>2021-12-07</time></p>
+  
+  
+  <p class="tags">
+  Tags: [
+  
+  <a href="https://devstopian.com/tags/dx/">#DX</a>, 
+  
+  <a href="https://devstopian.com/tags/docker/">#Docker</a>
+  
+  ]
+    <hr />
+  </p>
+  
+  <div>
+    <h2 id="docker-toolchains">Docker Toolchains</h2>
+<p>I'm sure that you've heard of Docker, but have you considered running your development toolchains in Docker?</p>
+<p>Docker is great for containerizing your application tools that run in production, but it's also great at containerizing your development environment. Using docker during development allows more freedom to explore different languages and tech stacks without worrying about maintaining the tools on my system over time. When I'm done running a development container, I simply throw it away and spin it back up when I'm ready to get back at it.</p>
+<p>First, let's lay down some useful <code>docker</code> commands to get you going:</p>
+<blockquote>
+<p><code>docker run -it --rm --entrypoint /bin/bash $TOOL</code></p>
+</blockquote>
+<p>That command will drop you into an integrated terminal <code>-it</code>, remove it when you stop the container <code>--rm</code> and open the shell <code>--entrypoint /bin/sh</code>. The <code>$TOOL</code> can be any image on your system or on <a rel="external" href="https://hub.docker.com/">Docker Hub</a>.</p>
+<p>For example, you could spin up the <code>alpine</code> image with the <code>ash</code> shell:</p>
+<blockquote>
+<p><code>docker run -it --rm --entrypoint /bin/ash alpine</code></p>
+</blockquote>
+<p><img src="https://devstopian.com/blog/2021-12-07-dockerized-dev/assets/2021-12-07-17-30-23.png" alt="" /></p>
+<p>Or, I might spin up a <code>python</code> instance to take a look around Python.</p>
+<blockquote>
+<p><code>docker run -it --rm --entrypoint /bin/sh python</code></p>
+</blockquote>
+<p><img src="https://devstopian.com/blog/2021-12-07-dockerized-dev/assets/2021-12-07-17-29-15.png" alt="" /></p>
+<p>It's also great for other languages you might want to take out for a spin, such as:</p>
+<blockquote>
+<p><code>docker run -it --rm --entrypoint /bin/sh haskell</code></p>
+</blockquote>
+<p><img src="https://devstopian.com/blog/2021-12-07-dockerized-dev/assets/2021-12-07-17-29-53.png" alt="" /></p>
+<p>Pretty cool, eh?</p>
+<h2 id="vscode-dev-containers">VSCode Dev Containers</h2>
+<p>The <a rel="external" href="https://containers.dev/">Dev Containers VSCode Extension</a> provides a great way to share an identical dev environment for a given repository. You can use the default images provided by Microsoft, or you can build your with a Dockerfile right there in your project!</p>
+<h3 id="example-setup">Example Setup</h3>
+<p>The following steps are useful for demonstrating using the dev containers with a NodeJS repository.</p>
+<ol>
+<li>Create a <code>.devcontainer/</code> folder at the root of your repository.</li>
+<li>Install the <a rel="external" href="https://containers.dev/">Dev Containers VSCode Extension</a>.</li>
+<li>Add the following <code>.devcontainer/devcontainer.json</code> file. Note the configuration can include other extension to be installed in the dev container.</li>
+</ol>
+<pre class="giallo" style="color: #CDD6F4; background-color: #1E1E2E;"><code data-lang="json"><span class="giallo-l"><span style="color: #9399B2;font-style: italic;">// For format details, see https://aka.ms/devcontainer.json. For config options, see the</span></span>
+<span class="giallo-l"><span style="color: #9399B2;font-style: italic;">// README at: https://github.com/devcontainers/templates/tree/main/src/typescript-node</span></span>
+<span class="giallo-l"><span style="color: #9399B2;">{</span></span>
+<span class="giallo-l"><span style="color: #9399B2;">    &quot;</span><span style="color: #89B4FA;">name</span><span style="color: #9399B2;">&quot;:</span><span style="color: #A6E3A1;"> &quot;Dev Build&quot;</span><span style="color: #9399B2;">,</span></span>
+<span class="giallo-l"><span style="color: #9399B2;">    &quot;</span><span style="color: #89B4FA;">build</span><span style="color: #9399B2;">&quot;: {</span></span>
+<span class="giallo-l"><span style="color: #9399B2;font-style: italic;">        // Path is relative to the devcontainer.json file.</span></span>
+<span class="giallo-l"><span style="color: #9399B2;">        &quot;</span><span style="color: #89B4FA;">dockerfile</span><span style="color: #9399B2;">&quot;:</span><span style="color: #A6E3A1;"> &quot;Dockerfile&quot;</span></span>
+<span class="giallo-l"><span style="color: #9399B2;">    },</span></span>
+<span class="giallo-l"><span style="color: #9399B2;">    &quot;</span><span style="color: #89B4FA;">customizations</span><span style="color: #9399B2;">&quot;: {</span></span>
+<span class="giallo-l"><span style="color: #9399B2;">        &quot;</span><span style="color: #89B4FA;">vscode</span><span style="color: #9399B2;">&quot;: {</span></span>
+<span class="giallo-l"><span style="color: #9399B2;">            &quot;</span><span style="color: #89B4FA;">extensions</span><span style="color: #9399B2;">&quot;: [</span></span>
+<span class="giallo-l"><span style="color: #A6E3A1;">                &quot;bradlc.vscode-tailwindcss&quot;</span><span style="color: #9399B2;">,</span></span>
+<span class="giallo-l"><span style="color: #A6E3A1;">                &quot;esbenp.prettier-vscode&quot;</span><span style="color: #9399B2;">,</span></span>
+<span class="giallo-l"><span style="color: #A6E3A1;">                &quot;ms-playwright.playwright&quot;</span><span style="color: #9399B2;">,</span></span>
+<span class="giallo-l"><span style="color: #A6E3A1;">                &quot;vitest.explorer&quot;</span><span style="color: #9399B2;">,</span></span>
+<span class="giallo-l"><span style="color: #A6E3A1;">                &quot;ms-vscode-remote.remote-containers&quot;</span></span>
+<span class="giallo-l"><span style="color: #9399B2;">            ]</span></span>
+<span class="giallo-l"><span style="color: #9399B2;">        }</span></span>
+<span class="giallo-l"><span style="color: #9399B2;">    }</span></span>
+<span class="giallo-l"><span style="color: #9399B2;">}</span></span></code></pre>
+<ol start="4">
+<li>Add the following <code>.devcontainer/Dockerfile</code>. Install any other tools as necessary.</li>
+</ol>
+<pre class="giallo" style="color: #CDD6F4; background-color: #1E1E2E;"><code data-lang="shellscript"><span class="giallo-l"><span style="color: #9399B2;font-style: italic;"># ref: https://hub.docker.com/_/node/</span></span>
+<span class="giallo-l"><span style="color: #89B4FA;font-style: italic;">FROM</span><span style="color: #A6E3A1;"> node:24-trixie AS devcontainer</span></span>
+<span class="giallo-l"></span>
+<span class="giallo-l"><span style="color: #89B4FA;font-style: italic;">RUN</span><span style="color: #A6E3A1;"> apt-get update</span><span style="color: #9399B2;"> &amp;&amp;</span><span style="color: #89B4FA;font-style: italic;"> apt-get</span><span style="color: #A6E3A1;"> install -y</span><span style="color: #F5C2E7;"> \</span></span>
+<span class="giallo-l"><span style="color: #A6E3A1;">    curl</span><span style="color: #F5C2E7;"> \</span></span>
+<span class="giallo-l"><span style="color: #A6E3A1;">    sudo</span><span style="color: #F5C2E7;"> \</span></span>
+<span class="giallo-l"><span style="color: #A6E3A1;">    vim</span><span style="color: #F5C2E7;"> \</span></span>
+<span class="giallo-l"><span style="color: #9399B2;">    &amp;&amp;</span><span style="color: #89B4FA;font-style: italic;"> rm</span><span style="color: #A6E3A1;"> -rf /var/lib/apt/lists/</span><span>*</span></span>
+<span class="giallo-l"></span>
+<span class="giallo-l"><span style="color: #89B4FA;font-style: italic;">USER</span><span style="color: #A6E3A1;"> node</span></span>
+<span class="giallo-l"></span>
+<span class="giallo-l"><span style="color: #89B4FA;font-style: italic;">WORKDIR</span><span style="color: #A6E3A1;"> /workspaces</span></span></code></pre>
+<ol start="5">
+<li>Relaunch vscode in the devcontainer.
+<ul>
+<li>Options:
+<ol>
+<li>Reload vscode &amp; select "Reopen in Container" in the bottom right alert for the newly opened vscode.</li>
+<li>Run "Dev Containers: Rebuild and Reopen in Container" in the command pane in vscode.</li>
+<li>Select the remote action in the very bottom left of the vscode instance.
+<img src="https://devstopian.com/blog/2021-12-07-dockerized-dev/assets/final.png" alt="Final Dev Container" /></li>
+</ol>
+</li>
+</ul>
+</li>
+</ol>
+<h3 id="caveats">Caveats</h3>
+<ul>
+<li>
+<p>Though <a rel="external" href="https://en.wikipedia.org/wiki/Software_rot">software rot</a> will likely one day render this dev container unusable, there is at least documentation of the full build process through the <code>./devcontainer/Dockerfile</code>.</p>
+<ul>
+<li>A future developer could, therefore, create a new build process from the legacy build file.</li>
+</ul>
+</li>
+<li>
+<p>Switching dev containers across many repositories (30+) can be painful and slow.</p>
+</li>
+<li>
+<p>The file permissions can be tricky. Typically, with many Linux distros, such as <a rel="external" href="https://www.debian.org/releases/trixie/">Debian Trixie</a>, the default user's id is <code>1000</code>. So, be careful to create/use a user with id 1000 to simplify <code>chown</code>ing with your host files that are volume mounted into your devcontainer.</p>
+<ul>
+<li>If the docker image you are basing your devcontainer on does not have a user with id <code>1000</code> to use, then you will need to add one.</li>
+<li>Fortunately, the <code>node</code> user in the <code>node:24-trixie</code> base image has id <code>1000</code>.</li>
+<li>Technically, the id of the running user in the container just needs to match the user id on your host to avoid permission problems.</li>
+<li>Note how my user on my host system, <code>joel</code>, is different than when mounted in through the dev container <code>node</code>:</li>
+</ul>
+<pre class="giallo" style="color: #CDD6F4; background-color: #1E1E2E;"><code data-lang="shellscript"><span class="giallo-l"><span style="color: #9399B2;font-style: italic;"># From my host OS:</span></span>
+<span class="giallo-l"><span style="color: #89B4FA;font-style: italic;">joel@jarch</span><span style="color: #A6E3A1;"> ~/git/devstopian/blog</span><span> (feature/jv_setup*)$ ls -al</span></span>
+<span class="giallo-l"><span style="color: #89B4FA;font-style: italic;">total</span><span style="color: #FAB387;"> 32</span></span>
+<span class="giallo-l"><span style="color: #89B4FA;font-style: italic;">drwxr-xr-x</span><span style="color: #FAB387;"> 7</span><span style="color: #A6E3A1;"> joel joel</span><span style="color: #FAB387;"> 4096</span><span style="color: #A6E3A1;"> Jan</span><span style="color: #FAB387;"> 24</span><span style="color: #A6E3A1;"> 11:58 .</span></span>
+<span class="giallo-l"><span style="color: #89B4FA;font-style: italic;">drwxr-xr-x</span><span style="color: #FAB387;"> 7</span><span style="color: #A6E3A1;"> joel joel</span><span style="color: #FAB387;"> 4096</span><span style="color: #A6E3A1;"> Jan</span><span style="color: #FAB387;"> 17</span><span style="color: #A6E3A1;"> 15:04 ..</span></span>
+<span class="giallo-l"><span style="color: #89B4FA;font-style: italic;">drwxr-xr-x</span><span style="color: #FAB387;"> 2</span><span style="color: #A6E3A1;"> joel joel</span><span style="color: #FAB387;"> 4096</span><span style="color: #A6E3A1;"> Jan</span><span style="color: #FAB387;"> 24</span><span style="color: #A6E3A1;"> 11:58 .devcontainer</span></span>
+<span class="giallo-l"><span style="color: #89B4FA;font-style: italic;">drwxr-xr-x</span><span style="color: #FAB387;"> 7</span><span style="color: #A6E3A1;"> joel joel</span><span style="color: #FAB387;"> 4096</span><span style="color: #A6E3A1;"> Jan</span><span style="color: #FAB387;"> 24</span><span style="color: #A6E3A1;"> 11:27 .git</span></span>
+<span class="giallo-l"><span style="color: #89B4FA;font-style: italic;">drwxr-xr-x</span><span style="color: #FAB387;"> 2</span><span style="color: #A6E3A1;"> joel joel</span><span style="color: #FAB387;"> 4096</span><span style="color: #A6E3A1;"> Jan</span><span style="color: #FAB387;"> 24</span><span style="color: #A6E3A1;"> 11:38 .github</span></span>
+<span class="giallo-l"><span style="color: #89B4FA;font-style: italic;">drwxr-xr-x</span><span style="color: #FAB387;"> 2</span><span style="color: #A6E3A1;"> joel joel</span><span style="color: #FAB387;"> 4096</span><span style="color: #A6E3A1;"> Jan</span><span style="color: #FAB387;"> 24</span><span style="color: #A6E3A1;"> 11:26 .vscode</span></span>
+<span class="giallo-l"><span style="color: #89B4FA;font-style: italic;">-rw-r--r--</span><span style="color: #FAB387;"> 1</span><span style="color: #A6E3A1;"> joel joel</span><span style="color: #FAB387;">  150</span><span style="color: #A6E3A1;"> Jan</span><span style="color: #FAB387;"> 24</span><span style="color: #A6E3A1;"> 11:26 README.md</span></span>
+<span class="giallo-l"><span style="color: #89B4FA;font-style: italic;">drwxr-xr-x</span><span style="color: #FAB387;"> 3</span><span style="color: #A6E3A1;"> joel joel</span><span style="color: #FAB387;"> 4096</span><span style="color: #A6E3A1;"> Jan</span><span style="color: #FAB387;"> 24</span><span style="color: #A6E3A1;"> 11:26 docs</span></span>
+<span class="giallo-l"></span>
+<span class="giallo-l"><span style="color: #89B4FA;font-style: italic;">joel@jarch</span><span style="color: #A6E3A1;"> ~/git/devstopian/blog</span><span> (feature/jv_setup*)$ id</span></span>
+<span class="giallo-l"><span>uid</span><span style="color: #94E2D5;">=</span><span style="color: #A6E3A1;">1000</span><span style="color: #9399B2;">(</span><span style="color: #89B4FA;font-style: italic;">joel</span><span style="color: #9399B2;">)</span><span> gid</span><span style="color: #94E2D5;">=</span><span style="color: #A6E3A1;">1000</span><span style="color: #9399B2;">(</span><span style="color: #89B4FA;font-style: italic;">joel</span><span style="color: #9399B2;">)</span><span> groups</span><span style="color: #94E2D5;">=</span><span style="color: #A6E3A1;">1000</span><span style="color: #9399B2;">(</span><span style="color: #89B4FA;font-style: italic;">joel</span><span style="color: #9399B2;">)</span><span style="color: #A6E3A1;">,957</span><span style="color: #9399B2;">(</span><span style="color: #89B4FA;font-style: italic;">docker</span><span style="color: #9399B2;">)</span><span style="color: #A6E3A1;">,998</span><span style="color: #9399B2;">(</span><span style="color: #89B4FA;font-style: italic;">wheel</span><span style="color: #9399B2;">)</span></span>
+<span class="giallo-l"></span>
+<span class="giallo-l"><span style="color: #9399B2;font-style: italic;"># From within the devcontainer:</span></span>
+<span class="giallo-l"><span style="color: #89B4FA;font-style: italic;">node@a54d80845994:/workspaces/frontend$</span><span style="color: #A6E3A1;"> ls -al</span></span>
+<span class="giallo-l"><span style="color: #89B4FA;font-style: italic;">total</span><span style="color: #FAB387;"> 32</span></span>
+<span class="giallo-l"><span style="color: #89B4FA;font-style: italic;">drwxr-xr-x</span><span style="color: #FAB387;"> 7</span><span style="color: #A6E3A1;"> node node</span><span style="color: #FAB387;"> 4096</span><span style="color: #A6E3A1;"> Jan</span><span style="color: #FAB387;"> 24</span><span style="color: #A6E3A1;"> 17:58 .</span></span>
+<span class="giallo-l"><span style="color: #89B4FA;font-style: italic;">drwxr-xr-x</span><span style="color: #FAB387;"> 3</span><span style="color: #A6E3A1;"> root root</span><span style="color: #FAB387;"> 4096</span><span style="color: #A6E3A1;"> Jan</span><span style="color: #FAB387;"> 24</span><span style="color: #A6E3A1;"> 18:11 ..</span></span>
+<span class="giallo-l"><span style="color: #89B4FA;font-style: italic;">drwxr-xr-x</span><span style="color: #FAB387;"> 2</span><span style="color: #A6E3A1;"> node node</span><span style="color: #FAB387;"> 4096</span><span style="color: #A6E3A1;"> Jan</span><span style="color: #FAB387;"> 24</span><span style="color: #A6E3A1;"> 17:58 .devcontainer</span></span>
+<span class="giallo-l"><span style="color: #89B4FA;font-style: italic;">drwxr-xr-x</span><span style="color: #FAB387;"> 7</span><span style="color: #A6E3A1;"> node node</span><span style="color: #FAB387;"> 4096</span><span style="color: #A6E3A1;"> Jan</span><span style="color: #FAB387;"> 24</span><span style="color: #A6E3A1;"> 17:27 .git</span></span>
+<span class="giallo-l"><span style="color: #89B4FA;font-style: italic;">drwxr-xr-x</span><span style="color: #FAB387;"> 2</span><span style="color: #A6E3A1;"> node node</span><span style="color: #FAB387;"> 4096</span><span style="color: #A6E3A1;"> Jan</span><span style="color: #FAB387;"> 24</span><span style="color: #A6E3A1;"> 17:38 .github</span></span>
+<span class="giallo-l"><span style="color: #89B4FA;font-style: italic;">drwxr-xr-x</span><span style="color: #FAB387;"> 2</span><span style="color: #A6E3A1;"> node node</span><span style="color: #FAB387;"> 4096</span><span style="color: #A6E3A1;"> Jan</span><span style="color: #FAB387;"> 24</span><span style="color: #A6E3A1;"> 17:26 .vscode</span></span>
+<span class="giallo-l"><span style="color: #89B4FA;font-style: italic;">-rw-r--r--</span><span style="color: #FAB387;"> 1</span><span style="color: #A6E3A1;"> node node</span><span style="color: #FAB387;">  150</span><span style="color: #A6E3A1;"> Jan</span><span style="color: #FAB387;"> 24</span><span style="color: #A6E3A1;"> 17:26 README.md</span></span>
+<span class="giallo-l"><span style="color: #89B4FA;font-style: italic;">drwxr-xr-x</span><span style="color: #FAB387;"> 3</span><span style="color: #A6E3A1;"> node node</span><span style="color: #FAB387;"> 4096</span><span style="color: #A6E3A1;"> Jan</span><span style="color: #FAB387;"> 24</span><span style="color: #A6E3A1;"> 17:26 docs</span></span>
+<span class="giallo-l"></span>
+<span class="giallo-l"><span style="color: #89B4FA;font-style: italic;">joel@jarch</span><span style="color: #A6E3A1;"> ~/git/devstopian/blog</span><span> (feature/jv_setup*)$ id</span></span>
+<span class="giallo-l"><span>uid</span><span style="color: #94E2D5;">=</span><span style="color: #A6E3A1;">1000</span><span style="color: #9399B2;">(</span><span style="color: #89B4FA;font-style: italic;">joel</span><span style="color: #9399B2;">)</span><span> gid</span><span style="color: #94E2D5;">=</span><span style="color: #A6E3A1;">1000</span><span style="color: #9399B2;">(</span><span style="color: #89B4FA;font-style: italic;">joel</span><span style="color: #9399B2;">)</span><span> groups</span><span style="color: #94E2D5;">=</span><span style="color: #A6E3A1;">1000</span><span style="color: #9399B2;">(</span><span style="color: #89B4FA;font-style: italic;">joel</span><span style="color: #9399B2;">)</span><span style="color: #A6E3A1;">,957</span><span style="color: #9399B2;">(</span><span style="color: #89B4FA;font-style: italic;">docker</span><span style="color: #9399B2;">)</span><span style="color: #A6E3A1;">,998</span><span style="color: #9399B2;">(</span><span style="color: #89B4FA;font-style: italic;">wheel</span><span style="color: #9399B2;">)</span></span></code></pre></li>
+<li>
+<p>You can, if you prefer, install <code>git</code> within the devcontainer. However, beware of permissions issues to authenticate with the GitHub repos.</p>
+<ul>
+<li>I usually prefer to just run git commands on my host OS's terminal.</li>
+</ul>
+</li>
+</ul>
+
+  </div>
+</section>
+
+    </main>
+    <hr>
+    <footer>
+      <!-- <p>Powered by <a href="https://www.getzola.org/">Zola</a> and inspired by the <a href="https://github.com/mxaddict/zolanight">ZolaNight Theme</a></p>
+       -->
+    </footer>
+  </body>
+</html>

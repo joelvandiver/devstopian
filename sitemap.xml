@@ -18,6 +18,10 @@
         <lastmod>2021-06-08</lastmod>
     </url>
     <url>
+        <loc>https://devstopian.com/blog/2021-12-07-dockerized-dev/</loc>
+        <lastmod>2021-12-07</lastmod>
+    </url>
+    <url>
         <loc>https://devstopian.com/blog/2023-12-10-run-script/</loc>
         <lastmod>2023-12-10</lastmod>
     </url>
@@ -50,6 +54,9 @@
     </url>
     <url>
         <loc>https://devstopian.com/tags/devops/</loc>
+    </url>
+    <url>
+        <loc>https://devstopian.com/tags/docker/</loc>
     </url>
     <url>
         <loc>https://devstopian.com/tags/dx/</loc>
