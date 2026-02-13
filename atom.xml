@@ -24,7 +24,7 @@
         <id>https://devstopian.com/blog/2026-02-11-promptme/</id>
         
         <content type="html" xml:base="https://devstopian.com/blog/2026-02-11-promptme/">&lt;blockquote&gt;
-&lt;p&gt;Shift &lt;code&gt;README&lt;&#x2F;code&gt; left to &lt;code&gt;PROMPTME&lt;&#x2F;code&gt;&lt;&#x2F;p&gt;
+&lt;p&gt;Begin your project with a &lt;code&gt;PROMPTME&lt;&#x2F;code&gt; and end with a &lt;code&gt;README&lt;&#x2F;code&gt;.&lt;&#x2F;p&gt;
 &lt;&#x2F;blockquote&gt;
 &lt;h2 id=&quot;problem&quot;&gt;Problem&lt;&#x2F;h2&gt;
 &lt;blockquote&gt;
@@ -103,6 +103,87 @@ chatbot and see how it goes.&lt;&#x2F;p&gt;
 &lt;span class=&quot;giallo-l&quot;&gt;&lt;&#x2F;span&gt;
 &lt;span class=&quot;giallo-l&quot;&gt;&lt;span style=&quot;color: #94E2D5;&quot;&gt;-&lt;&#x2F;span&gt;&lt;span&gt; Can you walk me through how to setup a log viewer?  I would like the full &lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
 &lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;implementation details; not just a plan for implementation.&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;</content>
+        
+    </entry>
+    <entry xml:lang="en">
+        <title>Devstack</title>
+        <published>2024-04-23T00:00:00+00:00</published>
+        <updated>2024-04-23T00:00:00+00:00</updated>
+        
+        <author>
+          <name>
+            
+              Unknown
+            
+          </name>
+        </author>
+        
+        <link rel="alternate" type="text/html" href="https://devstopian.com/blog/2024-04-23-devstack/"/>
+        <id>https://devstopian.com/blog/2024-04-23-devstack/</id>
+        
+        <content type="html" xml:base="https://devstopian.com/blog/2024-04-23-devstack/">&lt;h2 id=&quot;the-problem&quot;&gt;The Problem&lt;&#x2F;h2&gt;
+&lt;p&gt;In the move to microservices and Kubernetes, we strive to create small, well-defined services with minimal coupling with other services. But there will always be a need to test in an integrated system. You need to prove to yourself that you did in fact build the &lt;em&gt;right&lt;&#x2F;em&gt; system that integrates with other services. At the same time, you cannot build a rigorous system when you only work in a fully integrated way.&lt;&#x2F;p&gt;
+&lt;p&gt;A traditional software delivery cycle might be:&lt;&#x2F;p&gt;
+&lt;ol&gt;
+&lt;li&gt;Write code on your local (&lt;strong&gt;LOCAL&lt;&#x2F;strong&gt;) system.&lt;&#x2F;li&gt;
+&lt;li&gt;Push the code to a remote server to build.&lt;&#x2F;li&gt;
+&lt;li&gt;Publish the changes to a development integrated testing (&lt;strong&gt;DIT&lt;&#x2F;strong&gt;) environment.&lt;&#x2F;li&gt;
+&lt;li&gt;Verify the changes in &lt;strong&gt;DIT&lt;&#x2F;strong&gt;.&lt;&#x2F;li&gt;
+&lt;li&gt;Publish the changes to a systems integrated testing (&lt;strong&gt;SIT&lt;&#x2F;strong&gt;) environment.&lt;&#x2F;li&gt;
+&lt;li&gt;Verify the changes in &lt;strong&gt;SIT&lt;&#x2F;strong&gt;.&lt;&#x2F;li&gt;
+&lt;li&gt;Publish the changes to production.&lt;&#x2F;li&gt;
+&lt;li&gt;Create new requirements for development.&lt;&#x2F;li&gt;
+&lt;li&gt;Repeat.&lt;&#x2F;li&gt;
+&lt;&#x2F;ol&gt;
+&lt;p&gt;This cycle could be presented as the following pipeline of environments:&lt;&#x2F;p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;LOCAL &amp;gt; DIT &amp;gt; SIT &amp;gt; PROD&lt;&#x2F;p&gt;
+&lt;&#x2F;blockquote&gt;
+&lt;p&gt;This traditional approach can make the &lt;strong&gt;DIT&lt;&#x2F;strong&gt; environment a bit contentious among developers in a team. Developers can inadvertently make changes in &lt;strong&gt;DIT&lt;&#x2F;strong&gt; that unintentionally impact other developers. On the other hand, if developers do not regularly verify their services integrate with other services, then they&#x27;re more likely to build the &lt;em&gt;wrong&lt;&#x2F;em&gt; solution. Also, by the nature of some services such as a cache (Redis), a database (PostgreSQL), and a queue (RabbitMQ), a developer may need to spin up a local network of services anyways.&lt;&#x2F;p&gt;
+&lt;h2 id=&quot;local-as-dit&quot;&gt;LOCAL as DIT&lt;&#x2F;h2&gt;
+&lt;p&gt;One solution I have experienced to this problem is to mirror the entire &lt;strong&gt;DIT&lt;&#x2F;strong&gt; environment on a developer&#x27;s &lt;strong&gt;LOCAL&lt;&#x2F;strong&gt; system. The developer is responsible to:&lt;&#x2F;p&gt;
+&lt;ol&gt;
+&lt;li&gt;keep their source repositories up to date&lt;&#x2F;li&gt;
+&lt;li&gt;install all of the toolchains necessary to build and run all of the services&lt;&#x2F;li&gt;
+&lt;li&gt;mount the code through to their cluster of services.&lt;&#x2F;li&gt;
+&lt;&#x2F;ol&gt;
+&lt;p&gt;This works fine for a small cluster of services, but this does not scale well. A local developer&#x27;s system likely cannot handle 100s of services. The compute requirements in memory, storage, and processing will be easily overburdened. This solution also discourages experimenting with new tech stacks and tool chains, as all developers must be aligned at all times.&lt;&#x2F;p&gt;
+&lt;h2 id=&quot;enter-devstack&quot;&gt;Enter Devstack&lt;&#x2F;h2&gt;
+&lt;p&gt;The &lt;code&gt;devstack&lt;&#x2F;code&gt; is a cluster of highly related services running in Kubernetes on a developer&#x27;s system. Typically, the services are placed in the same namespace and share a single helm chart as the unit of deployment. The most important piece to defining a &lt;code&gt;devstack&lt;&#x2F;code&gt; is custom routing that can be configured differently for deployment downstream (&lt;strong&gt;DIT&lt;&#x2F;strong&gt; and beyond). Once you have built custom routing, you can add in other capabilities to improve the development experience.&lt;&#x2F;p&gt;
+&lt;p&gt;A simple &lt;code&gt;devstack&lt;&#x2F;code&gt; could include a dev-&lt;em&gt;only&lt;&#x2F;em&gt; Kubernetes gateway that configures routing to your single namespace of services.&lt;&#x2F;p&gt;
+&lt;p&gt;A more advanced &lt;code&gt;devstack&lt;&#x2F;code&gt; could be a Helm chart with the following requirements:&lt;&#x2F;p&gt;
+&lt;ol&gt;
+&lt;li&gt;Add a Kubernetes gateway with TLS certs for a adhoc domain (e.g. https:&#x2F;&#x2F;local.mysupercoolnewapp.com&#x2F;) and a route to your development web server.&lt;&#x2F;li&gt;
+&lt;li&gt;Update your hosts file to map that domain to your local system.&lt;&#x2F;li&gt;
+&lt;li&gt;Add features and capabilities that are configurable with Helm values in a Helm chart. Some options may include:
+&lt;ol&gt;
+&lt;li&gt;Provide a fake auth service that exposes a profile cookie in the http messages in the cluster.&lt;&#x2F;li&gt;
+&lt;li&gt;Provide a dev home page to document the local devstack.&lt;&#x2F;li&gt;
+&lt;li&gt;Provide a local CDN with static assets available to your cluster.&lt;&#x2F;li&gt;
+&lt;li&gt;Provide cross-cutting services, such as logging (via Grafana &amp;amp; Loki).&lt;&#x2F;li&gt;
+&lt;li&gt;Provide breakglass services such as PGAdmin4 to manage the PostgreSQL database.&lt;&#x2F;li&gt;
+&lt;&#x2F;ol&gt;
+&lt;&#x2F;li&gt;
+&lt;&#x2F;ol&gt;
+&lt;p&gt;The Helm chart could then be used as a subchart to your chart under development.&lt;&#x2F;p&gt;
+&lt;p&gt;With the &lt;code&gt;devstack&lt;&#x2F;code&gt;, we can now setup the following pipeline:&lt;&#x2F;p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;LOCAL &amp;gt; DEVSTACK &amp;gt; DIT &amp;gt; SIT &amp;gt; PROD&lt;&#x2F;p&gt;
+&lt;&#x2F;blockquote&gt;
+&lt;p&gt;Awesome! Now, we have a way to develop a small stack of services on our local systems. Obviously, there is still a need to test the interfaces &lt;em&gt;between namespaces&lt;&#x2F;em&gt;, but at least the boundary of more highly coupled services can be tested in isolation.&lt;&#x2F;p&gt;
+&lt;h2 id=&quot;don-t-forget-local&quot;&gt;Don&#x27;t Forget: LOCAL&lt;&#x2F;h2&gt;
+&lt;p&gt;The importance of working locally with a single service cannot be overstated. The different levels of integration downstream are great for prototyping and verification, but a lot can go wrong when you have many services in the mix. At the most basic level, developers should have the ability to work on a service in complete isolation from all other services. This isolation is crucial for rapid prototyping and iteration, allowing developers to focus solely on the internal logic and functionality of their service without external dependencies.&lt;&#x2F;p&gt;
+&lt;p&gt;The rule I try to follow is:&lt;&#x2F;p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;90 &amp;gt; 9 &amp;gt; 1&lt;&#x2F;p&gt;
+&lt;&#x2F;blockquote&gt;
+&lt;p&gt;Where:&lt;&#x2F;p&gt;
+&lt;ol&gt;
+&lt;li&gt;90% of time is spent on LOCAL development,&lt;&#x2F;li&gt;
+&lt;li&gt;9% in &lt;code&gt;devstack&lt;&#x2F;code&gt; development,&lt;&#x2F;li&gt;
+&lt;li&gt;and 1% downstream.&lt;&#x2F;li&gt;
+&lt;&#x2F;ol&gt;
+</content>
         
     </entry>
     <entry xml:lang="en">

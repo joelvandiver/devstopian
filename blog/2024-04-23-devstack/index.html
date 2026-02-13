@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Devstack | Dev·stopian</title>
+    
+    
+    <meta name="description" content="Build with a devstack.">
+    
+    
+    <meta name="keywords" content="AI">
+    
+    
+    <link rel="canonical" href="https:&#x2F;&#x2F;devstopian.com&#x2F;blog&#x2F;2024-04-23-devstack&#x2F;" />
+    
+    <link rel="stylesheet" href="https://devstopian.com/style.css">
+    
+  </head>
+  <body class="theme-tokiostopian">
+    
+    <header>
+      <nav>
+        <a href="/">/home/</a>
+
+        
+        
+        
+        <a href="https:&#x2F;&#x2F;devstopian.com&#x2F;blog&#x2F;">&#x2F;blog&#x2F;</a>
+        
+
+        
+        
+        <a href="https:&#x2F;&#x2F;devstopian.com&#x2F;about&#x2F;">&#x2F;about&#x2F;</a>
+        
+      </nav>
+    </header>
+    <hr>
+    <main>
+      
+<section>
+  <h1>Devstack</h1>
+  
+  <p>published: <time>2024-04-23</time></p>
+  
+  
+  <p class="tags">
+  tags: [
+  
+  <a href="https://devstopian.com/tags/ai/">#AI</a>
+  
+  ]
+  </p>
+  
+  <div>
+    <h2 id="the-problem">The Problem</h2>
+<p>In the move to microservices and Kubernetes, we strive to create small, well-defined services with minimal coupling with other services. But there will always be a need to test in an integrated system. You need to prove to yourself that you did in fact build the <em>right</em> system that integrates with other services. At the same time, you cannot build a rigorous system when you only work in a fully integrated way.</p>
+<p>A traditional software delivery cycle might be:</p>
+<ol>
+<li>Write code on your local (<strong>LOCAL</strong>) system.</li>
+<li>Push the code to a remote server to build.</li>
+<li>Publish the changes to a development integrated testing (<strong>DIT</strong>) environment.</li>
+<li>Verify the changes in <strong>DIT</strong>.</li>
+<li>Publish the changes to a systems integrated testing (<strong>SIT</strong>) environment.</li>
+<li>Verify the changes in <strong>SIT</strong>.</li>
+<li>Publish the changes to production.</li>
+<li>Create new requirements for development.</li>
+<li>Repeat.</li>
+</ol>
+<p>This cycle could be presented as the following pipeline of environments:</p>
+<blockquote>
+<p>LOCAL &gt; DIT &gt; SIT &gt; PROD</p>
+</blockquote>
+<p>This traditional approach can make the <strong>DIT</strong> environment a bit contentious among developers in a team. Developers can inadvertently make changes in <strong>DIT</strong> that unintentionally impact other developers. On the other hand, if developers do not regularly verify their services integrate with other services, then they're more likely to build the <em>wrong</em> solution. Also, by the nature of some services such as a cache (Redis), a database (PostgreSQL), and a queue (RabbitMQ), a developer may need to spin up a local network of services anyways.</p>
+<h2 id="local-as-dit">LOCAL as DIT</h2>
+<p>One solution I have experienced to this problem is to mirror the entire <strong>DIT</strong> environment on a developer's <strong>LOCAL</strong> system. The developer is responsible to:</p>
+<ol>
+<li>keep their source repositories up to date</li>
+<li>install all of the toolchains necessary to build and run all of the services</li>
+<li>mount the code through to their cluster of services.</li>
+</ol>
+<p>This works fine for a small cluster of services, but this does not scale well. A local developer's system likely cannot handle 100s of services. The compute requirements in memory, storage, and processing will be easily overburdened. This solution also discourages experimenting with new tech stacks and tool chains, as all developers must be aligned at all times.</p>
+<h2 id="enter-devstack">Enter Devstack</h2>
+<p>The <code>devstack</code> is a cluster of highly related services running in Kubernetes on a developer's system. Typically, the services are placed in the same namespace and share a single helm chart as the unit of deployment. The most important piece to defining a <code>devstack</code> is custom routing that can be configured differently for deployment downstream (<strong>DIT</strong> and beyond). Once you have built custom routing, you can add in other capabilities to improve the development experience.</p>
+<p>A simple <code>devstack</code> could include a dev-<em>only</em> Kubernetes gateway that configures routing to your single namespace of services.</p>
+<p>A more advanced <code>devstack</code> could be a Helm chart with the following requirements:</p>
+<ol>
+<li>Add a Kubernetes gateway with TLS certs for a adhoc domain (e.g. https://local.mysupercoolnewapp.com/) and a route to your development web server.</li>
+<li>Update your hosts file to map that domain to your local system.</li>
+<li>Add features and capabilities that are configurable with Helm values in a Helm chart. Some options may include:
+<ol>
+<li>Provide a fake auth service that exposes a profile cookie in the http messages in the cluster.</li>
+<li>Provide a dev home page to document the local devstack.</li>
+<li>Provide a local CDN with static assets available to your cluster.</li>
+<li>Provide cross-cutting services, such as logging (via Grafana &amp; Loki).</li>
+<li>Provide breakglass services such as PGAdmin4 to manage the PostgreSQL database.</li>
+</ol>
+</li>
+</ol>
+<p>The Helm chart could then be used as a subchart to your chart under development.</p>
+<p>With the <code>devstack</code>, we can now setup the following pipeline:</p>
+<blockquote>
+<p>LOCAL &gt; DEVSTACK &gt; DIT &gt; SIT &gt; PROD</p>
+</blockquote>
+<p>Awesome! Now, we have a way to develop a small stack of services on our local systems. Obviously, there is still a need to test the interfaces <em>between namespaces</em>, but at least the boundary of more highly coupled services can be tested in isolation.</p>
+<h2 id="don-t-forget-local">Don't Forget: LOCAL</h2>
+<p>The importance of working locally with a single service cannot be overstated. The different levels of integration downstream are great for prototyping and verification, but a lot can go wrong when you have many services in the mix. At the most basic level, developers should have the ability to work on a service in complete isolation from all other services. This isolation is crucial for rapid prototyping and iteration, allowing developers to focus solely on the internal logic and functionality of their service without external dependencies.</p>
+<p>The rule I try to follow is:</p>
+<blockquote>
+<p>90 &gt; 9 &gt; 1</p>
+</blockquote>
+<p>Where:</p>
+<ol>
+<li>90% of time is spent on LOCAL development,</li>
+<li>9% in <code>devstack</code> development,</li>
+<li>and 1% downstream.</li>
+</ol>
+
+  </div>
+</section>
+
+    </main>
+    <hr>
+    <footer>
+      <!-- <p>Powered by <a href="https://www.getzola.org/">Zola</a> and inspired by the <a href="https://github.com/mxaddict/zolanight">ZolaNight Theme</a></p>
+       -->
+    </footer>
+  </body>
+</html>
