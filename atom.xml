@@ -781,7 +781,7 @@ chatbot and see how it goes.&lt;&#x2F;p&gt;
 &lt;blockquote&gt;
 &lt;p&gt;Updated 2026-02&lt;&#x2F;p&gt;
 &lt;&#x2F;blockquote&gt;
-&lt;p&gt;I upgraded the post from F# to Rust. F# was my primary language in 2019. I borrowed the idea of abstracting construction behind generators from the Haskell community and functional programming at large. The idea translates nicely into Rust with its spread syntax &lt;code&gt;..gen_character()&lt;&#x2F;code&gt;.&lt;&#x2F;p&gt;
+&lt;p&gt;I upgraded the post from F# to Rust. F# was my primary language in 2019. I borrowed the idea of abstracting construction behind generators from the Haskell community and functional programming at large. The idea translates nicely into Rust with its spread syntax (e.g. &lt;code&gt;..gen_character()&lt;&#x2F;code&gt;).&lt;&#x2F;p&gt;
 </content>
         
     </entry>
