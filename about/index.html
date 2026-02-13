@@ -39,11 +39,49 @@
   
   
   <div>
-    <p>Find me on:</p>
+    <h2 id="about-me">About Me</h2>
+<p>My journey towards software engineering took a non-traditional path. I had exposure to programming in college, but I had never connected the rigor of Mathematics and Science to programming even though "Science" is right there in the name "Computer Science".</p>
+<p>I became a High School Mathematics teacher in 2005 in Texas and began programming a small website for my students. I figured that I could post content to the website for students to review on their own time. [<em>See my ancient youtube account:</em> <a rel="external" href="https://www.youtube.com/joelvandiver">https://www.youtube.com/joelvandiver</a>.]</p>
+<p>What started with a simple website of posting static content very quickly turned into programming Math lessons alongside video content. I used JavaScript to generate problems where the core idea can be expressed in modern TypeScript:</p>
+<pre class="giallo" style="color: #CDD6F4; background-color: #1E1E2E;"><code data-lang="typescript"><span class="giallo-l"><span style="color: #9399B2;font-style: italic;">/// Represents a problem for students.</span></span>
+<span class="giallo-l"><span style="color: #CBA6F7;">interface</span><span style="color: #F9E2AF;font-style: italic;"> Problem</span><span style="color: #9399B2;"> {</span></span>
+<span class="giallo-l"><span>    equation</span><span style="color: #94E2D5;">:</span><span style="color: #CBA6F7;"> string</span><span style="color: #9399B2;">,</span></span>
+<span class="giallo-l"><span>    answer</span><span style="color: #94E2D5;">:</span><span style="color: #CBA6F7;"> number</span></span>
+<span class="giallo-l"><span style="color: #9399B2;">}</span></span>
+<span class="giallo-l"></span>
+<span class="giallo-l"><span style="color: #9399B2;font-style: italic;">/// Return the linear problem.</span></span>
+<span class="giallo-l"><span style="color: #CBA6F7;">function</span><span style="color: #89B4FA;font-style: italic;"> linear</span><span style="color: #9399B2;">(</span><span style="color: #EBA0AC;font-style: italic;">m</span><span style="color: #94E2D5;">:</span><span style="color: #CBA6F7;"> number</span><span style="color: #9399B2;">,</span><span style="color: #EBA0AC;font-style: italic;"> b</span><span style="color: #94E2D5;">:</span><span style="color: #CBA6F7;"> number</span><span style="color: #9399B2;">,</span><span style="color: #EBA0AC;font-style: italic;"> x</span><span style="color: #94E2D5;">:</span><span style="color: #CBA6F7;"> number</span><span style="color: #9399B2;">)</span><span style="color: #94E2D5;">:</span><span style="color: #F9E2AF;font-style: italic;"> Problem</span><span style="color: #9399B2;"> {</span></span>
+<span class="giallo-l"><span style="color: #CBA6F7;">    return</span><span style="color: #9399B2;"> {</span></span>
+<span class="giallo-l"><span>        equation</span><span style="color: #94E2D5;">:</span><span style="color: #A6E3A1;"> `y = </span><span style="color: #9399B2;">${</span><span>m</span><span style="color: #9399B2;">}</span><span style="color: #A6E3A1;">x + </span><span style="color: #9399B2;">${</span><span>b</span><span style="color: #9399B2;">}</span><span style="color: #A6E3A1;">`</span><span style="color: #9399B2;">,</span></span>
+<span class="giallo-l"><span>        answer</span><span style="color: #94E2D5;">:</span><span> m</span><span style="color: #94E2D5;"> *</span><span> x</span><span style="color: #94E2D5;"> +</span><span> b</span></span>
+<span class="giallo-l"><span style="color: #9399B2;">    }</span></span>
+<span class="giallo-l"><span style="color: #9399B2;">}</span></span>
+<span class="giallo-l"></span>
+<span class="giallo-l"><span style="color: #9399B2;font-style: italic;">/// Generate a random integer up to the max number.</span></span>
+<span class="giallo-l"><span style="color: #CBA6F7;">function</span><span style="color: #89B4FA;font-style: italic;"> generateNumber</span><span style="color: #9399B2;">(</span><span style="color: #EBA0AC;font-style: italic;">max</span><span style="color: #94E2D5;">:</span><span style="color: #CBA6F7;"> number</span><span style="color: #9399B2;">) {</span></span>
+<span class="giallo-l"><span style="color: #CBA6F7;">    return</span><span> Math</span><span style="color: #94E2D5;">.</span><span style="color: #89B4FA;font-style: italic;">floor</span><span>(Math</span><span style="color: #94E2D5;">.</span><span style="color: #89B4FA;font-style: italic;">random</span><span>()</span><span style="color: #94E2D5;"> *</span><span> (max</span><span style="color: #94E2D5;"> +</span><span style="color: #FAB387;"> 1</span><span>))</span><span style="color: #9399B2;">;</span></span>
+<span class="giallo-l"><span style="color: #9399B2;">}</span></span></code></pre>
+<p>With that one idea, my programming career was born! I began generating individualized tests with the exact same logic but completely different answers per student. Then, I programmed the automated assessments via Excel and numerical scantrons. The more I programmed, the more I was able to focus on student learning and their achievements. Also, as a curious side benefit: the more I programmed the better at reasoning the Mathematics lessons themselves. I was forced to formalize the lessons through Algorithms everyday. Instead of generating problems on the fly as students needed help, I would generate the <strong>generator</strong>. That was crazy to me!</p>
+<p>After several years of this positive feedback loop, I was offered an opportunity to work at a small software company nearby, and I hadn't even applied! I started my programming career in .NET.  Day after day, I would slog through raw SQL queries as I learned to express my questions with code.  I was shocked by the <em>impurities</em> of imperative languages such as C#. Coming from a Math background, I had exclusively programmed in a functional style.  It wasn't until years later that I learned just how <em>impure</em> JS actually is.</p>
+<p>Later, I had the opportunity to move to a bigger company with a larger space to grow.  Over time, I have worked in various positions in the company, and I've had the opportunity to learn from other languages and frameworks.</p>
+<p>With every technical skill I acquired, I learned new things:</p>
 <ul>
-<li><a rel="external" href="https://www.linkedin.com/in/joelvandiver/">Joel Vandiver | LinkedIn</a></li>
-<li><a rel="external" href="https://github.com/joelvandiver">joelvandiver - GitHub</a></li>
+<li><strong>T-SQL</strong>: Taught me how to reason about my questions using set-theory.</li>
+<li><strong>C#.NET</strong>: Taught me object orientated programming, dependency injection, and a whole host of design patterns.</li>
+<li><strong>F#.NET</strong>: Taught me to rely on immutability by default, use functions as first-class values, and the benefits of minimizing side-effects.</li>
+<li><strong>TypeScript</strong>: Taught me that types can be computable as well.</li>
+<li><strong>Python</strong>: Taught me to get things done and to be expressive in my ideas.</li>
+<li><strong>Rust</strong>: Taught me to prove memory and data structures in a system.</li>
+<li><strong>Docker</strong>: Taught me to formally define my application's environment and to explore other technologies.</li>
+<li><strong>Kubernetes</strong>: Taught me to distribute my services to simplify development at scale.</li>
+<li><strong>GenAI</strong>: Taught me to formalize my questions to accelerate my learning.</li>
+<li><strong>AgenticAI</strong>: Taught me to press into rigor and verification of generated code.</li>
 </ul>
+<p>The list could go on forever, it seems. My career has been a wild ride of constant learning, and I've got so much more to explore!</p>
+<hr />
+<blockquote>
+<p>Find me on <a rel="external" href="https://www.linkedin.com/in/joelvandiver/">LinkedIn</a> / <a rel="external" href="https://github.com/joelvandiver">GitHub</a></p>
+</blockquote>
 
   </div>
 </section>
