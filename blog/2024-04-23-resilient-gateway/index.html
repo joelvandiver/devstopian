@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Resilient Gateway | Dev·stopian</title>
+    
+    
+    <meta name="description" content="Build resilient Nginx reverse proxies.">
+    
+    
+    <meta name="keywords" content="Nginx">
+    
+    
+    <link rel="canonical" href="https:&#x2F;&#x2F;devstopian.com&#x2F;blog&#x2F;2024-04-23-resilient-gateway&#x2F;" />
+    
+    <link rel="stylesheet" href="https://devstopian.com/style.css">
+    
+  </head>
+  <body class="theme-tokiostopian">
+    
+    <header>
+      <nav>
+        <a href="/">/home/</a>
+
+        
+        
+        
+        <a href="https:&#x2F;&#x2F;devstopian.com&#x2F;blog&#x2F;">&#x2F;blog&#x2F;</a>
+        
+
+        
+        
+        <a href="https:&#x2F;&#x2F;devstopian.com&#x2F;about&#x2F;">&#x2F;about&#x2F;</a>
+        
+      </nav>
+    </header>
+    <hr>
+    <main>
+      
+<section>
+  <h1>Resilient Gateway</h1>
+  
+  <p>Originally Published: <time>2024-04-23</time></p>
+  
+  
+  <p class="tags">
+  Tags: [
+  
+  <a href="https://devstopian.com/tags/nginx/">#Nginx</a>
+  
+  ]
+    <hr />
+  </p>
+  
+  <div>
+    <p>Creating a "Resilient Gateway" using Nginx as a reverse proxy is a great way to ensure that your web infrastructure can handle failures gracefully. Let's explore how to configure Nginx to start up and remain operational even if the backend services are down. This setup enhances the resilience and availability of your web applications, making them more robust against backend instabilities.</p>
+<h2 id="understand-the-challenge">Understand: The Challenge</h2>
+<p>Typically, when Nginx is configured to proxy to a backend service and that service is unavailable at startup, Nginx will not come up!</p>
+<p>Let's take this <code>nginx.conf</code> as an example:</p>
+<pre class="giallo" style="color: #CDD6F4; background-color: #1E1E2E;"><code data-lang="plain"><span class="giallo-l"><span>events {</span></span>
+<span class="giallo-l"><span>    worker_connections 1024;</span></span>
+<span class="giallo-l"><span>}</span></span>
+<span class="giallo-l"></span>
+<span class="giallo-l"><span>http {</span></span>
+<span class="giallo-l"><span>    server {</span></span>
+<span class="giallo-l"><span>        listen 80;</span></span>
+<span class="giallo-l"></span>
+<span class="giallo-l"><span>        location /flaky {</span></span>
+<span class="giallo-l"><span>            proxy_pass http://flaky:8000;</span></span>
+<span class="giallo-l"><span>        }</span></span>
+<span class="giallo-l"><span>    }</span></span>
+<span class="giallo-l"><span>}</span></span></code></pre>
+<p>If the <code>http://flaky:8000</code> service is not running, then Nginx will not start. By default, Nginx requires all backend services to be up and running when it comes up.</p>
+<h2 id="the-solution-resilient-gateway">The Solution: Resilient Gateway</h2>
+<p>To make our Nginx gateway resilient, we can use a combination of configuration strategies that include service discovery and DNS resolution. This setup ensures that Nginx can start up without needing the backend services to be available and can continue to operate if they go down.</p>
+<blockquote>
+<p>Step 1: Defining a Variable</p>
+</blockquote>
+<p>Nginx evaluates variables lazily. This means that the resolution of the hostname happens at the time of the request, allowing for dynamic changes in the backend's status.</p>
+<p><code>set $backend "flaky:8000";</code></p>
+<p>Here, <code>$backend</code> is a variable, and its resolution is deferred until a request is made. This setup allows for dynamic reconfiguration if the status of flaky changes.</p>
+<blockquote>
+<p>Step 2: Add the Internal DNS Resolver</p>
+</blockquote>
+<p><code>resolver 127.0.0.11 valid=30s;  # Docker's internal DNS resolver</code></p>
+<p>The <code>resolver</code> directive defines the DNS server to use for name resolution since the service is discovered at the time of the request.</p>
+<pre class="giallo" style="color: #CDD6F4; background-color: #1E1E2E;"><code data-lang="plain"><span class="giallo-l"><span>events {</span></span>
+<span class="giallo-l"><span>    worker_connections 1024;</span></span>
+<span class="giallo-l"><span>}</span></span>
+<span class="giallo-l"></span>
+<span class="giallo-l"><span>http {</span></span>
+<span class="giallo-l"><span>    server {</span></span>
+<span class="giallo-l"><span>        listen 80;</span></span>
+<span class="giallo-l"></span>
+<span class="giallo-l"><span>        set $backend &quot;flaky:8000&quot;;</span></span>
+<span class="giallo-l"></span>
+<span class="giallo-l"><span>        location /flaky {</span></span>
+<span class="giallo-l"><span>            proxy_pass http://$backend;</span></span>
+<span class="giallo-l"><span>        }</span></span>
+<span class="giallo-l"><span>    }</span></span>
+<span class="giallo-l"><span>}</span></span></code></pre>
+<p>In this configuration, if the flaky service is down, users will encounter an error when trying to access it through the gateway. The web server is free to respond with appropriate errors pages (typically 502 Bad Gateway). Serving error pages is by far a better experience than not responding at all. Also, other services may be up and running and can respond to requests even if a particular backend service is down.</p>
+<h2 id="conclusion">Conclusion</h2>
+<p>By implementing the dns resolver, your Nginx reverse proxy becomes more resilient and enhances the availability and stability of your applications. This configuration is especially useful in a microservices architectures where individual service availability can vary.</p>
+
+  </div>
+</section>
+
+    </main>
+    <hr>
+    <footer>
+      <!-- <p>Powered by <a href="https://www.getzola.org/">Zola</a> and inspired by the <a href="https://github.com/mxaddict/zolanight">ZolaNight Theme</a></p>
+       -->
+    </footer>
+  </body>
+</html>

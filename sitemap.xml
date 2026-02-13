@@ -26,11 +26,18 @@
         <lastmod>2024-04-23</lastmod>
     </url>
     <url>
+        <loc>https://devstopian.com/blog/2024-04-23-resilient-gateway/</loc>
+        <lastmod>2024-04-23</lastmod>
+    </url>
+    <url>
         <loc>https://devstopian.com/blog/2026-02-11-promptme/</loc>
         <lastmod>2026-02-11</lastmod>
     </url>
     <url>
         <loc>https://devstopian.com/blog/page/1/</loc>
+    </url>
+    <url>
+        <loc>https://devstopian.com/blog/page/2/</loc>
     </url>
     <url>
         <loc>https://devstopian.com/tags/</loc>
@@ -55,6 +62,9 @@
     </url>
     <url>
         <loc>https://devstopian.com/tags/kubernetes/</loc>
+    </url>
+    <url>
+        <loc>https://devstopian.com/tags/nginx/</loc>
     </url>
     <url>
         <loc>https://devstopian.com/tags/rust/</loc>
