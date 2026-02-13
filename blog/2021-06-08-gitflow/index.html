@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>GitFlow | Dev·stopian</title>
+    
+    
+    <meta name="description" content="Git It Done &amp; Keep It Clean">
+    
+    
+    <meta name="keywords" content="DX, DevOps, Git">
+    
+    
+    <link rel="canonical" href="https:&#x2F;&#x2F;devstopian.com&#x2F;blog&#x2F;2021-06-08-gitflow&#x2F;" />
+    
+    <link rel="stylesheet" href="https://devstopian.com/style.css">
+    
+  </head>
+  <body class="theme-tokiostopian">
+    
+    <header>
+      <nav>
+        <a href="/">/home/</a>
+
+        
+        
+        
+        <a href="https:&#x2F;&#x2F;devstopian.com&#x2F;blog&#x2F;">&#x2F;blog&#x2F;</a>
+        
+
+        
+        
+        <a href="https:&#x2F;&#x2F;devstopian.com&#x2F;about&#x2F;">&#x2F;about&#x2F;</a>
+        
+      </nav>
+    </header>
+    <hr>
+    <main>
+      
+<section>
+  <h1>GitFlow</h1>
+  
+  <p>published: <time>2021-06-08</time></p>
+  
+  
+  <p class="tags">
+  tags: [
+  
+  <a href="https://devstopian.com/tags/dx/">#DX</a>, 
+  
+  <a href="https://devstopian.com/tags/devops/">#DevOps</a>, 
+  
+  <a href="https://devstopian.com/tags/git/">#Git</a>
+  
+  ]
+  </p>
+  
+  <div>
+    <p>First off, you're doing great! You are doing the best you can to keep track of the changes to your system.  The people on your team know what's going on ... right?  Code conflicts only turn into actual conflicts sporadically.  But, hey, that's just part of the job, isn't it?  You only run <code>git blame</code> sometimes - no, not to <em>shame</em> anyone, just <em>blame</em>. I've only reached for the non-existent <code>git shame</code> command a few times in my career 😀!</p>
+<p>But, we can do better!</p>
+<hr />
+<p>Git is a powerful (if not all-consuming) source control system.  I've been using it since 2012, and my particular workflow with Git has changed pretty dramatically over time.</p>
+<h2 id="git-push-pull-flow">Git Push-Pull Flow</h2>
+<p>In my early days of learning and using Git, I opted for the simple push-pull workflow.  The workflow was simply:</p>
+<ol>
+<li>Fetch other developers' code from <code>main</code>.</li>
+<li>Merge the changes from the remote <code>main</code> to your local <code>main</code>.</li>
+<li>Resolve any conflicts.</li>
+<li>Commit the changes.</li>
+<li>Push the new commit.</li>
+</ol>
+<p>The commands may look like:</p>
+<pre class="giallo" style="color: #CDD6F4; background-color: #1E1E2E;"><code data-lang="shellscript"><span class="giallo-l"><span style="color: #9399B2;font-style: italic;"># Get the latest commits from the remote.</span></span>
+<span class="giallo-l"><span style="color: #89B4FA;font-style: italic;">git</span><span style="color: #A6E3A1;"> pull</span></span>
+<span class="giallo-l"></span>
+<span class="giallo-l"><span style="color: #9399B2;font-style: italic;"># Make changes locally.</span></span>
+<span class="giallo-l"><span style="color: #9399B2;font-style: italic;"># Add all changes (or individually, if you prefer.)</span></span>
+<span class="giallo-l"><span style="color: #89B4FA;font-style: italic;">git</span><span style="color: #A6E3A1;"> add -A</span></span>
+<span class="giallo-l"></span>
+<span class="giallo-l"><span style="color: #9399B2;font-style: italic;"># Commit your changes with a meaningful message.</span></span>
+<span class="giallo-l"><span style="color: #89B4FA;font-style: italic;">git</span><span style="color: #A6E3A1;"> commit -m &quot;Sample Message&quot;</span></span>
+<span class="giallo-l"></span>
+<span class="giallo-l"><span style="color: #9399B2;font-style: italic;"># Fetch and merge changes.</span></span>
+<span class="giallo-l"><span style="color: #89B4FA;font-style: italic;">git</span><span style="color: #A6E3A1;"> pull</span></span>
+<span class="giallo-l"></span>
+<span class="giallo-l"><span style="color: #9399B2;font-style: italic;"># Fix any merge conflicts.</span></span>
+<span class="giallo-l"></span>
+<span class="giallo-l"><span style="color: #9399B2;font-style: italic;"># Push the changes.</span></span>
+<span class="giallo-l"><span style="color: #89B4FA;font-style: italic;">git</span><span style="color: #A6E3A1;"> push</span></span></code></pre>
+<p>This works fine for small systems but starts to fail in larger systems.</p>
+<h3 id="noisy-commits">Noisy Commits</h3>
+<p>The difficulty comes from providing <em>meaningful</em> commit messages of the changes over time. We are always (at least we should be) learning new things and discovering better ways to do things. I don't want to see a chain of my commits following this pattern:</p>
+<ul>
+<li>Do thing</li>
+<li>Undo thing</li>
+<li>Redo thing with new idea</li>
+<li>Start over</li>
+</ul>
+<blockquote>
+<p><strong>Anger-Danger</strong> Side Note: I've had other developers call out a particular commit of mine as the smoking gun to their problem only for me to show them my fix in a later commit.</p>
+</blockquote>
+<h2 id="pull-merge-request-flow">Pull/Merge Request Flow</h2>
+<p>A feature branch is the perfect place to figure things out.</p>
+<p>Now, the flow is:</p>
+<ol>
+<li>Make a feature branch (aka <code>feature/{name}</code>)
+<ol>
+<li>Push commits</li>
+<li>Figure out the correct solution</li>
+<li>Iterate.</li>
+</ol>
+</li>
+<li>Pull changes from other developers.</li>
+<li>Create a pull/merge request</li>
+<li>Squash commits into <code>main</code>. A squash commit summarizes all commits in the feature branch.</li>
+</ol>
+<p>Let's upgrade the commands above to:</p>
+<pre class="giallo" style="color: #CDD6F4; background-color: #1E1E2E;"><code data-lang="shellscript"><span class="giallo-l"><span style="color: #9399B2;font-style: italic;"># Get the latest commits from the remote.</span></span>
+<span class="giallo-l"><span style="color: #89B4FA;font-style: italic;">git</span><span style="color: #A6E3A1;"> pull</span></span>
+<span class="giallo-l"></span>
+<span class="giallo-l"><span style="color: #9399B2;font-style: italic;"># Checkout a feature branch.</span></span>
+<span class="giallo-l"><span style="color: #9399B2;font-style: italic;"># Rename &quot;sample_branch&quot; to something meaningful</span></span>
+<span class="giallo-l"><span style="color: #9399B2;font-style: italic;"># that you are trying to achieve.</span></span>
+<span class="giallo-l"><span style="color: #89B4FA;font-style: italic;">git</span><span style="color: #A6E3A1;"> checkout -b feature/sample_branch</span></span>
+<span class="giallo-l"></span>
+<span class="giallo-l"><span style="color: #9399B2;font-style: italic;"># Push the branch with tracking to the remote.</span></span>
+<span class="giallo-l"><span style="color: #89B4FA;font-style: italic;">git</span><span style="color: #A6E3A1;"> push -u origin feature/sample_branch</span></span>
+<span class="giallo-l"></span>
+<span class="giallo-l"><span style="color: #9399B2;font-style: italic;"># Make changes locally.</span></span>
+<span class="giallo-l"><span style="color: #9399B2;font-style: italic;"># Add all changes (or individually, if you prefer.)</span></span>
+<span class="giallo-l"><span style="color: #89B4FA;font-style: italic;">git</span><span style="color: #A6E3A1;"> add -A</span></span>
+<span class="giallo-l"></span>
+<span class="giallo-l"><span style="color: #9399B2;font-style: italic;"># Commit your changes with a meaningful message.</span></span>
+<span class="giallo-l"><span style="color: #89B4FA;font-style: italic;">git</span><span style="color: #A6E3A1;"> commit -m &quot;Sample Message&quot;</span></span>
+<span class="giallo-l"></span>
+<span class="giallo-l"><span style="color: #9399B2;font-style: italic;"># Push the changes to your tracking branch.</span></span>
+<span class="giallo-l"><span style="color: #89B4FA;font-style: italic;">git</span><span style="color: #A6E3A1;"> push</span></span>
+<span class="giallo-l"></span>
+<span class="giallo-l"><span style="color: #9399B2;font-style: italic;"># Fetch and merge changes.</span></span>
+<span class="giallo-l"><span style="color: #89B4FA;font-style: italic;">git</span><span style="color: #A6E3A1;"> pull</span></span>
+<span class="giallo-l"></span>
+<span class="giallo-l"><span style="color: #9399B2;font-style: italic;"># Fix any merge conflicts.</span></span>
+<span class="giallo-l"></span>
+<span class="giallo-l"><span style="color: #9399B2;font-style: italic;"># Push the merged changes.</span></span>
+<span class="giallo-l"><span style="color: #89B4FA;font-style: italic;">git</span><span style="color: #A6E3A1;"> push</span></span>
+<span class="giallo-l"></span>
+<span class="giallo-l"><span style="color: #9399B2;font-style: italic;"># Follow the Merge Request (GitLab)</span></span>
+<span class="giallo-l"><span style="color: #9399B2;font-style: italic;"># or Pull Request (GitHub)</span></span>
+<span class="giallo-l"><span style="color: #9399B2;font-style: italic;"># Be sure to squash the commits on merge!</span></span></code></pre>
+<p>With this flow, developers rummaging around in the commit log will see the <em>official and vetted</em> changes. The intermediate stages to discovery are thrown away.</p>
+<h2 id="reset-rebase-flow">Reset-Rebase Flow</h2>
+<p>CI stands for "continuous integration". By definition, any branch of code is not continuously integrated. This can be a bit aggressive, but there is merit to this idea.</p>
+<p>Let's try out a new flow:</p>
+<ol>
+<li>Make commits locally to figure out the <em>correct</em> solution.</li>
+<li>Reset the changes to <code>main</code>.</li>
+<li>Fetch the remote changes.</li>
+<li>Rebase your final changes on the remote changes.</li>
+<li>Push your changes.</li>
+</ol>
+<p>The commands can be upgraded further:</p>
+<pre class="giallo" style="color: #CDD6F4; background-color: #1E1E2E;"><code data-lang="shellscript"><span class="giallo-l"><span style="color: #9399B2;font-style: italic;"># Get the latest commits from the remote.</span></span>
+<span class="giallo-l"><span style="color: #89B4FA;font-style: italic;">git</span><span style="color: #A6E3A1;"> pull</span></span>
+<span class="giallo-l"></span>
+<span class="giallo-l"><span style="color: #9399B2;font-style: italic;"># Make changes locally.</span></span>
+<span class="giallo-l"><span style="color: #9399B2;font-style: italic;"># Add all changes (or individually, if you prefer.)</span></span>
+<span class="giallo-l"><span style="color: #89B4FA;font-style: italic;">git</span><span style="color: #A6E3A1;"> add -A</span></span>
+<span class="giallo-l"></span>
+<span class="giallo-l"><span style="color: #9399B2;font-style: italic;"># Commit your changes with a meaningful message.</span></span>
+<span class="giallo-l"><span style="color: #89B4FA;font-style: italic;">git</span><span style="color: #A6E3A1;"> commit -m &quot;Sample Message&quot;</span></span>
+<span class="giallo-l"></span>
+<span class="giallo-l"><span style="color: #9399B2;font-style: italic;"># Repeat your commits until your are satisfied.</span></span>
+<span class="giallo-l"></span>
+<span class="giallo-l"><span style="color: #9399B2;font-style: italic;"># Reset your local changes to the remote branch.</span></span>
+<span class="giallo-l"><span style="color: #89B4FA;font-style: italic;">git</span><span style="color: #A6E3A1;"> reset --soft origin/main</span></span>
+<span class="giallo-l"></span>
+<span class="giallo-l"><span style="color: #9399B2;font-style: italic;"># Create a single, official commit with a meaningful message.</span></span>
+<span class="giallo-l"><span style="color: #89B4FA;font-style: italic;">git</span><span style="color: #A6E3A1;"> commit -m &quot;Official Sample Message&quot;</span></span>
+<span class="giallo-l"></span>
+<span class="giallo-l"><span style="color: #9399B2;font-style: italic;"># Fetch the changes.</span></span>
+<span class="giallo-l"><span style="color: #89B4FA;font-style: italic;">git</span><span style="color: #A6E3A1;"> fetch</span></span>
+<span class="giallo-l"></span>
+<span class="giallo-l"><span style="color: #9399B2;font-style: italic;"># Rebase your commit on all fetched commits.</span></span>
+<span class="giallo-l"><span style="color: #89B4FA;font-style: italic;">git</span><span style="color: #A6E3A1;"> rebase</span></span>
+<span class="giallo-l"></span>
+<span class="giallo-l"><span style="color: #9399B2;font-style: italic;"># Fix any rebase conflicts.</span></span>
+<span class="giallo-l"></span>
+<span class="giallo-l"><span style="color: #9399B2;font-style: italic;"># Push the rebased changes.</span></span>
+<span class="giallo-l"><span style="color: #89B4FA;font-style: italic;">git</span><span style="color: #A6E3A1;"> push</span></span></code></pre><h2 id="still-branch">Still Branch?</h2>
+<p>The purist in me prefers the reset-rebase flow, but the pragmatist in me realizes that we work in very complex systems that need more eyes on the work. The reset-rebase flow is great for getting things done and pushing the changes. The pull/merge request flow, however, is great for fostering team collaboration and ensuring greater quality. We all struggle with producer's bias; I mean I built it, so of course it's right!</p>
+<p>I use a judgement call per codebase and for a particular problem if I am going to follow the reset-rebase flow or the pull/merge flow. If I follow the pull/merge flow, then I try to keep my branch short-lived (under a day or two).</p>
+<h2 id="agentic-ai-update">Agentic AI Update</h2>
+<blockquote>
+<p>02/2026</p>
+</blockquote>
+<p>The gitflows above are great when I'm making the changes, but what about when there's an agent working on a repository? The rate of changes made by the agent can be frenetic, to say the least. When I first worked with agents, I followed this pattern:</p>
+<ol>
+<li>Prompt for a change.</li>
+<li>Approve or reject the change.</li>
+<li>Prompt for another change.</li>
+<li>Iterate.</li>
+</ol>
+<p>I found this flow lead to AI slop. When I left the changes from the agent un-committed, then it would undo things it had done that were correct. I need to take more control over it's changes over time.</p>
+<p>So, I came up with this custom flow specifically to work with agents:</p>
+<ol>
+<li>Prompt for changes.</li>
+<li>Reject changes I do not approve of.</li>
+<li>Create a checkpoint commit as I have verified progress was made.</li>
+<li>Prompt for more changes.</li>
+<li>Iterate until the solution is <strong>correct</strong>.</li>
+<li>Reset the checkpoint commits.</li>
+<li>Create an official commit.</li>
+<li>Follow the gitflows above accordingly.</li>
+</ol>
+<p>This flow helps me to take more control in steering the agent to produce <strong>correct</strong> solutions. I have found that it also helps with changing my mind on previous requirements since I can <code>git reset --hard $last_good_commit</code> to the last good commit.</p>
+<p>I've added this <code>check</code> script to my <code>$PATH</code>:</p>
+<pre class="giallo" style="color: #CDD6F4; background-color: #1E1E2E;"><code data-lang="shellscript"><span class="giallo-l"><span style="color: #F5C2E7;font-style: italic;">#!/bin/bash</span></span>
+<span class="giallo-l"></span>
+<span class="giallo-l"><span>help</span><span style="color: #94E2D5;">=</span><span style="color: #9399B2;">$(</span><span style="color: #89B4FA;font-style: italic;">cat</span><span style="color: #94E2D5;"> &lt;&lt;</span><span style="color: #A6E3A1;">EOF</span></span>
+<span class="giallo-l"><span style="color: #A6E3A1;">Usage: check {point|reset}</span></span>
+<span class="giallo-l"></span>
+<span class="giallo-l"><span style="color: #A6E3A1;">point: Create a checkpoint by committing with a specific message.</span></span>
+<span class="giallo-l"><span style="color: #A6E3A1;">reset: Reset to the commit before the first checkpoint.</span></span>
+<span class="giallo-l"><span style="color: #A6E3A1;">EOF</span></span>
+<span class="giallo-l"><span style="color: #9399B2;">)</span></span>
+<span class="giallo-l"></span>
+<span class="giallo-l"><span style="color: #9399B2;font-style: italic;"># Create a checkpoint message.</span></span>
+<span class="giallo-l"><span>checkpoint_msg</span><span style="color: #94E2D5;">=</span><span style="color: #A6E3A1;">&quot;ai-pair-coding-checkpoint&quot;</span></span>
+<span class="giallo-l"></span>
+<span class="giallo-l"><span style="color: #CBA6F7;">case</span><span style="color: #A6E3A1;"> &quot;</span><span style="color: #EBA0AC;font-style: italic;">$1</span><span style="color: #A6E3A1;">&quot;</span><span style="color: #CBA6F7;"> in</span></span>
+<span class="giallo-l"><span style="color: #A6E3A1;">    point</span><span style="color: #94E2D5;">)</span></span>
+<span class="giallo-l"><span style="color: #9399B2;font-style: italic;">        # Create a checkpoint by committing with a specific message.</span></span>
+<span class="giallo-l"><span style="color: #89B4FA;font-style: italic;">        git</span><span style="color: #A6E3A1;"> add -A</span></span>
+<span class="giallo-l"><span style="color: #89B4FA;font-style: italic;">        git</span><span style="color: #A6E3A1;"> commit -m &quot;</span><span>$checkpoint_msg</span><span style="color: #A6E3A1;">&quot;</span></span>
+<span class="giallo-l"><span style="color: #9399B2;">        ;;</span></span>
+<span class="giallo-l"><span style="color: #A6E3A1;">    reset</span><span style="color: #94E2D5;">)</span></span>
+<span class="giallo-l"><span style="color: #9399B2;font-style: italic;">        # Find the first checkpoint commit</span></span>
+<span class="giallo-l"><span>        first_checkpoint</span><span style="color: #94E2D5;">=</span><span style="color: #9399B2;">$(</span><span style="color: #89B4FA;font-style: italic;">git</span><span style="color: #A6E3A1;"> log --oneline --grep=&quot;</span><span>$checkpoint_msg</span><span style="color: #A6E3A1;">&quot;</span><span style="color: #94E2D5;"> |</span><span style="color: #89B4FA;font-style: italic;"> tail</span><span style="color: #A6E3A1;"> -1</span><span style="color: #94E2D5;"> |</span><span style="color: #89B4FA;font-style: italic;"> awk</span><span style="color: #A6E3A1;"> &#39;{print $1}&#39;</span><span style="color: #9399B2;">)</span></span>
+<span class="giallo-l"><span style="color: #CBA6F7;">        if</span><span style="color: #9399B2;"> [</span><span style="color: #94E2D5;"> -z</span><span style="color: #A6E3A1;"> &quot;</span><span>$first_checkpoint</span><span style="color: #A6E3A1;">&quot;</span><span style="color: #9399B2;"> ];</span><span style="color: #CBA6F7;"> then</span></span>
+<span class="giallo-l"><span style="color: #F38BA8;font-style: italic;">            echo</span><span style="color: #A6E3A1;"> &quot;No checkpoint found.&quot;</span></span>
+<span class="giallo-l"><span style="color: #CBA6F7;">            return</span><span style="color: #FAB387;"> 1</span></span>
+<span class="giallo-l"><span style="color: #CBA6F7;">        fi</span></span>
+<span class="giallo-l"></span>
+<span class="giallo-l"><span style="color: #9399B2;font-style: italic;">        # Get the target commit hash (the one before the checkpoint)</span></span>
+<span class="giallo-l"><span>        target_commit</span><span style="color: #94E2D5;">=</span><span style="color: #9399B2;">$(</span><span style="color: #89B4FA;font-style: italic;">git</span><span style="color: #A6E3A1;"> rev-parse &quot;</span><span>$first_checkpoint</span><span style="color: #A6E3A1;">^&quot;</span><span style="color: #9399B2;">)</span></span>
+<span class="giallo-l"></span>
+<span class="giallo-l"><span style="color: #CBA6F7;">        if</span><span style="color: #9399B2;"> [</span><span style="color: #94E2D5;"> -z</span><span style="color: #A6E3A1;"> &quot;</span><span>$target_commit</span><span style="color: #A6E3A1;">&quot;</span><span style="color: #9399B2;"> ];</span><span style="color: #CBA6F7;"> then</span></span>
+<span class="giallo-l"><span style="color: #F38BA8;font-style: italic;">            echo</span><span style="color: #A6E3A1;"> &quot;No commit found before the checkpoint.&quot;</span></span>
+<span class="giallo-l"><span style="color: #CBA6F7;">            return</span><span style="color: #FAB387;"> 1</span></span>
+<span class="giallo-l"><span style="color: #CBA6F7;">        fi</span></span>
+<span class="giallo-l"></span>
+<span class="giallo-l"><span style="color: #F38BA8;font-style: italic;">        echo</span><span style="color: #A6E3A1;"> &quot;Resetting to commit before first checkpoint: </span><span>$target_commit</span><span style="color: #A6E3A1;">&quot;</span></span>
+<span class="giallo-l"><span style="color: #89B4FA;font-style: italic;">        git</span><span style="color: #A6E3A1;"> reset --soft &quot;</span><span>$target_commit</span><span style="color: #A6E3A1;">&quot;</span></span>
+<span class="giallo-l"><span style="color: #9399B2;">        ;;</span></span>
+<span class="giallo-l"><span style="color: #94E2D5;">    *)</span></span>
+<span class="giallo-l"><span style="color: #F38BA8;font-style: italic;">        echo</span><span style="color: #A6E3A1;"> &quot;</span><span>$help</span><span style="color: #A6E3A1;">&quot;</span></span>
+<span class="giallo-l"><span style="color: #9399B2;">        ;;</span></span>
+<span class="giallo-l"><span style="color: #CBA6F7;">esac</span></span></code></pre><h3 id="example-agent-check-flow">Example Agent Check Flow</h3>
+<p>As the agent makes progress I run several <code>check point</code> commands. You can see the multiple <code>ai-pair-coding-checkpoint</code> commits in the screenshot.</p>
+<p><img src="https://devstopian.com/blog/2021-06-08-gitflow/image.png" alt="alt text" /></p>
+<p>Then, once I'm satisfied with the final changes, I run <code>check reset</code>. The screenshot shows commits have been reset and the final changes left in the queue.</p>
+<p><img src="https://devstopian.com/blog/2021-06-08-gitflow/image-1.png" alt="alt text" /></p>
+<p>Now, I'm free to create the final commit with the verified changes.</p>
+<h2 id="update-log">Update Log</h2>
+<blockquote>
+<p>Update 2021-12</p>
+</blockquote>
+<p>My original post was focused on the pull/merge flow. I realized that I need to leverage the reset-rebase flow to integrate continuously (CI) and to move more nimbly.</p>
+<blockquote>
+<p>Update 2026-02</p>
+</blockquote>
+<p>Wow, agentic AI is crazy! I have been blown away with how fast it produces changes. I scrambled to create a flow that kept me in control and to take the reigns back from the slop it was producing. I can now request changes from the agent and keep it grounded on the correct solutions.</p>
+
+  </div>
+</section>
+
+    </main>
+    <hr>
+    <footer>
+      <!-- <p>Powered by <a href="https://www.getzola.org/">Zola</a> and inspired by the <a href="https://github.com/mxaddict/zolanight">ZolaNight Theme</a></p>
+       -->
+    </footer>
+  </body>
+</html>

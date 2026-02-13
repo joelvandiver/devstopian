@@ -10,6 +10,10 @@
         <loc>https://devstopian.com/blog/</loc>
     </url>
     <url>
+        <loc>https://devstopian.com/blog/2021-06-08-gitflow/</loc>
+        <lastmod>2021-06-08</lastmod>
+    </url>
+    <url>
         <loc>https://devstopian.com/blog/2023-12-10-run-script/</loc>
         <lastmod>2023-12-10</lastmod>
     </url>
@@ -38,6 +42,9 @@
     </url>
     <url>
         <loc>https://devstopian.com/tags/dx/</loc>
+    </url>
+    <url>
+        <loc>https://devstopian.com/tags/git/</loc>
     </url>
     <url>
         <loc>https://devstopian.com/tags/helm/</loc>
