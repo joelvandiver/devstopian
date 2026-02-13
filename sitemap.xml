@@ -10,6 +10,10 @@
         <loc>https://devstopian.com/blog/</loc>
     </url>
     <url>
+        <loc>https://devstopian.com/blog/2019-04-06-test-gen/</loc>
+        <lastmod>2019-04-06</lastmod>
+    </url>
+    <url>
         <loc>https://devstopian.com/blog/2021-06-08-gitflow/</loc>
         <lastmod>2021-06-08</lastmod>
     </url>
@@ -51,5 +55,11 @@
     </url>
     <url>
         <loc>https://devstopian.com/tags/kubernetes/</loc>
+    </url>
+    <url>
+        <loc>https://devstopian.com/tags/rust/</loc>
+    </url>
+    <url>
+        <loc>https://devstopian.com/tags/testing/</loc>
     </url>
 </urlset>
