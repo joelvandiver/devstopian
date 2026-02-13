@@ -183,6 +183,11 @@ chatbot and see how it goes.&lt;&#x2F;p&gt;
 &lt;li&gt;9% in &lt;code&gt;devstack&lt;&#x2F;code&gt; development,&lt;&#x2F;li&gt;
 &lt;li&gt;and 1% downstream.&lt;&#x2F;li&gt;
 &lt;&#x2F;ol&gt;
+&lt;h2 id=&quot;update-log&quot;&gt;Update Log&lt;&#x2F;h2&gt;
+&lt;blockquote&gt;
+&lt;p&gt;Update 2026-02-13&lt;&#x2F;p&gt;
+&lt;&#x2F;blockquote&gt;
+&lt;p&gt;My original post about the &lt;code&gt;devstack&lt;&#x2F;code&gt; left off the importance of working locally with a single service. In my drive for rigor over the last several years, I have since placed greater emphasis on local development. The &lt;code&gt;devstack&lt;&#x2F;code&gt; is still critical to my overall flow, but it&#x27;s importance has been lowered.&lt;&#x2F;p&gt;
 </content>
         
     </entry>
