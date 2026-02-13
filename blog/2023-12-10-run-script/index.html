@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Run Script | Dev·stopian</title>
+    
+    
+    <meta name="description" content="Use a run script to streamline your development flow.">
+    
+    
+    <meta name="keywords" content="DX, DevOps, Bash">
+    
+    
+    <link rel="canonical" href="https:&#x2F;&#x2F;devstopian.com&#x2F;blog&#x2F;2023-12-10-run-script&#x2F;" />
+    
+    <link rel="stylesheet" href="https://devstopian.com/style.css">
+    
+  </head>
+  <body class="theme-tokiostopian">
+    
+    <header>
+      <nav>
+        <a href="/">/home/</a>
+
+        
+        
+        
+        <a href="https:&#x2F;&#x2F;devstopian.com&#x2F;blog&#x2F;">&#x2F;blog&#x2F;</a>
+        
+
+        
+        
+        <a href="https:&#x2F;&#x2F;devstopian.com&#x2F;about&#x2F;">&#x2F;about&#x2F;</a>
+        
+      </nav>
+    </header>
+    <hr>
+    <main>
+      
+<section>
+  <h1>Run Script</h1>
+  
+  <p>published: <time>2023-12-10</time></p>
+  
+  
+  <p class="tags">
+  tags: [
+  
+  <a href="https://devstopian.com/tags/dx/">#DX</a>, 
+  
+  <a href="https://devstopian.com/tags/devops/">#DevOps</a>, 
+  
+  <a href="https://devstopian.com/tags/bash/">#Bash</a>
+  
+  ]
+  </p>
+  
+  <div>
+    <h2 id="why-run">Why <code>run</code>?</h2>
+<p>The <code>run</code> script was inspired by the <code>npm run</code> scripts.  I found the <code>npm</code> development flow transformative in how I think about organizing the automation my code repositories. Moving your development flow to a <code>run</code> script allows you to consolidate your scripts that you likely have scattered through your repo. Examples may include:</p>
+<ol>
+<li><code>scripts/install.sh</code></li>
+<li><code>scripts/test.sh</code></li>
+<li><code>build/deploy.sh</code></li>
+<li>etc.</li>
+</ol>
+<p>Also, if you have many code repositories that you switch between, the <code>run</code> script gives you a consistent entry point to discover the tool available for developing that repository. I switch between ~10+ repos per day, and we have 150+ repositories at work.</p>
+<h2 id="how-to-run">How to <code>run</code>?</h2>
+<h3 id="add-the-script">Add the Script</h3>
+<p>Setup a run script for quick development.</p>
+<ol>
+<li>Create the run script file:</li>
+</ol>
+<pre class="giallo" style="color: #CDD6F4; background-color: #1E1E2E;"><code data-lang="shellscript"><span class="giallo-l"><span style="color: #9399B2;font-style: italic;"># Create the run file.</span></span>
+<span class="giallo-l"><span style="color: #89B4FA;font-style: italic;">$</span><span style="color: #A6E3A1;"> touch run</span></span>
+<span class="giallo-l"><span style="color: #9399B2;font-style: italic;"># Change the mode to executable.</span></span>
+<span class="giallo-l"><span style="color: #89B4FA;font-style: italic;">$</span><span style="color: #A6E3A1;"> chmod +x run</span></span></code></pre>
+<ol start="2">
+<li>Add the run script from template:</li>
+</ol>
+<pre class="giallo" style="color: #CDD6F4; background-color: #1E1E2E;"><code data-lang="shellscript"><span class="giallo-l"><span style="color: #F5C2E7;font-style: italic;">#!/bin/bash</span></span>
+<span class="giallo-l"></span>
+<span class="giallo-l"><span style="color: #9399B2;font-style: italic;"># Create a help doc to print usage.</span></span>
+<span class="giallo-l"><span>help</span><span style="color: #94E2D5;">=</span><span style="color: #9399B2;">$(</span><span style="color: #89B4FA;font-style: italic;">cat</span><span style="color: #94E2D5;"> &lt;&lt;</span><span style="color: #A6E3A1;"> EOF</span></span>
+<span class="giallo-l"></span>
+<span class="giallo-l"><span style="color: #A6E3A1;">Usage: </span><span style="color: #EBA0AC;font-style: italic;">$0</span><span style="color: #A6E3A1;"> [command]</span></span>
+<span class="giallo-l"></span>
+<span class="giallo-l"><span style="color: #A6E3A1;">Commands:</span></span>
+<span class="giallo-l"><span style="color: #A6E3A1;">  install   Install the development tools.</span></span>
+<span class="giallo-l"><span style="color: #A6E3A1;">  start     Run the application.</span></span>
+<span class="giallo-l"><span style="color: #A6E3A1;">  test      Test the application.</span></span>
+<span class="giallo-l"><span style="color: #A6E3A1;">EOF</span></span>
+<span class="giallo-l"><span style="color: #9399B2;">)</span></span>
+<span class="giallo-l"></span>
+<span class="giallo-l"><span>cmd</span><span style="color: #94E2D5;">=</span><span style="color: #EBA0AC;font-style: italic;">$1</span></span>
+<span class="giallo-l"></span>
+<span class="giallo-l"><span style="color: #9399B2;font-style: italic;"># Remove the first argument (shift left)</span></span>
+<span class="giallo-l"><span style="color: #F38BA8;font-style: italic;">shift</span></span>
+<span class="giallo-l"></span>
+<span class="giallo-l"><span style="color: #9399B2;font-style: italic;"># Switch on the commands to run.</span></span>
+<span class="giallo-l"><span style="color: #CBA6F7;">case</span><span> $cmd</span><span style="color: #CBA6F7;"> in</span></span>
+<span class="giallo-l"><span style="color: #A6E3A1;">    &quot;install&quot;</span><span style="color: #94E2D5;">)</span></span>
+<span class="giallo-l"><span style="color: #F38BA8;font-style: italic;">        echo</span><span style="color: #A6E3A1;"> &quot;TODO: Add [install]&quot;</span></span>
+<span class="giallo-l"><span style="color: #9399B2;font-style: italic;">        # Use &quot;$@&quot; to pass all remaining arguments.</span></span>
+<span class="giallo-l"><span style="color: #9399B2;">        ;;</span></span>
+<span class="giallo-l"><span style="color: #A6E3A1;">    &quot;start&quot;</span><span style="color: #94E2D5;">)</span></span>
+<span class="giallo-l"><span style="color: #F38BA8;font-style: italic;">        echo</span><span style="color: #A6E3A1;"> &quot;TODO: Add [start]&quot;</span></span>
+<span class="giallo-l"><span style="color: #9399B2;font-style: italic;">        # Use &quot;$@&quot; to pass all remaining arguments.</span></span>
+<span class="giallo-l"><span style="color: #9399B2;">        ;;</span></span>
+<span class="giallo-l"><span style="color: #A6E3A1;">    &quot;test&quot;</span><span style="color: #94E2D5;">)</span></span>
+<span class="giallo-l"><span style="color: #F38BA8;font-style: italic;">        echo</span><span style="color: #A6E3A1;"> &quot;TODO: Add [test]&quot;</span></span>
+<span class="giallo-l"><span style="color: #9399B2;font-style: italic;">        # Use &quot;$@&quot; to pass all remaining arguments.</span></span>
+<span class="giallo-l"><span style="color: #9399B2;">        ;;</span></span>
+<span class="giallo-l"><span style="color: #94E2D5;">    *)</span></span>
+<span class="giallo-l"><span style="color: #9399B2;font-style: italic;">        # Print the help doc.</span></span>
+<span class="giallo-l"><span style="color: #F38BA8;font-style: italic;">        echo</span><span style="color: #A6E3A1;"> &quot;</span><span>$help</span><span style="color: #A6E3A1;">&quot;</span></span>
+<span class="giallo-l"><span style="color: #9399B2;">        ;;</span></span>
+<span class="giallo-l"><span style="color: #CBA6F7;">esac</span></span></code></pre><h2 id="example-run">Example run:</h2>
+<p>The following is the <code>run</code> script for deploying this blog (<em>as of 2026-02-13</em>). For fun, I like to generate logos via an online text-to-ascii art generators, such as <a rel="external" href="https://patorjk.com/software/taag/">https://patorjk.com/software/taag/</a>.</p>
+<pre class="giallo" style="color: #CDD6F4; background-color: #1E1E2E;"><code data-lang="shellscript"><span class="giallo-l"><span style="color: #F5C2E7;font-style: italic;">#!/bin/bash</span></span>
+<span class="giallo-l"></span>
+<span class="giallo-l"><span style="color: #9399B2;font-style: italic;"># Reference https://patorjk.com/software/taag/#p=display&amp;f=ANSI+Shadow&amp;t=Devstopian&amp;x=none&amp;v=4&amp;h=4&amp;w=80&amp;we=false</span></span>
+<span class="giallo-l"></span>
+<span class="giallo-l"><span>help</span><span style="color: #94E2D5;">=</span><span style="color: #9399B2;">$(</span><span style="color: #89B4FA;font-style: italic;">cat</span><span style="color: #94E2D5;"> &lt;&lt;</span><span style="color: #A6E3A1;"> EOF</span></span>
+<span class="giallo-l"></span>
+<span class="giallo-l"><span style="color: #A6E3A1;">██████╗ ███████╗██╗   ██╗███████╗████████╗ ██████╗ ██████╗ ██╗ █████╗ ███╗   ██╗</span></span>
+<span class="giallo-l"><span style="color: #A6E3A1;">██╔══██╗██╔════╝██║   ██║██╔════╝╚══██╔══╝██╔═══██╗██╔══██╗██║██╔══██╗████╗  ██║</span></span>
+<span class="giallo-l"><span style="color: #A6E3A1;">██║  ██║█████╗  ██║   ██║███████╗   ██║   ██║   ██║██████╔╝██║███████║██╔██╗ ██║</span></span>
+<span class="giallo-l"><span style="color: #A6E3A1;">██║  ██║██╔══╝  ╚██╗ ██╔╝╚════██║   ██║   ██║   ██║██╔═══╝ ██║██╔══██║██║╚██╗██║</span></span>
+<span class="giallo-l"><span style="color: #A6E3A1;">██████╔╝███████╗ ╚████╔╝ ███████║   ██║   ╚██████╔╝██║     ██║██║  ██║██║ ╚████║</span></span>
+<span class="giallo-l"><span style="color: #A6E3A1;">╚═════╝ ╚══════╝  ╚═══╝  ╚══════╝   ╚═╝    ╚═════╝ ╚═╝     ╚═╝╚═╝  ╚═╝╚═╝  ╚═══╝</span></span>
+<span class="giallo-l"><span style="color: #A6E3A1;">                                                                                </span></span>
+<span class="giallo-l"><span style="color: #A6E3A1;">Usage: </span><span style="color: #EBA0AC;font-style: italic;">$0</span><span style="color: #A6E3A1;"> [command]</span></span>
+<span class="giallo-l"></span>
+<span class="giallo-l"><span style="color: #A6E3A1;">Commands:</span></span>
+<span class="giallo-l"><span style="color: #A6E3A1;">  deploy    Deploy the website to production</span></span>
+<span class="giallo-l"><span style="color: #A6E3A1;">  dev       Start the development server</span></span>
+<span class="giallo-l"><span style="color: #A6E3A1;">  ico       Generate favicon PNGs from SVG source</span></span>
+<span class="giallo-l"><span style="color: #A6E3A1;">EOF</span></span>
+<span class="giallo-l"><span style="color: #9399B2;">)</span></span>
+<span class="giallo-l"></span>
+<span class="giallo-l"><span style="color: #89B4FA;font-style: italic;">deploy</span><span style="color: #9399B2;">() {</span></span>
+<span class="giallo-l"><span style="color: #9399B2;font-style: italic;">    # Only commit and push to the draft repository if a commit message</span></span>
+<span class="giallo-l"><span style="color: #9399B2;font-style: italic;">    # was provided after the command</span></span>
+<span class="giallo-l"><span style="color: #CBA6F7;">    if</span><span style="color: #9399B2;"> [</span><span style="color: #94E2D5;"> -n</span><span style="color: #A6E3A1;"> &quot;</span><span style="color: #EBA0AC;font-style: italic;">$2</span><span style="color: #A6E3A1;">&quot;</span><span style="color: #9399B2;"> ];</span><span style="color: #CBA6F7;"> then</span></span>
+<span class="giallo-l"><span style="color: #F38BA8;font-style: italic;">        echo</span><span style="color: #A6E3A1;"> &quot;Committing changes with message to drafts: </span><span style="color: #EBA0AC;font-style: italic;">$2</span><span style="color: #A6E3A1;">&quot;</span></span>
+<span class="giallo-l"><span style="color: #89B4FA;font-style: italic;">        git</span><span style="color: #A6E3A1;"> add -A</span></span>
+<span class="giallo-l"><span style="color: #89B4FA;font-style: italic;">        git</span><span style="color: #A6E3A1;"> commit -m &quot;</span><span style="color: #EBA0AC;font-style: italic;">$2</span><span style="color: #A6E3A1;">&quot;</span></span>
+<span class="giallo-l"><span style="color: #89B4FA;font-style: italic;">        git</span><span style="color: #A6E3A1;"> push origin main</span></span>
+<span class="giallo-l"><span style="color: #CBA6F7;">    fi</span></span>
+<span class="giallo-l"></span>
+<span class="giallo-l"><span style="color: #F38BA8;font-style: italic;">    echo</span><span style="color: #A6E3A1;"> &quot;Deploying to production...&quot;</span></span>
+<span class="giallo-l"><span>    msg</span><span style="color: #94E2D5;">=</span><span style="color: #EBA0AC;font-style: italic;">${2</span><span style="color: #94E2D5;">:-</span><span style="color: #A6E3A1;">&quot;Deploying to production&quot;</span><span style="color: #EBA0AC;font-style: italic;">}</span></span>
+<span class="giallo-l"><span style="color: #89B4FA;font-style: italic;">    zola</span><span style="color: #A6E3A1;"> build</span></span>
+<span class="giallo-l"></span>
+<span class="giallo-l"><span style="color: #F38BA8;font-style: italic;">    cd</span><span style="color: #A6E3A1;"> ../blog</span><span>    </span></span>
+<span class="giallo-l"><span style="color: #89B4FA;font-style: italic;">    rm</span><span style="color: #A6E3A1;"> -rf</span><span style="color: #F5C2E7;"> \</span></span>
+<span class="giallo-l"><span style="color: #A6E3A1;">        404.html</span><span style="color: #F5C2E7;"> \</span></span>
+<span class="giallo-l"><span style="color: #A6E3A1;">        atom.xml</span><span style="color: #F5C2E7;"> \</span></span>
+<span class="giallo-l"><span style="color: #A6E3A1;">        blog</span><span style="color: #F5C2E7;"> \</span></span>
+<span class="giallo-l"><span style="color: #A6E3A1;">        favicon.ico</span><span style="color: #F5C2E7;"> \</span></span>
+<span class="giallo-l"><span style="color: #A6E3A1;">        favicon.png</span><span style="color: #F5C2E7;"> \</span></span>
+<span class="giallo-l"><span style="color: #A6E3A1;">        favicon.svg</span><span style="color: #F5C2E7;"> \</span></span>
+<span class="giallo-l"><span style="color: #A6E3A1;">        images</span><span style="color: #F5C2E7;"> \</span></span>
+<span class="giallo-l"><span style="color: #A6E3A1;">        index.html</span><span style="color: #F5C2E7;"> \</span></span>
+<span class="giallo-l"><span style="color: #A6E3A1;">        regular-page</span><span style="color: #F5C2E7;"> \</span></span>
+<span class="giallo-l"><span style="color: #A6E3A1;">        robots.txt</span><span style="color: #F5C2E7;"> \</span></span>
+<span class="giallo-l"><span style="color: #A6E3A1;">        sitemap.xml</span><span style="color: #F5C2E7;"> \</span></span>
+<span class="giallo-l"><span style="color: #A6E3A1;">        style.css</span><span style="color: #F5C2E7;"> \</span></span>
+<span class="giallo-l"><span style="color: #A6E3A1;">        tags</span></span>
+<span class="giallo-l"></span>
+<span class="giallo-l"><span style="color: #89B4FA;font-style: italic;">    cp</span><span style="color: #A6E3A1;"> -r ../drafts/public/</span><span>*</span><span style="color: #A6E3A1;"> ./</span></span>
+<span class="giallo-l"></span>
+<span class="giallo-l"><span style="color: #9399B2;font-style: italic;">    # Commit and push the changes to the production repository</span></span>
+<span class="giallo-l"><span style="color: #89B4FA;font-style: italic;">    git</span><span style="color: #A6E3A1;"> add -A</span></span>
+<span class="giallo-l"><span style="color: #89B4FA;font-style: italic;">    git</span><span style="color: #A6E3A1;"> commit -m &quot;</span><span>$msg</span><span style="color: #A6E3A1;">&quot;</span></span>
+<span class="giallo-l"><span style="color: #89B4FA;font-style: italic;">    git</span><span style="color: #A6E3A1;"> push origin main</span></span>
+<span class="giallo-l"><span style="color: #9399B2;">}</span></span>
+<span class="giallo-l"></span>
+<span class="giallo-l"><span style="color: #CBA6F7;">case</span><span style="color: #EBA0AC;font-style: italic;"> $1</span><span style="color: #CBA6F7;"> in</span></span>
+<span class="giallo-l"><span style="color: #A6E3A1;">    deploy</span><span style="color: #94E2D5;">)</span><span style="color: #89B4FA;font-style: italic;"> deploy</span><span style="color: #A6E3A1;"> &quot;</span><span style="color: #EBA0AC;font-style: italic;">$@</span><span style="color: #A6E3A1;">&quot;</span><span style="color: #9399B2;"> ;;</span></span>
+<span class="giallo-l"><span style="color: #A6E3A1;">    dev</span><span style="color: #94E2D5;">)</span><span style="color: #89B4FA;font-style: italic;"> zola</span><span style="color: #A6E3A1;"> serve --open</span><span style="color: #9399B2;"> ;;</span></span>
+<span class="giallo-l"><span style="color: #A6E3A1;">    ico</span><span style="color: #94E2D5;">)</span></span>
+<span class="giallo-l"><span style="color: #89B4FA;font-style: italic;">        inkscape</span><span style="color: #A6E3A1;"> ./static/favicon.svg --export-type=png --export-width=32 --export-height=32 --export-filename=./static/favicon.png</span></span>
+<span class="giallo-l"><span style="color: #89B4FA;font-style: italic;">        mv</span><span style="color: #A6E3A1;"> ./static/favicon.png ./static/favicon.ico</span></span>
+<span class="giallo-l"><span style="color: #9399B2;">        ;;</span></span>
+<span class="giallo-l"><span style="color: #94E2D5;">    *)</span><span style="color: #F38BA8;font-style: italic;"> echo</span><span style="color: #A6E3A1;"> &quot;</span><span>$help</span><span style="color: #A6E3A1;">&quot;</span><span style="color: #9399B2;"> ;;</span></span>
+<span class="giallo-l"><span style="color: #CBA6F7;">esac</span></span></code></pre>
+<blockquote>
+<p>Runtime:</p>
+</blockquote>
+<p><img src="https://devstopian.com/blog/2023-12-10-run-script/image-2.png" alt="Example run" /></p>
+<h2 id="optional-optimizations">Optional Optimizations</h2>
+<ol>
+<li>Add the Current Directory to <code>$PATH</code>.</li>
+</ol>
+<p>To avoid the need to type <code>./run</code> every time you run the script, you could add the current directory to your <code>$PATH</code>. This allows for running any script in your current directory without the prefixed <code>./</code>, (e.g. <code>run</code>). This isn't strictly required, but it certainly helps to trim the 2 characters in a command you may run hundreds of a times in a day. Keep in mind though, that bash will start its search for any command you type with your current directory!</p>
+<pre class="giallo" style="color: #CDD6F4; background-color: #1E1E2E;"><code data-lang="shellscript"><span class="giallo-l"><span style="color: #9399B2;font-style: italic;"># Add to `~/.bashrc`</span></span>
+<span class="giallo-l"><span style="color: #CBA6F7;">export</span><span> PATH</span><span style="color: #94E2D5;">=</span><span style="color: #A6E3A1;">&quot;</span><span>$PATH</span><span style="color: #A6E3A1;">:.&quot;</span></span></code></pre>
+<ol start="2">
+<li>Update your prompt string (<code>$PS1</code>) in your bash environment.</li>
+</ol>
+<p>The prompt string sets the text with colors when you open your terminal:</p>
+<p><img src="https://devstopian.com/blog/2023-12-10-run-script/image.png" alt="PS1 Example" /></p>
+<p>I personally like to have the git branch printed along with whether the current repository has any outstanding changes (aka *<em>dirty</em>). You can add the following to your <code>~/.bashrc</code> to get the same effect in your terminal.</p>
+<pre class="giallo" style="color: #CDD6F4; background-color: #1E1E2E;"><code data-lang="shellscript"><span class="giallo-l"><span style="color: #89B4FA;font-style: italic;">git_branch</span><span style="color: #9399B2;">() {</span></span>
+<span class="giallo-l"><span style="color: #CBA6F7;">  local</span><span> branch dirty</span></span>
+<span class="giallo-l"></span>
+<span class="giallo-l"><span style="color: #9399B2;font-style: italic;">  # Get branch name</span></span>
+<span class="giallo-l"><span>  branch</span><span style="color: #94E2D5;">=</span><span style="color: #9399B2;">$(</span><span style="color: #89B4FA;font-style: italic;">git</span><span style="color: #A6E3A1;"> symbolic-ref --short HEAD</span><span style="color: #94E2D5;"> 2&gt;</span><span style="color: #A6E3A1;">/dev/null</span><span style="color: #9399B2;">)</span><span style="color: #94E2D5;"> ||</span><span style="color: #CBA6F7;"> return</span></span>
+<span class="giallo-l"></span>
+<span class="giallo-l"><span style="color: #9399B2;font-style: italic;">  # Check for dirty state</span></span>
+<span class="giallo-l"><span style="color: #CBA6F7;">  if</span><span style="color: #94E2D5;"> !</span><span style="color: #89B4FA;font-style: italic;"> git</span><span style="color: #A6E3A1;"> diff --quiet</span><span style="color: #94E2D5;"> 2&gt;</span><span style="color: #A6E3A1;">/dev/null</span><span style="color: #94E2D5;"> || !</span><span style="color: #89B4FA;font-style: italic;"> git</span><span style="color: #A6E3A1;"> diff --cached --quiet</span><span style="color: #94E2D5;"> 2&gt;</span><span style="color: #A6E3A1;">/dev/null</span><span style="color: #9399B2;">;</span><span style="color: #CBA6F7;"> then</span></span>
+<span class="giallo-l"><span>    dirty</span><span style="color: #94E2D5;">=</span><span style="color: #A6E3A1;">&quot;*&quot;</span></span>
+<span class="giallo-l"><span style="color: #CBA6F7;">  elif</span><span style="color: #9399B2;"> [</span><span style="color: #94E2D5;"> -n</span><span style="color: #A6E3A1;"> &quot;</span><span style="color: #9399B2;">$(</span><span style="color: #89B4FA;font-style: italic;">git</span><span style="color: #A6E3A1;"> ls-files --others --exclude-standard</span><span style="color: #94E2D5;"> 2&gt;</span><span style="color: #A6E3A1;">/dev/null</span><span style="color: #9399B2;">)</span><span style="color: #A6E3A1;">&quot;</span><span style="color: #9399B2;"> ];</span><span style="color: #CBA6F7;"> then</span></span>
+<span class="giallo-l"><span>    dirty</span><span style="color: #94E2D5;">=</span><span style="color: #A6E3A1;">&quot;*&quot;</span></span>
+<span class="giallo-l"><span style="color: #CBA6F7;">  fi</span></span>
+<span class="giallo-l"></span>
+<span class="giallo-l"><span style="color: #F38BA8;font-style: italic;">  printf</span><span style="color: #A6E3A1;"> &quot;%s%s&quot; &quot;</span><span>$branch</span><span style="color: #A6E3A1;">&quot; &quot;</span><span>$dirty</span><span style="color: #A6E3A1;">&quot;</span></span>
+<span class="giallo-l"><span style="color: #9399B2;">}</span></span>
+<span class="giallo-l"></span>
+<span class="giallo-l"><span style="color: #9399B2;font-style: italic;"># Colors (devstopian palette, 24-bit)</span></span>
+<span class="giallo-l"><span style="color: #9399B2;font-style: italic;"># red:   #ff2d6f  (255,45,111)</span></span>
+<span class="giallo-l"><span style="color: #9399B2;font-style: italic;"># green: #6ef08b  (110,240,139)</span></span>
+<span class="giallo-l"><span style="color: #9399B2;font-style: italic;"># yellow:#ffd166  (255,209,102)</span></span>
+<span class="giallo-l"><span style="color: #9399B2;font-style: italic;"># blue:  #3aa3ff  (58,163,255)</span></span>
+<span class="giallo-l"><span style="color: #9399B2;font-style: italic;"># magenta:#ff2d95 (255,45,149)</span></span>
+<span class="giallo-l"><span style="color: #9399B2;font-style: italic;"># cyan:  #00f0d7  (0,240,215)</span></span>
+<span class="giallo-l"><span>RED</span><span style="color: #94E2D5;">=</span><span style="color: #A6E3A1;">&quot;\[\033[38;2;255;45;111m\]&quot;</span></span>
+<span class="giallo-l"><span>GREEN</span><span style="color: #94E2D5;">=</span><span style="color: #A6E3A1;">&quot;\[\033[38;2;110;240;139m\]&quot;</span></span>
+<span class="giallo-l"><span>YELLOW</span><span style="color: #94E2D5;">=</span><span style="color: #A6E3A1;">&quot;\[\033[38;2;255;209;102m\]&quot;</span></span>
+<span class="giallo-l"><span>BLUE</span><span style="color: #94E2D5;">=</span><span style="color: #A6E3A1;">&quot;\[\033[38;2;58;163;255m\]&quot;</span></span>
+<span class="giallo-l"><span>PURPLE</span><span style="color: #94E2D5;">=</span><span style="color: #A6E3A1;">&quot;\[\033[38;2;255;45;149m\]&quot;</span></span>
+<span class="giallo-l"><span>CYAN</span><span style="color: #94E2D5;">=</span><span style="color: #A6E3A1;">&quot;\[\033[38;2;0;240;215m\]&quot;</span></span>
+<span class="giallo-l"><span>RESET</span><span style="color: #94E2D5;">=</span><span style="color: #A6E3A1;">&quot;\[\033[0m\]&quot;</span></span>
+<span class="giallo-l"></span>
+<span class="giallo-l"><span>PS1</span><span style="color: #94E2D5;">=</span><span style="color: #A6E3A1;">&quot;</span><span>${GREEN}</span><span style="color: #A6E3A1;">\u@\h</span><span>${RESET} ${BLUE}</span><span style="color: #A6E3A1;">\w</span><span>${RESET} ${PURPLE}</span><span style="color: #A6E3A1;">(</span><span style="color: #F5C2E7;">\$</span><span style="color: #A6E3A1;">(git_branch))</span><span>${RESET}</span><span style="color: #F5C2E7;">\\</span><span style="color: #A6E3A1;">$ &quot;</span></span></code></pre>
+<p>Happy <code>run</code>ing!</p>
+<h2 id="update-log">Update Log</h2>
+<blockquote>
+<p>Update 2026-02-13</p>
+</blockquote>
+<p>My original post from 2023-12-10 had a run script example from my blob build at time using the <a rel="external" href="https://squidfunk.github.io/mkdocs-material/">Material for MkDocs</a> from the python community. Also, I added the <code>$PS1</code> optional enhancement as this has significantly improved my dev-flow while switching repositories.</p>
+
+  </div>
+</section>
+
+    </main>
+    <hr>
+    <footer>
+      <!-- <p>Powered by <a href="https://www.getzola.org/">Zola</a> and inspired by the <a href="https://github.com/mxaddict/zolanight">ZolaNight Theme</a></p>
+       -->
+    </footer>
+  </body>
+</html>

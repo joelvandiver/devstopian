@@ -10,6 +10,10 @@
         <loc>https://devstopian.com/blog/</loc>
     </url>
     <url>
+        <loc>https://devstopian.com/blog/2023-12-10-run-script/</loc>
+        <lastmod>2023-12-10</lastmod>
+    </url>
+    <url>
         <loc>https://devstopian.com/blog/2026-02-11-promptme/</loc>
         <lastmod>2026-02-11</lastmod>
     </url>
@@ -21,5 +25,14 @@
     </url>
     <url>
         <loc>https://devstopian.com/tags/ai/</loc>
+    </url>
+    <url>
+        <loc>https://devstopian.com/tags/bash/</loc>
+    </url>
+    <url>
+        <loc>https://devstopian.com/tags/devops/</loc>
+    </url>
+    <url>
+        <loc>https://devstopian.com/tags/dx/</loc>
     </url>
 </urlset>
