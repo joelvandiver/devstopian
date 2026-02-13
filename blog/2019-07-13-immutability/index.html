@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Power of Immutability | Dev·stopian</title>
+    
+    
+    <meta name="description" content="Immutability reduces possibilities.">
+    
+    
+    <meta name="keywords" content="Rust">
+    
+    
+    <link rel="canonical" href="https:&#x2F;&#x2F;devstopian.com&#x2F;blog&#x2F;2019-07-13-immutability&#x2F;" />
+    
+    <link rel="stylesheet" href="https://devstopian.com/style.css">
+    
+  </head>
+  <body class="theme-tokiostopian">
+    
+    <header>
+      <nav>
+        <a href="/">/home/</a>
+
+        
+        
+        
+        <a href="https:&#x2F;&#x2F;devstopian.com&#x2F;blog&#x2F;">&#x2F;blog&#x2F;</a>
+        
+
+        
+        
+        <a href="https:&#x2F;&#x2F;devstopian.com&#x2F;about&#x2F;">&#x2F;about&#x2F;</a>
+        
+      </nav>
+    </header>
+    <hr>
+    <main>
+      
+<section>
+  <h1>Power of Immutability</h1>
+  
+  <p>Originally Published: <time>2019-07-13</time></p>
+  
+  
+  <p class="tags">
+  Tags: [
+  
+  <a href="https://devstopian.com/tags/rust/">#Rust</a>
+  
+  ]
+    <hr />
+  </p>
+  
+  <div>
+    <p>I have heard many developers coming from imperative programming languages like Python, C#, and C++ say that immutability is overly restrictive. It is true that immutability is restrictive, but this restriction comes with one huge benefit: reduction of possible outcomes.</p>
+<p><code>Information</code> may be informally defined as the element of surprise.  The more surprises a system has, the more information it contains.  Note the distinction between actual information and possible information.  Typically as developers we focus our algorithms on the actual information that our system processes.  But, of equal (or greater) concern is of the possible information the system will process.  Let's call this the <code>Information Domain</code>.  Effectively, it is the concern of the developer to process the <code>Information Domain</code>.  We have to anticipate all of the possible outcomes of our system or at least the edges of our system.</p>
+<h2 id="simple-immutability">Simple Immutability</h2>
+<p>Let's take a simple mathematical function with a restricted domain for example. We'll transform it to show how mutability increases the information.</p>
+<pre class="giallo" style="color: #CDD6F4; background-color: #1E1E2E;"><code data-lang="rust"><span class="giallo-l"><span style="color: #CBA6F7;">fn</span><span style="color: #89B4FA;font-style: italic;"> f</span><span style="color: #9399B2;">(</span><span style="color: #EBA0AC;">x</span><span style="color: #94E2D5;">:</span><span style="color: #CBA6F7;"> i32</span><span style="color: #9399B2;">)</span><span style="color: #94E2D5;"> -&gt;</span><span style="color: #CBA6F7;"> i32</span><span style="color: #9399B2;"> {</span></span>
+<span class="giallo-l"><span>    x</span><span style="color: #94E2D5;"> +</span><span style="color: #FAB387;"> 3</span></span>
+<span class="giallo-l"><span style="color: #9399B2;">}</span></span>
+<span class="giallo-l"><span style="color: #CBA6F7;">let</span><span> domain</span><span style="color: #94E2D5;"> =</span><span style="color: #89B4FA;font-style: italic;"> vec!</span><span style="color: #9399B2;">[</span><span style="color: #94E2D5;">-</span><span style="color: #FAB387;">2</span><span style="color: #9399B2;">,</span><span style="color: #94E2D5;"> -</span><span style="color: #FAB387;">1</span><span style="color: #9399B2;">,</span><span style="color: #FAB387;"> 0</span><span style="color: #9399B2;">,</span><span style="color: #FAB387;"> 1</span><span style="color: #9399B2;">,</span><span style="color: #FAB387;"> 2</span><span style="color: #9399B2;">];</span></span>
+<span class="giallo-l"><span style="color: #CBA6F7;">let</span><span> range</span><span style="color: #94E2D5;"> =</span><span> domain</span><span style="color: #94E2D5;">.</span><span style="color: #89B4FA;font-style: italic;">into_iter</span><span style="color: #9399B2;">()</span><span style="color: #94E2D5;">.</span><span style="color: #89B4FA;font-style: italic;">map</span><span style="color: #9399B2;">(</span><span>f</span><span style="color: #9399B2;">)</span><span style="color: #94E2D5;">.</span><span style="color: #89B4FA;font-style: italic;">collect</span><span style="color: #94E2D5;">::</span><span style="color: #89DCEB;">&lt;</span><span style="color: #F9E2AF;font-style: italic;">Vec</span><span style="color: #89DCEB;">&lt;</span><span style="color: #CBA6F7;">i32</span><span style="color: #89DCEB;">&gt;&gt;</span><span style="color: #9399B2;">();</span></span>
+<span class="giallo-l"><span style="color: #89B4FA;font-style: italic;">assert_eq!</span><span style="color: #9399B2;">(</span><span>range</span><span style="color: #9399B2;">,</span><span style="color: #89B4FA;font-style: italic;"> vec!</span><span style="color: #9399B2;">[</span><span style="color: #FAB387;">1</span><span style="color: #9399B2;">,</span><span style="color: #FAB387;"> 2</span><span style="color: #9399B2;">,</span><span style="color: #FAB387;"> 3</span><span style="color: #9399B2;">,</span><span style="color: #FAB387;"> 4</span><span style="color: #9399B2;">,</span><span style="color: #FAB387;"> 5</span><span style="color: #9399B2;">]);</span></span></code></pre>
+<p>That's a pretty straightforward Mathematical definition:</p>
+<pre class="giallo" style="color: #CDD6F4; background-color: #1E1E2E;"><code data-lang="plain"><span class="giallo-l"><span>f(x) = x + 3</span></span>
+<span class="giallo-l"><span>D: [-2, -1, 0, 1, 2]</span></span>
+<span class="giallo-l"><span>R: [1, 2, 3, 4, 5]</span></span></code></pre><h2 id="problem-with-mutability">Problem with Mutability</h2>
+<blockquote>
+<p>Mutability at its core allows for surprise.</p>
+</blockquote>
+<p>Now, let's explore the same function with a mutable side-effect:</p>
+<pre class="giallo" style="color: #CDD6F4; background-color: #1E1E2E;"><code data-lang="rust"><span class="giallo-l"><span style="color: #CBA6F7;">let mut</span><span> a</span><span style="color: #94E2D5;"> =</span><span style="color: #FAB387;"> 4</span><span style="color: #9399B2;">;</span></span>
+<span class="giallo-l"><span style="color: #CBA6F7;">fn</span><span style="color: #89B4FA;font-style: italic;"> f</span><span style="color: #9399B2;">(</span><span style="color: #EBA0AC;">x</span><span style="color: #94E2D5;">:</span><span style="color: #CBA6F7;"> i32</span><span style="color: #9399B2;">)</span><span style="color: #94E2D5;"> -&gt;</span><span style="color: #CBA6F7;"> i32</span><span style="color: #9399B2;"> {</span></span>
+<span class="giallo-l"><span>    x</span><span style="color: #94E2D5;"> +</span><span style="color: #FAB387;"> 3</span></span>
+<span class="giallo-l"><span style="color: #9399B2;">}</span></span>
+<span class="giallo-l"><span style="color: #CBA6F7;">let</span><span> domain</span><span style="color: #94E2D5;"> =</span><span style="color: #89B4FA;font-style: italic;"> vec!</span><span style="color: #9399B2;">[</span><span style="color: #94E2D5;">-</span><span style="color: #FAB387;">2</span><span style="color: #9399B2;">,</span><span style="color: #94E2D5;"> -</span><span style="color: #FAB387;">1</span><span style="color: #9399B2;">,</span><span style="color: #FAB387;"> 0</span><span style="color: #9399B2;">,</span><span style="color: #FAB387;"> 1</span><span style="color: #9399B2;">,</span><span style="color: #FAB387;"> 2</span><span style="color: #9399B2;">];</span></span>
+<span class="giallo-l"><span style="color: #CBA6F7;">let</span><span> range</span><span style="color: #94E2D5;"> =</span><span> domain</span></span>
+<span class="giallo-l"><span style="color: #94E2D5;">    .</span><span style="color: #89B4FA;font-style: italic;">iter</span><span style="color: #9399B2;">()</span></span>
+<span class="giallo-l"><span style="color: #94E2D5;">    .</span><span style="color: #89B4FA;font-style: italic;">map</span><span style="color: #9399B2;">(</span><span style="color: #94E2D5;">|</span><span>x</span><span style="color: #94E2D5;">|</span><span style="color: #9399B2;"> {</span></span>
+<span class="giallo-l"><span>        a</span><span style="color: #94E2D5;"> =</span><span> a</span><span style="color: #94E2D5;"> +</span><span style="color: #FAB387;"> 1</span><span style="color: #9399B2;">;</span></span>
+<span class="giallo-l"><span style="color: #89B4FA;font-style: italic;">        f</span><span style="color: #9399B2;">(</span><span>a</span><span style="color: #94E2D5;"> +</span><span> x</span><span style="color: #9399B2;">)</span></span>
+<span class="giallo-l"><span style="color: #9399B2;">    })</span></span>
+<span class="giallo-l"><span style="color: #94E2D5;">    .</span><span style="color: #89B4FA;font-style: italic;">collect</span><span style="color: #94E2D5;">::</span><span style="color: #89DCEB;">&lt;</span><span style="color: #F9E2AF;font-style: italic;">Vec</span><span style="color: #89DCEB;">&lt;</span><span style="color: #CBA6F7;">i32</span><span style="color: #89DCEB;">&gt;&gt;</span><span style="color: #9399B2;">();</span></span>
+<span class="giallo-l"><span style="color: #89B4FA;font-style: italic;">assert_eq!</span><span style="color: #9399B2;">(</span><span>range</span><span style="color: #9399B2;">,</span><span style="color: #89B4FA;font-style: italic;"> vec!</span><span style="color: #9399B2;">[</span><span style="color: #FAB387;">6</span><span style="color: #9399B2;">,</span><span style="color: #FAB387;"> 8</span><span style="color: #9399B2;">,</span><span style="color: #FAB387;"> 10</span><span style="color: #9399B2;">,</span><span style="color: #FAB387;"> 12</span><span style="color: #9399B2;">,</span><span style="color: #FAB387;"> 14</span><span style="color: #9399B2;">]);</span></span>
+<span class="giallo-l"><span style="color: #CBA6F7;">let</span><span> range2</span><span style="color: #94E2D5;"> =</span><span> domain</span></span>
+<span class="giallo-l"><span style="color: #94E2D5;">    .</span><span style="color: #89B4FA;font-style: italic;">iter</span><span style="color: #9399B2;">()</span></span>
+<span class="giallo-l"><span style="color: #94E2D5;">    .</span><span style="color: #89B4FA;font-style: italic;">map</span><span style="color: #9399B2;">(</span><span style="color: #94E2D5;">|</span><span>x</span><span style="color: #94E2D5;">|</span><span style="color: #9399B2;"> {</span></span>
+<span class="giallo-l"><span>        a</span><span style="color: #94E2D5;"> =</span><span> a</span><span style="color: #94E2D5;"> +</span><span style="color: #FAB387;"> 1</span><span style="color: #9399B2;">;</span></span>
+<span class="giallo-l"><span style="color: #89B4FA;font-style: italic;">        f</span><span style="color: #9399B2;">(</span><span>a</span><span style="color: #94E2D5;"> +</span><span> x</span><span style="color: #9399B2;">)</span></span>
+<span class="giallo-l"><span style="color: #9399B2;">    })</span></span>
+<span class="giallo-l"><span style="color: #94E2D5;">    .</span><span style="color: #89B4FA;font-style: italic;">collect</span><span style="color: #94E2D5;">::</span><span style="color: #89DCEB;">&lt;</span><span style="color: #F9E2AF;font-style: italic;">Vec</span><span style="color: #89DCEB;">&lt;</span><span style="color: #CBA6F7;">i32</span><span style="color: #89DCEB;">&gt;&gt;</span><span style="color: #9399B2;">();</span></span>
+<span class="giallo-l"><span style="color: #89B4FA;font-style: italic;">assert_eq!</span><span style="color: #9399B2;">(</span><span>range2</span><span style="color: #9399B2;">,</span><span style="color: #89B4FA;font-style: italic;"> vec!</span><span style="color: #9399B2;">[</span><span style="color: #FAB387;">11</span><span style="color: #9399B2;">,</span><span style="color: #FAB387;"> 13</span><span style="color: #9399B2;">,</span><span style="color: #FAB387;"> 15</span><span style="color: #9399B2;">,</span><span style="color: #FAB387;"> 17</span><span style="color: #9399B2;">,</span><span style="color: #FAB387;"> 19</span><span style="color: #9399B2;">]);</span></span></code></pre>
+<p>Note the <code>range2</code> vector has different values from the <code>range</code> vector. This may seem simple when you read the source code, but if you did not have access to the source, this behavior may be a surprise if you only new the definition of the <code>f</code> function.</p>
+<p>I like how Rust's closure syntax with the <code>mut</code> keyword makes the mutation explicit!</p>
+<p>Now, let's refactor the mutability away to get the same outcome. This makes the closure above referentially transparent.</p>
+<pre class="giallo" style="color: #CDD6F4; background-color: #1E1E2E;"><code data-lang="rust"><span class="giallo-l"><span style="color: #CBA6F7;">fn</span><span style="color: #89B4FA;font-style: italic;"> f</span><span style="color: #9399B2;">(</span><span style="color: #EBA0AC;">x</span><span style="color: #94E2D5;">:</span><span style="color: #CBA6F7;"> i32</span><span style="color: #9399B2;">,</span><span style="color: #EBA0AC;"> y</span><span style="color: #94E2D5;">:</span><span style="color: #CBA6F7;"> i32</span><span style="color: #9399B2;">)</span><span style="color: #94E2D5;"> -&gt;</span><span style="color: #CBA6F7;"> i32</span><span style="color: #9399B2;"> {</span></span>
+<span class="giallo-l"><span>    x</span><span style="color: #94E2D5;"> +</span><span> y</span><span style="color: #94E2D5;"> +</span><span style="color: #FAB387;"> 3</span></span>
+<span class="giallo-l"><span style="color: #9399B2;">}</span></span>
+<span class="giallo-l"><span style="color: #CBA6F7;">let</span><span> domain_x</span><span style="color: #94E2D5;"> =</span><span style="color: #89B4FA;font-style: italic;"> vec!</span><span style="color: #9399B2;">[</span><span style="color: #94E2D5;">-</span><span style="color: #FAB387;">2</span><span style="color: #9399B2;">,</span><span style="color: #94E2D5;"> -</span><span style="color: #FAB387;">1</span><span style="color: #9399B2;">,</span><span style="color: #FAB387;"> 0</span><span style="color: #9399B2;">,</span><span style="color: #FAB387;"> 1</span><span style="color: #9399B2;">,</span><span style="color: #FAB387;"> 2</span><span style="color: #9399B2;">];</span></span>
+<span class="giallo-l"><span style="color: #CBA6F7;">let</span><span> domain_y</span><span style="color: #94E2D5;"> =</span><span style="color: #89B4FA;font-style: italic;"> vec!</span><span style="color: #9399B2;">[</span><span style="color: #FAB387;">5</span><span style="color: #9399B2;">,</span><span style="color: #FAB387;"> 6</span><span style="color: #9399B2;">,</span><span style="color: #FAB387;"> 7</span><span style="color: #9399B2;">,</span><span style="color: #FAB387;"> 8</span><span style="color: #9399B2;">,</span><span style="color: #FAB387;"> 9</span><span style="color: #9399B2;">,</span><span style="color: #FAB387;"> 10</span><span style="color: #9399B2;">];</span></span>
+<span class="giallo-l"><span style="color: #CBA6F7;">let</span><span> range</span><span style="color: #94E2D5;"> =</span><span> domain_x</span></span>
+<span class="giallo-l"><span style="color: #94E2D5;">    .</span><span style="color: #89B4FA;font-style: italic;">into_iter</span><span style="color: #9399B2;">()</span></span>
+<span class="giallo-l"><span style="color: #94E2D5;">    .</span><span style="color: #89B4FA;font-style: italic;">zip</span><span style="color: #9399B2;">(</span><span>domain_y</span><span style="color: #94E2D5;">.</span><span style="color: #89B4FA;font-style: italic;">into_iter</span><span style="color: #9399B2;">())</span></span>
+<span class="giallo-l"><span style="color: #94E2D5;">    .</span><span style="color: #89B4FA;font-style: italic;">map</span><span style="color: #9399B2;">(</span><span style="color: #94E2D5;">|</span><span style="color: #9399B2;">(</span><span>x</span><span style="color: #9399B2;">,</span><span> y</span><span style="color: #9399B2;">)</span><span style="color: #94E2D5;">|</span><span style="color: #89B4FA;font-style: italic;"> f</span><span style="color: #9399B2;">(</span><span>x</span><span style="color: #9399B2;">,</span><span> y</span><span style="color: #9399B2;">))</span></span>
+<span class="giallo-l"><span style="color: #94E2D5;">    .</span><span style="color: #89B4FA;font-style: italic;">collect</span><span style="color: #94E2D5;">::</span><span style="color: #89DCEB;">&lt;</span><span style="color: #F9E2AF;font-style: italic;">Vec</span><span style="color: #89DCEB;">&lt;</span><span style="color: #CBA6F7;">i32</span><span style="color: #89DCEB;">&gt;&gt;</span><span style="color: #9399B2;">();</span></span>
+<span class="giallo-l"><span style="color: #89B4FA;font-style: italic;">assert_eq!</span><span style="color: #9399B2;">(</span><span>range</span><span style="color: #9399B2;">,</span><span style="color: #89B4FA;font-style: italic;"> vec!</span><span style="color: #9399B2;">[</span><span style="color: #FAB387;">6</span><span style="color: #9399B2;">,</span><span style="color: #FAB387;"> 8</span><span style="color: #9399B2;">,</span><span style="color: #FAB387;"> 10</span><span style="color: #9399B2;">,</span><span style="color: #FAB387;"> 12</span><span style="color: #9399B2;">,</span><span style="color: #FAB387;"> 14</span><span style="color: #9399B2;">]);</span></span></code></pre>
+<p>In this example, the <code>y</code> parameter was added to the <code>f</code> function to make the extra state of information transparent. It might not have been clear from the mutable example that the changing values of <code>a</code> over time were the values of the the vector, <code>vec![5, 6, 7, 8, 9, 10]</code>. But, that's the new dimension of data that the mutability introduced.</p>
+<p>The extra complexity can also be seen by the use of the <code>zip</code> function above. The <code>zip</code> is effectively a cartesian product of <code>domain_x</code> and <code>domain_y</code>.</p>
+<p>The Mathematical representation has gotten more complex as well.</p>
+<pre class="giallo" style="color: #CDD6F4; background-color: #1E1E2E;"><code data-lang="plain"><span class="giallo-l"><span>f(x, y) = x + y + 3</span></span>
+<span class="giallo-l"><span>D_x: [-2, -1, 0, 1, 2]</span></span>
+<span class="giallo-l"><span>D_y: [5, 6, 7, 8, 9, 10]</span></span>
+<span class="giallo-l"><span>R: [6, 8, 10, 12, 14]</span></span></code></pre>
+<p>From the Mathematical definition, it's plain to see that the function <code>f</code> was increased to the second dimension. Plotting this function on a 3-D graph would yield a 2-D plane.</p>
+<h2 id="benefits-of-immutability">Benefits of Immutability</h2>
+<blockquote>
+<p>Immutability reduces the information domain.</p>
+</blockquote>
+<p>By allowing mutation, we've increased the element of surprise.  Mutable code requires the reader of code to mentally hold the state of a variable while reasoning through the code.</p>
+<p>Restrictions are not always an inhibitor, they can reduce complexity!</p>
+<h2 id="caveats">Caveats</h2>
+<p>The purist in me strives to keep everything immutable, but the pragmatist in me realizes that copying memory to support immutability can be prohibitively non-performant. So, in Rust, just as I try to confine the <code>unsafe</code> operations, I also try to confine the <code>mut</code> values and <code>.into</code> operations to a minimum.</p>
+<h2 id="update-log">Update Log</h2>
+<blockquote>
+<p>Update: 2026-02-12</p>
+</blockquote>
+<p>My original post had a focus on how functional programming languages such as Haskell and F# improve legibility by requiring immutability. I decided to place the focus on immutability in general. Rust, for example, implements immutability by default without being a strict, functional programming language.</p>
+
+  </div>
+</section>
+
+    </main>
+    <hr>
+    <footer>
+      <!-- <p>Powered by <a href="https://www.getzola.org/">Zola</a> and inspired by the <a href="https://github.com/mxaddict/zolanight">ZolaNight Theme</a></p>
+       -->
+    </footer>
+  </body>
+</html>
