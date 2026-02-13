@@ -39,4 +39,10 @@
     <url>
         <loc>https://devstopian.com/tags/dx/</loc>
     </url>
+    <url>
+        <loc>https://devstopian.com/tags/helm/</loc>
+    </url>
+    <url>
+        <loc>https://devstopian.com/tags/kubernetes/</loc>
+    </url>
 </urlset>
