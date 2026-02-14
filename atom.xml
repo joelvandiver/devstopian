@@ -5,8 +5,99 @@
     <link rel="self" type="application/atom+xml" href="https://devstopian.com/atom.xml"/>
     <link rel="alternate" type="text/html" href="https://devstopian.com"/>
     <generator uri="https://www.getzola.org/">Zola</generator>
-    <updated>2026-02-11T00:00:00+00:00</updated>
+    <updated>2026-02-14T00:00:00+00:00</updated>
     <id>https://devstopian.com/atom.xml</id>
+    <entry xml:lang="en">
+        <title>Agentic GitFlow</title>
+        <published>2026-02-14T00:00:00+00:00</published>
+        <updated>2026-02-14T00:00:00+00:00</updated>
+        
+        <author>
+          <name>
+            
+              Unknown
+            
+          </name>
+        </author>
+        
+        <link rel="alternate" type="text/html" href="https://devstopian.com/blog/2026-02-14-agentic-gitflow/"/>
+        <id>https://devstopian.com/blog/2026-02-14-agentic-gitflow/</id>
+        
+        <content type="html" xml:base="https://devstopian.com/blog/2026-02-14-agentic-gitflow/">&lt;p&gt;Wow, agentic AI is crazy! The rate of its changes is staggering. Tasks that used to take me hours or days now takes the agent a few seconds or minutes to make progress. However, there are engineering concerns to address anytime code is produced by human or agent. The code should be:&lt;&#x2F;p&gt;
+&lt;ol&gt;
+&lt;li&gt;easy to read,&lt;&#x2F;li&gt;
+&lt;li&gt;performant,&lt;&#x2F;li&gt;
+&lt;li&gt;secure,&lt;&#x2F;li&gt;
+&lt;li&gt;testable,&lt;&#x2F;li&gt;
+&lt;li&gt;idiomatic&lt;&#x2F;li&gt;
+&lt;li&gt;...&lt;&#x2F;li&gt;
+&lt;&#x2F;ol&gt;
+&lt;p&gt;While I was a newbie human working with an AI agent, I picked an unfamiliar problem space. I wanted to see how far I could push the agent beyond my understanding. I gave it a few prompts. It made a lot of changes. I made a few more prompts. And, repeat. Wow, how I ended up with slop! I&#x27;m not sure that it was the agent&#x27;s fault, though; I didn&#x27;t understand the problem space, after all! I&#x27;m not sure how much of the slop was a result of my misunderstanding in my poorly written prompts, or how much the agent hadn&#x27;t been trained on that problem space.&lt;&#x2F;p&gt;
+&lt;p&gt;That&#x27;s when I realized that I need to take more control of the flow of changes. I need to press into all of the changes to make sure that I understand. I may need to prompt it to refactor the code to make it more legible or to follow good engineering practices. If subsequent prompts do not add clarity, then I need a way to easily set those changes aside or throw them away forever.&lt;&#x2F;p&gt;
+&lt;p&gt;The pull-request and reset-rebase flows from my post on &lt;a href=&quot;https:&#x2F;&#x2F;devstopian.com&#x2F;blog&#x2F;2021-06-08-gitflow&#x2F;&quot;&gt;gitflows&lt;&#x2F;a&gt; are great when I&#x27;m making the changes that I want to share with my team, but what about when there&#x27;s an agent wrecking havoc on my repo? I don&#x27;t want to push changes from the agent that aren&#x27;t fully vetted. I want to use an agent to accelerate my rigor and my understanding, not produce slop.&lt;&#x2F;p&gt;
+&lt;p&gt;So, I came up with this custom flow specifically to work with agents:&lt;&#x2F;p&gt;
+&lt;ol&gt;
+&lt;li&gt;Prompt for changes.&lt;&#x2F;li&gt;
+&lt;li&gt;Reject changes I do not approve of.&lt;&#x2F;li&gt;
+&lt;li&gt;Create a checkpoint commit as I have verified progress was made.&lt;&#x2F;li&gt;
+&lt;li&gt;Prompt for a refactor.&lt;&#x2F;li&gt;
+&lt;li&gt;Iterate until the solution is &lt;strong&gt;correct&lt;&#x2F;strong&gt;.&lt;&#x2F;li&gt;
+&lt;li&gt;Reset the checkpoint commits with the final changes still outstanding.&lt;&#x2F;li&gt;
+&lt;li&gt;Create an official commit.&lt;&#x2F;li&gt;
+&lt;li&gt;Follow one of the &lt;a href=&quot;https:&#x2F;&#x2F;devstopian.com&#x2F;blog&#x2F;2021-06-08-gitflow&#x2F;&quot;&gt;gitflows&lt;&#x2F;a&gt; accordingly.&lt;&#x2F;li&gt;
+&lt;&#x2F;ol&gt;
+&lt;p&gt;This flow modifies the reset-rebase flow from &lt;a href=&quot;https:&#x2F;&#x2F;devstopian.com&#x2F;blog&#x2F;2021-06-08-gitflow&#x2F;&quot;&gt;gitflows&lt;&#x2F;a&gt; by adding a specific checkpoint message, &lt;code&gt;&quot;ai-pair-coding-checkpoint&quot;&lt;&#x2F;code&gt;. The flow helps me to steer the agent to produce a &lt;strong&gt;correct&lt;&#x2F;strong&gt; solution. I can also more freely change my mind on requirements or unravel my mistaken prompts by throwing away changes with &lt;code&gt;git reset --hard $last_good_commit&lt;&#x2F;code&gt;.&lt;&#x2F;p&gt;
+&lt;p&gt;To improve my efficiency, I added this &lt;code&gt;check&lt;&#x2F;code&gt; script to my &lt;code&gt;$PATH&lt;&#x2F;code&gt;:&lt;&#x2F;p&gt;
+&lt;pre class=&quot;giallo&quot; style=&quot;color: #CDD6F4; background-color: #1E1E2E;&quot;&gt;&lt;code data-lang=&quot;shellscript&quot;&gt;&lt;span class=&quot;giallo-l&quot;&gt;&lt;span style=&quot;color: #F5C2E7;font-style: italic;&quot;&gt;#!&#x2F;bin&#x2F;bash&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;help&lt;&#x2F;span&gt;&lt;span style=&quot;color: #94E2D5;&quot;&gt;=&lt;&#x2F;span&gt;&lt;span style=&quot;color: #9399B2;&quot;&gt;$(&lt;&#x2F;span&gt;&lt;span style=&quot;color: #89B4FA;font-style: italic;&quot;&gt;cat&lt;&#x2F;span&gt;&lt;span style=&quot;color: #94E2D5;&quot;&gt; &amp;lt;&amp;lt;&lt;&#x2F;span&gt;&lt;span style=&quot;color: #A6E3A1;&quot;&gt;EOF&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span style=&quot;color: #A6E3A1;&quot;&gt;Usage: check {point|reset}&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span style=&quot;color: #A6E3A1;&quot;&gt;point: Create a checkpoint by committing with a specific message.&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span style=&quot;color: #A6E3A1;&quot;&gt;reset: Reset to the commit before the first checkpoint.&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span style=&quot;color: #A6E3A1;&quot;&gt;EOF&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span style=&quot;color: #9399B2;&quot;&gt;)&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span style=&quot;color: #9399B2;font-style: italic;&quot;&gt;# Create a checkpoint message.&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;checkpoint_msg&lt;&#x2F;span&gt;&lt;span style=&quot;color: #94E2D5;&quot;&gt;=&lt;&#x2F;span&gt;&lt;span style=&quot;color: #A6E3A1;&quot;&gt;&amp;quot;ai-pair-coding-checkpoint&amp;quot;&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span style=&quot;color: #CBA6F7;&quot;&gt;case&lt;&#x2F;span&gt;&lt;span style=&quot;color: #A6E3A1;&quot;&gt; &amp;quot;&lt;&#x2F;span&gt;&lt;span style=&quot;color: #EBA0AC;font-style: italic;&quot;&gt;$1&lt;&#x2F;span&gt;&lt;span style=&quot;color: #A6E3A1;&quot;&gt;&amp;quot;&lt;&#x2F;span&gt;&lt;span style=&quot;color: #CBA6F7;&quot;&gt; in&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span style=&quot;color: #A6E3A1;&quot;&gt;    point&lt;&#x2F;span&gt;&lt;span style=&quot;color: #94E2D5;&quot;&gt;)&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span style=&quot;color: #9399B2;font-style: italic;&quot;&gt;        # Create a checkpoint by committing with a specific message.&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span style=&quot;color: #89B4FA;font-style: italic;&quot;&gt;        git&lt;&#x2F;span&gt;&lt;span style=&quot;color: #A6E3A1;&quot;&gt; add -A&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span style=&quot;color: #89B4FA;font-style: italic;&quot;&gt;        git&lt;&#x2F;span&gt;&lt;span style=&quot;color: #A6E3A1;&quot;&gt; commit -m &amp;quot;&lt;&#x2F;span&gt;&lt;span&gt;$checkpoint_msg&lt;&#x2F;span&gt;&lt;span style=&quot;color: #A6E3A1;&quot;&gt;&amp;quot;&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span style=&quot;color: #9399B2;&quot;&gt;        ;;&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span style=&quot;color: #A6E3A1;&quot;&gt;    reset&lt;&#x2F;span&gt;&lt;span style=&quot;color: #94E2D5;&quot;&gt;)&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span style=&quot;color: #9399B2;font-style: italic;&quot;&gt;        # Find the first checkpoint commit&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;        first_checkpoint&lt;&#x2F;span&gt;&lt;span style=&quot;color: #94E2D5;&quot;&gt;=&lt;&#x2F;span&gt;&lt;span style=&quot;color: #9399B2;&quot;&gt;$(&lt;&#x2F;span&gt;&lt;span style=&quot;color: #89B4FA;font-style: italic;&quot;&gt;git&lt;&#x2F;span&gt;&lt;span style=&quot;color: #A6E3A1;&quot;&gt; log --oneline --grep=&amp;quot;&lt;&#x2F;span&gt;&lt;span&gt;$checkpoint_msg&lt;&#x2F;span&gt;&lt;span style=&quot;color: #A6E3A1;&quot;&gt;&amp;quot;&lt;&#x2F;span&gt;&lt;span style=&quot;color: #94E2D5;&quot;&gt; |&lt;&#x2F;span&gt;&lt;span style=&quot;color: #89B4FA;font-style: italic;&quot;&gt; tail&lt;&#x2F;span&gt;&lt;span style=&quot;color: #A6E3A1;&quot;&gt; -1&lt;&#x2F;span&gt;&lt;span style=&quot;color: #94E2D5;&quot;&gt; |&lt;&#x2F;span&gt;&lt;span style=&quot;color: #89B4FA;font-style: italic;&quot;&gt; awk&lt;&#x2F;span&gt;&lt;span style=&quot;color: #A6E3A1;&quot;&gt; &amp;#39;{print $1}&amp;#39;&lt;&#x2F;span&gt;&lt;span style=&quot;color: #9399B2;&quot;&gt;)&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span style=&quot;color: #CBA6F7;&quot;&gt;        if&lt;&#x2F;span&gt;&lt;span style=&quot;color: #9399B2;&quot;&gt; [&lt;&#x2F;span&gt;&lt;span style=&quot;color: #94E2D5;&quot;&gt; -z&lt;&#x2F;span&gt;&lt;span style=&quot;color: #A6E3A1;&quot;&gt; &amp;quot;&lt;&#x2F;span&gt;&lt;span&gt;$first_checkpoint&lt;&#x2F;span&gt;&lt;span style=&quot;color: #A6E3A1;&quot;&gt;&amp;quot;&lt;&#x2F;span&gt;&lt;span style=&quot;color: #9399B2;&quot;&gt; ];&lt;&#x2F;span&gt;&lt;span style=&quot;color: #CBA6F7;&quot;&gt; then&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span style=&quot;color: #F38BA8;font-style: italic;&quot;&gt;            echo&lt;&#x2F;span&gt;&lt;span style=&quot;color: #A6E3A1;&quot;&gt; &amp;quot;No checkpoint found.&amp;quot;&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span style=&quot;color: #CBA6F7;&quot;&gt;            return&lt;&#x2F;span&gt;&lt;span style=&quot;color: #FAB387;&quot;&gt; 1&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span style=&quot;color: #CBA6F7;&quot;&gt;        fi&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span style=&quot;color: #9399B2;font-style: italic;&quot;&gt;        # Get the target commit hash (the one before the checkpoint)&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;        target_commit&lt;&#x2F;span&gt;&lt;span style=&quot;color: #94E2D5;&quot;&gt;=&lt;&#x2F;span&gt;&lt;span style=&quot;color: #9399B2;&quot;&gt;$(&lt;&#x2F;span&gt;&lt;span style=&quot;color: #89B4FA;font-style: italic;&quot;&gt;git&lt;&#x2F;span&gt;&lt;span style=&quot;color: #A6E3A1;&quot;&gt; rev-parse &amp;quot;&lt;&#x2F;span&gt;&lt;span&gt;$first_checkpoint&lt;&#x2F;span&gt;&lt;span style=&quot;color: #A6E3A1;&quot;&gt;^&amp;quot;&lt;&#x2F;span&gt;&lt;span style=&quot;color: #9399B2;&quot;&gt;)&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span style=&quot;color: #CBA6F7;&quot;&gt;        if&lt;&#x2F;span&gt;&lt;span style=&quot;color: #9399B2;&quot;&gt; [&lt;&#x2F;span&gt;&lt;span style=&quot;color: #94E2D5;&quot;&gt; -z&lt;&#x2F;span&gt;&lt;span style=&quot;color: #A6E3A1;&quot;&gt; &amp;quot;&lt;&#x2F;span&gt;&lt;span&gt;$target_commit&lt;&#x2F;span&gt;&lt;span style=&quot;color: #A6E3A1;&quot;&gt;&amp;quot;&lt;&#x2F;span&gt;&lt;span style=&quot;color: #9399B2;&quot;&gt; ];&lt;&#x2F;span&gt;&lt;span style=&quot;color: #CBA6F7;&quot;&gt; then&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span style=&quot;color: #F38BA8;font-style: italic;&quot;&gt;            echo&lt;&#x2F;span&gt;&lt;span style=&quot;color: #A6E3A1;&quot;&gt; &amp;quot;No commit found before the checkpoint.&amp;quot;&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span style=&quot;color: #CBA6F7;&quot;&gt;            return&lt;&#x2F;span&gt;&lt;span style=&quot;color: #FAB387;&quot;&gt; 1&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span style=&quot;color: #CBA6F7;&quot;&gt;        fi&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span style=&quot;color: #F38BA8;font-style: italic;&quot;&gt;        echo&lt;&#x2F;span&gt;&lt;span style=&quot;color: #A6E3A1;&quot;&gt; &amp;quot;Resetting to commit before first checkpoint: &lt;&#x2F;span&gt;&lt;span&gt;$target_commit&lt;&#x2F;span&gt;&lt;span style=&quot;color: #A6E3A1;&quot;&gt;&amp;quot;&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span style=&quot;color: #89B4FA;font-style: italic;&quot;&gt;        git&lt;&#x2F;span&gt;&lt;span style=&quot;color: #A6E3A1;&quot;&gt; reset --soft &amp;quot;&lt;&#x2F;span&gt;&lt;span&gt;$target_commit&lt;&#x2F;span&gt;&lt;span style=&quot;color: #A6E3A1;&quot;&gt;&amp;quot;&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span style=&quot;color: #9399B2;&quot;&gt;        ;;&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span style=&quot;color: #94E2D5;&quot;&gt;    *)&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span style=&quot;color: #F38BA8;font-style: italic;&quot;&gt;        echo&lt;&#x2F;span&gt;&lt;span style=&quot;color: #A6E3A1;&quot;&gt; &amp;quot;&lt;&#x2F;span&gt;&lt;span&gt;$help&lt;&#x2F;span&gt;&lt;span style=&quot;color: #A6E3A1;&quot;&gt;&amp;quot;&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span style=&quot;color: #9399B2;&quot;&gt;        ;;&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span style=&quot;color: #CBA6F7;&quot;&gt;esac&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;&lt;h3 id=&quot;example-agent-check-flow&quot;&gt;Example Agent Check Flow&lt;&#x2F;h3&gt;
+&lt;p&gt;As the agent makes progress I run several &lt;code&gt;check point&lt;&#x2F;code&gt; commands. You can see the multiple &lt;code&gt;ai-pair-coding-checkpoint&lt;&#x2F;code&gt; commits in the screenshot.&lt;&#x2F;p&gt;
+&lt;p&gt;&lt;img src=&quot;https:&#x2F;&#x2F;devstopian.com&#x2F;blog&#x2F;2026-02-14-agentic-gitflow&#x2F;image.png&quot; alt=&quot;alt text&quot; &#x2F;&gt;&lt;&#x2F;p&gt;
+&lt;p&gt;Then, once I&#x27;m satisfied with the final changes, I run &lt;code&gt;check reset&lt;&#x2F;code&gt;. The screenshot shows commits have been reset and the final changes left in the queue.&lt;&#x2F;p&gt;
+&lt;p&gt;&lt;img src=&quot;https:&#x2F;&#x2F;devstopian.com&#x2F;blog&#x2F;2026-02-14-agentic-gitflow&#x2F;image-1.png&quot; alt=&quot;alt text&quot; &#x2F;&gt;&lt;&#x2F;p&gt;
+&lt;p&gt;Now, I&#x27;m free to create the final commit with the verified changes.&lt;&#x2F;p&gt;
+</content>
+        
+    </entry>
     <entry xml:lang="en">
         <title>PROMPTME</title>
         <published>2026-02-11T00:00:00+00:00</published>
@@ -773,87 +864,11 @@ chatbot and see how it goes.&lt;&#x2F;p&gt;
 &lt;span class=&quot;giallo-l&quot;&gt;&lt;span style=&quot;color: #89B4FA;font-style: italic;&quot;&gt;git&lt;&#x2F;span&gt;&lt;span style=&quot;color: #A6E3A1;&quot;&gt; push&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;&lt;h2 id=&quot;still-branch&quot;&gt;Still Branch?&lt;&#x2F;h2&gt;
 &lt;p&gt;The purist in me prefers the reset-rebase flow, but the pragmatist in me realizes that we work in very complex systems that need more eyes on the work. The reset-rebase flow is great for getting things done and pushing the changes. The pull&#x2F;merge request flow, however, is great for fostering team collaboration and ensuring greater quality. We all struggle with producer&#x27;s bias; I mean I built it, so of course it&#x27;s right!&lt;&#x2F;p&gt;
 &lt;p&gt;I use a judgement call per codebase and for a particular problem if I am going to follow the reset-rebase flow or the pull&#x2F;merge flow. If I follow the pull&#x2F;merge flow, then I try to keep my branch short-lived (under a day or two).&lt;&#x2F;p&gt;
-&lt;h2 id=&quot;agentic-ai-update&quot;&gt;Agentic AI Update&lt;&#x2F;h2&gt;
-&lt;blockquote&gt;
-&lt;p&gt;02&#x2F;2026&lt;&#x2F;p&gt;
-&lt;&#x2F;blockquote&gt;
-&lt;p&gt;The gitflows above are great when I&#x27;m making the changes, but what about when there&#x27;s an agent working on a repository? The rate of changes made by the agent can be frenetic, to say the least. When I first worked with agents, I followed this pattern:&lt;&#x2F;p&gt;
-&lt;ol&gt;
-&lt;li&gt;Prompt for a change.&lt;&#x2F;li&gt;
-&lt;li&gt;Approve or reject the change.&lt;&#x2F;li&gt;
-&lt;li&gt;Prompt for another change.&lt;&#x2F;li&gt;
-&lt;li&gt;Iterate.&lt;&#x2F;li&gt;
-&lt;&#x2F;ol&gt;
-&lt;p&gt;I found this flow lead to AI slop. When I left the changes from the agent un-committed, then it would undo things it had done that were correct. I need to take more control over it&#x27;s changes over time.&lt;&#x2F;p&gt;
-&lt;p&gt;So, I came up with this custom flow specifically to work with agents:&lt;&#x2F;p&gt;
-&lt;ol&gt;
-&lt;li&gt;Prompt for changes.&lt;&#x2F;li&gt;
-&lt;li&gt;Reject changes I do not approve of.&lt;&#x2F;li&gt;
-&lt;li&gt;Create a checkpoint commit as I have verified progress was made.&lt;&#x2F;li&gt;
-&lt;li&gt;Prompt for more changes.&lt;&#x2F;li&gt;
-&lt;li&gt;Iterate until the solution is &lt;strong&gt;correct&lt;&#x2F;strong&gt;.&lt;&#x2F;li&gt;
-&lt;li&gt;Reset the checkpoint commits.&lt;&#x2F;li&gt;
-&lt;li&gt;Create an official commit.&lt;&#x2F;li&gt;
-&lt;li&gt;Follow the gitflows above accordingly.&lt;&#x2F;li&gt;
-&lt;&#x2F;ol&gt;
-&lt;p&gt;This flow helps me to take more control in steering the agent to produce &lt;strong&gt;correct&lt;&#x2F;strong&gt; solutions. I have found that it also helps with changing my mind on previous requirements since I can &lt;code&gt;git reset --hard $last_good_commit&lt;&#x2F;code&gt; to the last good commit.&lt;&#x2F;p&gt;
-&lt;p&gt;I&#x27;ve added this &lt;code&gt;check&lt;&#x2F;code&gt; script to my &lt;code&gt;$PATH&lt;&#x2F;code&gt;:&lt;&#x2F;p&gt;
-&lt;pre class=&quot;giallo&quot; style=&quot;color: #CDD6F4; background-color: #1E1E2E;&quot;&gt;&lt;code data-lang=&quot;shellscript&quot;&gt;&lt;span class=&quot;giallo-l&quot;&gt;&lt;span style=&quot;color: #F5C2E7;font-style: italic;&quot;&gt;#!&#x2F;bin&#x2F;bash&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
-&lt;span class=&quot;giallo-l&quot;&gt;&lt;&#x2F;span&gt;
-&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;help&lt;&#x2F;span&gt;&lt;span style=&quot;color: #94E2D5;&quot;&gt;=&lt;&#x2F;span&gt;&lt;span style=&quot;color: #9399B2;&quot;&gt;$(&lt;&#x2F;span&gt;&lt;span style=&quot;color: #89B4FA;font-style: italic;&quot;&gt;cat&lt;&#x2F;span&gt;&lt;span style=&quot;color: #94E2D5;&quot;&gt; &amp;lt;&amp;lt;&lt;&#x2F;span&gt;&lt;span style=&quot;color: #A6E3A1;&quot;&gt;EOF&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
-&lt;span class=&quot;giallo-l&quot;&gt;&lt;span style=&quot;color: #A6E3A1;&quot;&gt;Usage: check {point|reset}&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
-&lt;span class=&quot;giallo-l&quot;&gt;&lt;&#x2F;span&gt;
-&lt;span class=&quot;giallo-l&quot;&gt;&lt;span style=&quot;color: #A6E3A1;&quot;&gt;point: Create a checkpoint by committing with a specific message.&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
-&lt;span class=&quot;giallo-l&quot;&gt;&lt;span style=&quot;color: #A6E3A1;&quot;&gt;reset: Reset to the commit before the first checkpoint.&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
-&lt;span class=&quot;giallo-l&quot;&gt;&lt;span style=&quot;color: #A6E3A1;&quot;&gt;EOF&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
-&lt;span class=&quot;giallo-l&quot;&gt;&lt;span style=&quot;color: #9399B2;&quot;&gt;)&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
-&lt;span class=&quot;giallo-l&quot;&gt;&lt;&#x2F;span&gt;
-&lt;span class=&quot;giallo-l&quot;&gt;&lt;span style=&quot;color: #9399B2;font-style: italic;&quot;&gt;# Create a checkpoint message.&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
-&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;checkpoint_msg&lt;&#x2F;span&gt;&lt;span style=&quot;color: #94E2D5;&quot;&gt;=&lt;&#x2F;span&gt;&lt;span style=&quot;color: #A6E3A1;&quot;&gt;&amp;quot;ai-pair-coding-checkpoint&amp;quot;&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
-&lt;span class=&quot;giallo-l&quot;&gt;&lt;&#x2F;span&gt;
-&lt;span class=&quot;giallo-l&quot;&gt;&lt;span style=&quot;color: #CBA6F7;&quot;&gt;case&lt;&#x2F;span&gt;&lt;span style=&quot;color: #A6E3A1;&quot;&gt; &amp;quot;&lt;&#x2F;span&gt;&lt;span style=&quot;color: #EBA0AC;font-style: italic;&quot;&gt;$1&lt;&#x2F;span&gt;&lt;span style=&quot;color: #A6E3A1;&quot;&gt;&amp;quot;&lt;&#x2F;span&gt;&lt;span style=&quot;color: #CBA6F7;&quot;&gt; in&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
-&lt;span class=&quot;giallo-l&quot;&gt;&lt;span style=&quot;color: #A6E3A1;&quot;&gt;    point&lt;&#x2F;span&gt;&lt;span style=&quot;color: #94E2D5;&quot;&gt;)&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
-&lt;span class=&quot;giallo-l&quot;&gt;&lt;span style=&quot;color: #9399B2;font-style: italic;&quot;&gt;        # Create a checkpoint by committing with a specific message.&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
-&lt;span class=&quot;giallo-l&quot;&gt;&lt;span style=&quot;color: #89B4FA;font-style: italic;&quot;&gt;        git&lt;&#x2F;span&gt;&lt;span style=&quot;color: #A6E3A1;&quot;&gt; add -A&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
-&lt;span class=&quot;giallo-l&quot;&gt;&lt;span style=&quot;color: #89B4FA;font-style: italic;&quot;&gt;        git&lt;&#x2F;span&gt;&lt;span style=&quot;color: #A6E3A1;&quot;&gt; commit -m &amp;quot;&lt;&#x2F;span&gt;&lt;span&gt;$checkpoint_msg&lt;&#x2F;span&gt;&lt;span style=&quot;color: #A6E3A1;&quot;&gt;&amp;quot;&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
-&lt;span class=&quot;giallo-l&quot;&gt;&lt;span style=&quot;color: #9399B2;&quot;&gt;        ;;&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
-&lt;span class=&quot;giallo-l&quot;&gt;&lt;span style=&quot;color: #A6E3A1;&quot;&gt;    reset&lt;&#x2F;span&gt;&lt;span style=&quot;color: #94E2D5;&quot;&gt;)&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
-&lt;span class=&quot;giallo-l&quot;&gt;&lt;span style=&quot;color: #9399B2;font-style: italic;&quot;&gt;        # Find the first checkpoint commit&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
-&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;        first_checkpoint&lt;&#x2F;span&gt;&lt;span style=&quot;color: #94E2D5;&quot;&gt;=&lt;&#x2F;span&gt;&lt;span style=&quot;color: #9399B2;&quot;&gt;$(&lt;&#x2F;span&gt;&lt;span style=&quot;color: #89B4FA;font-style: italic;&quot;&gt;git&lt;&#x2F;span&gt;&lt;span style=&quot;color: #A6E3A1;&quot;&gt; log --oneline --grep=&amp;quot;&lt;&#x2F;span&gt;&lt;span&gt;$checkpoint_msg&lt;&#x2F;span&gt;&lt;span style=&quot;color: #A6E3A1;&quot;&gt;&amp;quot;&lt;&#x2F;span&gt;&lt;span style=&quot;color: #94E2D5;&quot;&gt; |&lt;&#x2F;span&gt;&lt;span style=&quot;color: #89B4FA;font-style: italic;&quot;&gt; tail&lt;&#x2F;span&gt;&lt;span style=&quot;color: #A6E3A1;&quot;&gt; -1&lt;&#x2F;span&gt;&lt;span style=&quot;color: #94E2D5;&quot;&gt; |&lt;&#x2F;span&gt;&lt;span style=&quot;color: #89B4FA;font-style: italic;&quot;&gt; awk&lt;&#x2F;span&gt;&lt;span style=&quot;color: #A6E3A1;&quot;&gt; &amp;#39;{print $1}&amp;#39;&lt;&#x2F;span&gt;&lt;span style=&quot;color: #9399B2;&quot;&gt;)&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
-&lt;span class=&quot;giallo-l&quot;&gt;&lt;span style=&quot;color: #CBA6F7;&quot;&gt;        if&lt;&#x2F;span&gt;&lt;span style=&quot;color: #9399B2;&quot;&gt; [&lt;&#x2F;span&gt;&lt;span style=&quot;color: #94E2D5;&quot;&gt; -z&lt;&#x2F;span&gt;&lt;span style=&quot;color: #A6E3A1;&quot;&gt; &amp;quot;&lt;&#x2F;span&gt;&lt;span&gt;$first_checkpoint&lt;&#x2F;span&gt;&lt;span style=&quot;color: #A6E3A1;&quot;&gt;&amp;quot;&lt;&#x2F;span&gt;&lt;span style=&quot;color: #9399B2;&quot;&gt; ];&lt;&#x2F;span&gt;&lt;span style=&quot;color: #CBA6F7;&quot;&gt; then&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
-&lt;span class=&quot;giallo-l&quot;&gt;&lt;span style=&quot;color: #F38BA8;font-style: italic;&quot;&gt;            echo&lt;&#x2F;span&gt;&lt;span style=&quot;color: #A6E3A1;&quot;&gt; &amp;quot;No checkpoint found.&amp;quot;&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
-&lt;span class=&quot;giallo-l&quot;&gt;&lt;span style=&quot;color: #CBA6F7;&quot;&gt;            return&lt;&#x2F;span&gt;&lt;span style=&quot;color: #FAB387;&quot;&gt; 1&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
-&lt;span class=&quot;giallo-l&quot;&gt;&lt;span style=&quot;color: #CBA6F7;&quot;&gt;        fi&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
-&lt;span class=&quot;giallo-l&quot;&gt;&lt;&#x2F;span&gt;
-&lt;span class=&quot;giallo-l&quot;&gt;&lt;span style=&quot;color: #9399B2;font-style: italic;&quot;&gt;        # Get the target commit hash (the one before the checkpoint)&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
-&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;        target_commit&lt;&#x2F;span&gt;&lt;span style=&quot;color: #94E2D5;&quot;&gt;=&lt;&#x2F;span&gt;&lt;span style=&quot;color: #9399B2;&quot;&gt;$(&lt;&#x2F;span&gt;&lt;span style=&quot;color: #89B4FA;font-style: italic;&quot;&gt;git&lt;&#x2F;span&gt;&lt;span style=&quot;color: #A6E3A1;&quot;&gt; rev-parse &amp;quot;&lt;&#x2F;span&gt;&lt;span&gt;$first_checkpoint&lt;&#x2F;span&gt;&lt;span style=&quot;color: #A6E3A1;&quot;&gt;^&amp;quot;&lt;&#x2F;span&gt;&lt;span style=&quot;color: #9399B2;&quot;&gt;)&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
-&lt;span class=&quot;giallo-l&quot;&gt;&lt;&#x2F;span&gt;
-&lt;span class=&quot;giallo-l&quot;&gt;&lt;span style=&quot;color: #CBA6F7;&quot;&gt;        if&lt;&#x2F;span&gt;&lt;span style=&quot;color: #9399B2;&quot;&gt; [&lt;&#x2F;span&gt;&lt;span style=&quot;color: #94E2D5;&quot;&gt; -z&lt;&#x2F;span&gt;&lt;span style=&quot;color: #A6E3A1;&quot;&gt; &amp;quot;&lt;&#x2F;span&gt;&lt;span&gt;$target_commit&lt;&#x2F;span&gt;&lt;span style=&quot;color: #A6E3A1;&quot;&gt;&amp;quot;&lt;&#x2F;span&gt;&lt;span style=&quot;color: #9399B2;&quot;&gt; ];&lt;&#x2F;span&gt;&lt;span style=&quot;color: #CBA6F7;&quot;&gt; then&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
-&lt;span class=&quot;giallo-l&quot;&gt;&lt;span style=&quot;color: #F38BA8;font-style: italic;&quot;&gt;            echo&lt;&#x2F;span&gt;&lt;span style=&quot;color: #A6E3A1;&quot;&gt; &amp;quot;No commit found before the checkpoint.&amp;quot;&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
-&lt;span class=&quot;giallo-l&quot;&gt;&lt;span style=&quot;color: #CBA6F7;&quot;&gt;            return&lt;&#x2F;span&gt;&lt;span style=&quot;color: #FAB387;&quot;&gt; 1&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
-&lt;span class=&quot;giallo-l&quot;&gt;&lt;span style=&quot;color: #CBA6F7;&quot;&gt;        fi&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
-&lt;span class=&quot;giallo-l&quot;&gt;&lt;&#x2F;span&gt;
-&lt;span class=&quot;giallo-l&quot;&gt;&lt;span style=&quot;color: #F38BA8;font-style: italic;&quot;&gt;        echo&lt;&#x2F;span&gt;&lt;span style=&quot;color: #A6E3A1;&quot;&gt; &amp;quot;Resetting to commit before first checkpoint: &lt;&#x2F;span&gt;&lt;span&gt;$target_commit&lt;&#x2F;span&gt;&lt;span style=&quot;color: #A6E3A1;&quot;&gt;&amp;quot;&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
-&lt;span class=&quot;giallo-l&quot;&gt;&lt;span style=&quot;color: #89B4FA;font-style: italic;&quot;&gt;        git&lt;&#x2F;span&gt;&lt;span style=&quot;color: #A6E3A1;&quot;&gt; reset --soft &amp;quot;&lt;&#x2F;span&gt;&lt;span&gt;$target_commit&lt;&#x2F;span&gt;&lt;span style=&quot;color: #A6E3A1;&quot;&gt;&amp;quot;&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
-&lt;span class=&quot;giallo-l&quot;&gt;&lt;span style=&quot;color: #9399B2;&quot;&gt;        ;;&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
-&lt;span class=&quot;giallo-l&quot;&gt;&lt;span style=&quot;color: #94E2D5;&quot;&gt;    *)&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
-&lt;span class=&quot;giallo-l&quot;&gt;&lt;span style=&quot;color: #F38BA8;font-style: italic;&quot;&gt;        echo&lt;&#x2F;span&gt;&lt;span style=&quot;color: #A6E3A1;&quot;&gt; &amp;quot;&lt;&#x2F;span&gt;&lt;span&gt;$help&lt;&#x2F;span&gt;&lt;span style=&quot;color: #A6E3A1;&quot;&gt;&amp;quot;&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
-&lt;span class=&quot;giallo-l&quot;&gt;&lt;span style=&quot;color: #9399B2;&quot;&gt;        ;;&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
-&lt;span class=&quot;giallo-l&quot;&gt;&lt;span style=&quot;color: #CBA6F7;&quot;&gt;esac&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;&lt;h3 id=&quot;example-agent-check-flow&quot;&gt;Example Agent Check Flow&lt;&#x2F;h3&gt;
-&lt;p&gt;As the agent makes progress I run several &lt;code&gt;check point&lt;&#x2F;code&gt; commands. You can see the multiple &lt;code&gt;ai-pair-coding-checkpoint&lt;&#x2F;code&gt; commits in the screenshot.&lt;&#x2F;p&gt;
-&lt;p&gt;&lt;img src=&quot;https:&#x2F;&#x2F;devstopian.com&#x2F;blog&#x2F;2021-06-08-gitflow&#x2F;image.png&quot; alt=&quot;alt text&quot; &#x2F;&gt;&lt;&#x2F;p&gt;
-&lt;p&gt;Then, once I&#x27;m satisfied with the final changes, I run &lt;code&gt;check reset&lt;&#x2F;code&gt;. The screenshot shows commits have been reset and the final changes left in the queue.&lt;&#x2F;p&gt;
-&lt;p&gt;&lt;img src=&quot;https:&#x2F;&#x2F;devstopian.com&#x2F;blog&#x2F;2021-06-08-gitflow&#x2F;image-1.png&quot; alt=&quot;alt text&quot; &#x2F;&gt;&lt;&#x2F;p&gt;
-&lt;p&gt;Now, I&#x27;m free to create the final commit with the verified changes.&lt;&#x2F;p&gt;
 &lt;h2 id=&quot;update-log&quot;&gt;Update Log&lt;&#x2F;h2&gt;
 &lt;blockquote&gt;
 &lt;p&gt;Update 2021-12&lt;&#x2F;p&gt;
 &lt;&#x2F;blockquote&gt;
 &lt;p&gt;My original post was focused on the pull&#x2F;merge flow. I realized that I need to leverage the reset-rebase flow to integrate continuously (CI) and to move more nimbly.&lt;&#x2F;p&gt;
-&lt;blockquote&gt;
-&lt;p&gt;Update 2026-02&lt;&#x2F;p&gt;
-&lt;&#x2F;blockquote&gt;
-&lt;p&gt;Wow, agentic AI is crazy! I have been blown away with how fast it produces changes. I scrambled to create a flow that kept me in control and to take the reigns back from the slop it was producing. I can now request changes from the agent and keep it grounded on the correct solutions.&lt;&#x2F;p&gt;
 </content>
         
     </entry>

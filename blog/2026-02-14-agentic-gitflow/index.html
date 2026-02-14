@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Agentic GitFlow | Dev·stopian</title>
+    
+    
+    <meta name="description" content="Take control of your agent&#x27;s changes!">
+    
+    
+    
+    <link rel="canonical" href="https:&#x2F;&#x2F;devstopian.com&#x2F;blog&#x2F;2026-02-14-agentic-gitflow&#x2F;" />
+    
+    <link rel="stylesheet" href="https://devstopian.com/style.css">
+    
+  </head>
+  <body class="theme-tokiostopian">
+    
+    <header>
+      <nav>
+        <a href="/">/home/</a>
+
+        
+        
+        
+        <a href="https:&#x2F;&#x2F;devstopian.com&#x2F;blog&#x2F;">&#x2F;blog&#x2F;</a>
+        
+
+        
+        
+        <a href="https:&#x2F;&#x2F;devstopian.com&#x2F;about&#x2F;">&#x2F;about&#x2F;</a>
+        
+      </nav>
+    </header>
+    <hr>
+    <main>
+      
+<section>
+  <h1>Agentic GitFlow</h1>
+  
+  <p>Originally Published: <time>2026-02-14</time></p>
+  
+  
+  <div>
+    <p>Wow, agentic AI is crazy! The rate of its changes is staggering. Tasks that used to take me hours or days now takes the agent a few seconds or minutes to make progress. However, there are engineering concerns to address anytime code is produced by human or agent. The code should be:</p>
+<ol>
+<li>easy to read,</li>
+<li>performant,</li>
+<li>secure,</li>
+<li>testable,</li>
+<li>idiomatic</li>
+<li>...</li>
+</ol>
+<p>While I was a newbie human working with an AI agent, I picked an unfamiliar problem space. I wanted to see how far I could push the agent beyond my understanding. I gave it a few prompts. It made a lot of changes. I made a few more prompts. And, repeat. Wow, how I ended up with slop! I'm not sure that it was the agent's fault, though; I didn't understand the problem space, after all! I'm not sure how much of the slop was a result of my misunderstanding in my poorly written prompts, or how much the agent hadn't been trained on that problem space.</p>
+<p>That's when I realized that I need to take more control of the flow of changes. I need to press into all of the changes to make sure that I understand. I may need to prompt it to refactor the code to make it more legible or to follow good engineering practices. If subsequent prompts do not add clarity, then I need a way to easily set those changes aside or throw them away forever.</p>
+<p>The pull-request and reset-rebase flows from my post on <a href="https://devstopian.com/blog/2021-06-08-gitflow/">gitflows</a> are great when I'm making the changes that I want to share with my team, but what about when there's an agent wrecking havoc on my repo? I don't want to push changes from the agent that aren't fully vetted. I want to use an agent to accelerate my rigor and my understanding, not produce slop.</p>
+<p>So, I came up with this custom flow specifically to work with agents:</p>
+<ol>
+<li>Prompt for changes.</li>
+<li>Reject changes I do not approve of.</li>
+<li>Create a checkpoint commit as I have verified progress was made.</li>
+<li>Prompt for a refactor.</li>
+<li>Iterate until the solution is <strong>correct</strong>.</li>
+<li>Reset the checkpoint commits with the final changes still outstanding.</li>
+<li>Create an official commit.</li>
+<li>Follow one of the <a href="https://devstopian.com/blog/2021-06-08-gitflow/">gitflows</a> accordingly.</li>
+</ol>
+<p>This flow modifies the reset-rebase flow from <a href="https://devstopian.com/blog/2021-06-08-gitflow/">gitflows</a> by adding a specific checkpoint message, <code>"ai-pair-coding-checkpoint"</code>. The flow helps me to steer the agent to produce a <strong>correct</strong> solution. I can also more freely change my mind on requirements or unravel my mistaken prompts by throwing away changes with <code>git reset --hard $last_good_commit</code>.</p>
+<p>To improve my efficiency, I added this <code>check</code> script to my <code>$PATH</code>:</p>
+<pre class="giallo" style="color: #CDD6F4; background-color: #1E1E2E;"><code data-lang="shellscript"><span class="giallo-l"><span style="color: #F5C2E7;font-style: italic;">#!/bin/bash</span></span>
+<span class="giallo-l"></span>
+<span class="giallo-l"><span>help</span><span style="color: #94E2D5;">=</span><span style="color: #9399B2;">$(</span><span style="color: #89B4FA;font-style: italic;">cat</span><span style="color: #94E2D5;"> &lt;&lt;</span><span style="color: #A6E3A1;">EOF</span></span>
+<span class="giallo-l"><span style="color: #A6E3A1;">Usage: check {point|reset}</span></span>
+<span class="giallo-l"></span>
+<span class="giallo-l"><span style="color: #A6E3A1;">point: Create a checkpoint by committing with a specific message.</span></span>
+<span class="giallo-l"><span style="color: #A6E3A1;">reset: Reset to the commit before the first checkpoint.</span></span>
+<span class="giallo-l"><span style="color: #A6E3A1;">EOF</span></span>
+<span class="giallo-l"><span style="color: #9399B2;">)</span></span>
+<span class="giallo-l"></span>
+<span class="giallo-l"><span style="color: #9399B2;font-style: italic;"># Create a checkpoint message.</span></span>
+<span class="giallo-l"><span>checkpoint_msg</span><span style="color: #94E2D5;">=</span><span style="color: #A6E3A1;">&quot;ai-pair-coding-checkpoint&quot;</span></span>
+<span class="giallo-l"></span>
+<span class="giallo-l"><span style="color: #CBA6F7;">case</span><span style="color: #A6E3A1;"> &quot;</span><span style="color: #EBA0AC;font-style: italic;">$1</span><span style="color: #A6E3A1;">&quot;</span><span style="color: #CBA6F7;"> in</span></span>
+<span class="giallo-l"><span style="color: #A6E3A1;">    point</span><span style="color: #94E2D5;">)</span></span>
+<span class="giallo-l"><span style="color: #9399B2;font-style: italic;">        # Create a checkpoint by committing with a specific message.</span></span>
+<span class="giallo-l"><span style="color: #89B4FA;font-style: italic;">        git</span><span style="color: #A6E3A1;"> add -A</span></span>
+<span class="giallo-l"><span style="color: #89B4FA;font-style: italic;">        git</span><span style="color: #A6E3A1;"> commit -m &quot;</span><span>$checkpoint_msg</span><span style="color: #A6E3A1;">&quot;</span></span>
+<span class="giallo-l"><span style="color: #9399B2;">        ;;</span></span>
+<span class="giallo-l"><span style="color: #A6E3A1;">    reset</span><span style="color: #94E2D5;">)</span></span>
+<span class="giallo-l"><span style="color: #9399B2;font-style: italic;">        # Find the first checkpoint commit</span></span>
+<span class="giallo-l"><span>        first_checkpoint</span><span style="color: #94E2D5;">=</span><span style="color: #9399B2;">$(</span><span style="color: #89B4FA;font-style: italic;">git</span><span style="color: #A6E3A1;"> log --oneline --grep=&quot;</span><span>$checkpoint_msg</span><span style="color: #A6E3A1;">&quot;</span><span style="color: #94E2D5;"> |</span><span style="color: #89B4FA;font-style: italic;"> tail</span><span style="color: #A6E3A1;"> -1</span><span style="color: #94E2D5;"> |</span><span style="color: #89B4FA;font-style: italic;"> awk</span><span style="color: #A6E3A1;"> &#39;{print $1}&#39;</span><span style="color: #9399B2;">)</span></span>
+<span class="giallo-l"><span style="color: #CBA6F7;">        if</span><span style="color: #9399B2;"> [</span><span style="color: #94E2D5;"> -z</span><span style="color: #A6E3A1;"> &quot;</span><span>$first_checkpoint</span><span style="color: #A6E3A1;">&quot;</span><span style="color: #9399B2;"> ];</span><span style="color: #CBA6F7;"> then</span></span>
+<span class="giallo-l"><span style="color: #F38BA8;font-style: italic;">            echo</span><span style="color: #A6E3A1;"> &quot;No checkpoint found.&quot;</span></span>
+<span class="giallo-l"><span style="color: #CBA6F7;">            return</span><span style="color: #FAB387;"> 1</span></span>
+<span class="giallo-l"><span style="color: #CBA6F7;">        fi</span></span>
+<span class="giallo-l"></span>
+<span class="giallo-l"><span style="color: #9399B2;font-style: italic;">        # Get the target commit hash (the one before the checkpoint)</span></span>
+<span class="giallo-l"><span>        target_commit</span><span style="color: #94E2D5;">=</span><span style="color: #9399B2;">$(</span><span style="color: #89B4FA;font-style: italic;">git</span><span style="color: #A6E3A1;"> rev-parse &quot;</span><span>$first_checkpoint</span><span style="color: #A6E3A1;">^&quot;</span><span style="color: #9399B2;">)</span></span>
+<span class="giallo-l"></span>
+<span class="giallo-l"><span style="color: #CBA6F7;">        if</span><span style="color: #9399B2;"> [</span><span style="color: #94E2D5;"> -z</span><span style="color: #A6E3A1;"> &quot;</span><span>$target_commit</span><span style="color: #A6E3A1;">&quot;</span><span style="color: #9399B2;"> ];</span><span style="color: #CBA6F7;"> then</span></span>
+<span class="giallo-l"><span style="color: #F38BA8;font-style: italic;">            echo</span><span style="color: #A6E3A1;"> &quot;No commit found before the checkpoint.&quot;</span></span>
+<span class="giallo-l"><span style="color: #CBA6F7;">            return</span><span style="color: #FAB387;"> 1</span></span>
+<span class="giallo-l"><span style="color: #CBA6F7;">        fi</span></span>
+<span class="giallo-l"></span>
+<span class="giallo-l"><span style="color: #F38BA8;font-style: italic;">        echo</span><span style="color: #A6E3A1;"> &quot;Resetting to commit before first checkpoint: </span><span>$target_commit</span><span style="color: #A6E3A1;">&quot;</span></span>
+<span class="giallo-l"><span style="color: #89B4FA;font-style: italic;">        git</span><span style="color: #A6E3A1;"> reset --soft &quot;</span><span>$target_commit</span><span style="color: #A6E3A1;">&quot;</span></span>
+<span class="giallo-l"><span style="color: #9399B2;">        ;;</span></span>
+<span class="giallo-l"><span style="color: #94E2D5;">    *)</span></span>
+<span class="giallo-l"><span style="color: #F38BA8;font-style: italic;">        echo</span><span style="color: #A6E3A1;"> &quot;</span><span>$help</span><span style="color: #A6E3A1;">&quot;</span></span>
+<span class="giallo-l"><span style="color: #9399B2;">        ;;</span></span>
+<span class="giallo-l"><span style="color: #CBA6F7;">esac</span></span></code></pre><h3 id="example-agent-check-flow">Example Agent Check Flow</h3>
+<p>As the agent makes progress I run several <code>check point</code> commands. You can see the multiple <code>ai-pair-coding-checkpoint</code> commits in the screenshot.</p>
+<p><img src="https://devstopian.com/blog/2026-02-14-agentic-gitflow/image.png" alt="alt text" /></p>
+<p>Then, once I'm satisfied with the final changes, I run <code>check reset</code>. The screenshot shows commits have been reset and the final changes left in the queue.</p>
+<p><img src="https://devstopian.com/blog/2026-02-14-agentic-gitflow/image-1.png" alt="alt text" /></p>
+<p>Now, I'm free to create the final commit with the verified changes.</p>
+
+  </div>
+</section>
+
+    </main>
+    <hr>
+    <footer>
+      <!-- <p>Powered by <a href="https://www.getzola.org/">Zola</a> and inspired by the <a href="https://github.com/mxaddict/zolanight">ZolaNight Theme</a></p>
+       -->
+    </footer>
+  </body>
+</html>
