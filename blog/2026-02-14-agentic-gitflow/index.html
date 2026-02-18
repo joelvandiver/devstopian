@@ -43,7 +43,7 @@
   
   
   <div>
-    <p>Wow, agentic AI is crazy! The rate of its changes is staggering. Tasks that used to take me hours or days now takes the agent a few seconds or minutes to make progress. However, there are engineering concerns to address anytime code is produced by human or agent. The code should be:</p>
+    <p>Wow, agentic AI is crazy! The rate of its changes is staggering. Tasks that used to take me hours or days now take the agent a few seconds or minutes to make progress. However, there are engineering concerns to address anytime code is produced by human or agent. The code should be:</p>
 <ol>
 <li>easy to read,</li>
 <li>performant,</li>
@@ -53,8 +53,8 @@
 <li>...</li>
 </ol>
 <p>While I was a newbie human working with an AI agent, I picked an unfamiliar problem space. I wanted to see how far I could push the agent beyond my understanding. I gave it a few prompts. It made a lot of changes. I made a few more prompts. And, repeat. Wow, how I ended up with slop! I'm not sure that it was the agent's fault, though; I didn't understand the problem space, after all! I'm not sure how much of the slop was a result of my misunderstanding in my poorly written prompts, or how much the agent hadn't been trained on that problem space.</p>
-<p>That's when I realized that I need to take more control of the flow of changes. I need to press into all of the changes to make sure that I understand. I may need to prompt it to refactor the code to make it more legible or to follow good engineering practices. If subsequent prompts do not add clarity, then I need a way to easily set those changes aside or throw them away forever.</p>
-<p>The pull-request and reset-rebase flows from my post on <a href="https://devstopian.com/blog/2021-06-08-gitflow/">gitflows</a> are great when I'm making the changes that I want to share with my team, but what about when there's an agent wrecking havoc on my repo? I don't want to push changes from the agent that aren't fully vetted. I want to use an agent to accelerate my rigor and my understanding, not produce slop.</p>
+<p>That's when I realized that I need to take more control of the flow of changes. I need to press into all of the changes to make sure that I understand. I may need to prompt it to refactor the code to make it more legible and to follow good engineering practices. If subsequent prompts and changes do not add clarity, then I need a way to easily set those changes aside or throw them away forever.</p>
+<p>The pull-request and reset-rebase flows from my post on <a href="https://devstopian.com/blog/2021-06-08-gitflow/">gitflows</a> are great when I'm making the changes that I want to share with my team, but what about when there's an agent wreaking havoc on my repo? I don't want to push changes from the agent that aren't fully vetted. I want to use an agent to accelerate my rigor and my understanding, not produce slop.</p>
 <p>So, I came up with this custom flow specifically to work with agents:</p>
 <ol>
 <li>Prompt for changes.</li>
@@ -115,7 +115,28 @@
 <p>Then, once I'm satisfied with the final changes, I run <code>check reset</code>. The screenshot shows commits have been reset and the final changes left in the queue.</p>
 <p><img src="https://devstopian.com/blog/2026-02-14-agentic-gitflow/image-1.png" alt="alt text" /></p>
 <p>Now, I'm free to create the final commit with the verified changes.</p>
-
+<h2 id="watch-out">Watch Out!</h2>
+<p>If you add other commits after a <code>check point</code> without a <code>check reset</code>, the script above will reset to the first <code>ai-pair-coding-checkpoint</code> it finds.</p>
+<p>If you pushed the commits to the remote, then you will need to do some cleanup:</p>
+<pre class="giallo" style="color: #CDD6F4; background-color: #1E1E2E;"><code data-lang="shellscript"><span class="giallo-l"><span style="color: #9399B2;font-style: italic;"># Find the commit you want to reset </span></span>
+<span class="giallo-l"><span style="color: #9399B2;font-style: italic;"># even though you reset to before it.</span></span>
+<span class="giallo-l"><span style="color: #89B4FA;font-style: italic;">git</span><span style="color: #A6E3A1;"> log --all</span></span>
+<span class="giallo-l"></span>
+<span class="giallo-l"><span style="color: #9399B2;font-style: italic;"># Reset to that commit</span></span>
+<span class="giallo-l"><span style="color: #89B4FA;font-style: italic;">git</span><span style="color: #A6E3A1;"> reset --soft</span><span> $commit_hash</span></span>
+<span class="giallo-l"></span>
+<span class="giallo-l"><span style="color: #9399B2;font-style: italic;"># Find the ai-pair-coding-checkpoint commit hash </span></span>
+<span class="giallo-l"><span style="color: #9399B2;font-style: italic;"># to reword.</span></span>
+<span class="giallo-l"><span style="color: #89B4FA;font-style: italic;">git</span><span style="color: #A6E3A1;"> log</span></span>
+<span class="giallo-l"></span>
+<span class="giallo-l"><span style="color: #9399B2;font-style: italic;"># Rebase that commit interactively.</span></span>
+<span class="giallo-l"><span style="color: #9399B2;font-style: italic;"># Change &quot;pick&quot; to &quot;reword&quot; and save.</span></span>
+<span class="giallo-l"><span style="color: #89B4FA;font-style: italic;">git</span><span style="color: #A6E3A1;"> rebase -i</span><span> $commit_hash</span></span>
+<span class="giallo-l"></span>
+<span class="giallo-l"><span style="color: #9399B2;font-style: italic;"># Force push to the remote, if</span></span>
+<span class="giallo-l"><span style="color: #9399B2;font-style: italic;">#   you pushed the offending commits to the remote</span></span>
+<span class="giallo-l"><span style="color: #9399B2;font-style: italic;">#   and you have permission to force push!</span></span>
+<span class="giallo-l"><span style="color: #89B4FA;font-style: italic;">git</span><span style="color: #A6E3A1;"> push -f</span></span></code></pre>
   </div>
 </section>
 

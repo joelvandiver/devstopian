@@ -23,7 +23,7 @@
         <link rel="alternate" type="text/html" href="https://devstopian.com/blog/2026-02-14-agentic-gitflow/"/>
         <id>https://devstopian.com/blog/2026-02-14-agentic-gitflow/</id>
         
-        <content type="html" xml:base="https://devstopian.com/blog/2026-02-14-agentic-gitflow/">&lt;p&gt;Wow, agentic AI is crazy! The rate of its changes is staggering. Tasks that used to take me hours or days now takes the agent a few seconds or minutes to make progress. However, there are engineering concerns to address anytime code is produced by human or agent. The code should be:&lt;&#x2F;p&gt;
+        <content type="html" xml:base="https://devstopian.com/blog/2026-02-14-agentic-gitflow/">&lt;p&gt;Wow, agentic AI is crazy! The rate of its changes is staggering. Tasks that used to take me hours or days now take the agent a few seconds or minutes to make progress. However, there are engineering concerns to address anytime code is produced by human or agent. The code should be:&lt;&#x2F;p&gt;
 &lt;ol&gt;
 &lt;li&gt;easy to read,&lt;&#x2F;li&gt;
 &lt;li&gt;performant,&lt;&#x2F;li&gt;
@@ -33,8 +33,8 @@
 &lt;li&gt;...&lt;&#x2F;li&gt;
 &lt;&#x2F;ol&gt;
 &lt;p&gt;While I was a newbie human working with an AI agent, I picked an unfamiliar problem space. I wanted to see how far I could push the agent beyond my understanding. I gave it a few prompts. It made a lot of changes. I made a few more prompts. And, repeat. Wow, how I ended up with slop! I&#x27;m not sure that it was the agent&#x27;s fault, though; I didn&#x27;t understand the problem space, after all! I&#x27;m not sure how much of the slop was a result of my misunderstanding in my poorly written prompts, or how much the agent hadn&#x27;t been trained on that problem space.&lt;&#x2F;p&gt;
-&lt;p&gt;That&#x27;s when I realized that I need to take more control of the flow of changes. I need to press into all of the changes to make sure that I understand. I may need to prompt it to refactor the code to make it more legible or to follow good engineering practices. If subsequent prompts do not add clarity, then I need a way to easily set those changes aside or throw them away forever.&lt;&#x2F;p&gt;
-&lt;p&gt;The pull-request and reset-rebase flows from my post on &lt;a href=&quot;https:&#x2F;&#x2F;devstopian.com&#x2F;blog&#x2F;2021-06-08-gitflow&#x2F;&quot;&gt;gitflows&lt;&#x2F;a&gt; are great when I&#x27;m making the changes that I want to share with my team, but what about when there&#x27;s an agent wrecking havoc on my repo? I don&#x27;t want to push changes from the agent that aren&#x27;t fully vetted. I want to use an agent to accelerate my rigor and my understanding, not produce slop.&lt;&#x2F;p&gt;
+&lt;p&gt;That&#x27;s when I realized that I need to take more control of the flow of changes. I need to press into all of the changes to make sure that I understand. I may need to prompt it to refactor the code to make it more legible and to follow good engineering practices. If subsequent prompts and changes do not add clarity, then I need a way to easily set those changes aside or throw them away forever.&lt;&#x2F;p&gt;
+&lt;p&gt;The pull-request and reset-rebase flows from my post on &lt;a href=&quot;https:&#x2F;&#x2F;devstopian.com&#x2F;blog&#x2F;2021-06-08-gitflow&#x2F;&quot;&gt;gitflows&lt;&#x2F;a&gt; are great when I&#x27;m making the changes that I want to share with my team, but what about when there&#x27;s an agent wreaking havoc on my repo? I don&#x27;t want to push changes from the agent that aren&#x27;t fully vetted. I want to use an agent to accelerate my rigor and my understanding, not produce slop.&lt;&#x2F;p&gt;
 &lt;p&gt;So, I came up with this custom flow specifically to work with agents:&lt;&#x2F;p&gt;
 &lt;ol&gt;
 &lt;li&gt;Prompt for changes.&lt;&#x2F;li&gt;
@@ -95,7 +95,28 @@
 &lt;p&gt;Then, once I&#x27;m satisfied with the final changes, I run &lt;code&gt;check reset&lt;&#x2F;code&gt;. The screenshot shows commits have been reset and the final changes left in the queue.&lt;&#x2F;p&gt;
 &lt;p&gt;&lt;img src=&quot;https:&#x2F;&#x2F;devstopian.com&#x2F;blog&#x2F;2026-02-14-agentic-gitflow&#x2F;image-1.png&quot; alt=&quot;alt text&quot; &#x2F;&gt;&lt;&#x2F;p&gt;
 &lt;p&gt;Now, I&#x27;m free to create the final commit with the verified changes.&lt;&#x2F;p&gt;
-</content>
+&lt;h2 id=&quot;watch-out&quot;&gt;Watch Out!&lt;&#x2F;h2&gt;
+&lt;p&gt;If you add other commits after a &lt;code&gt;check point&lt;&#x2F;code&gt; without a &lt;code&gt;check reset&lt;&#x2F;code&gt;, the script above will reset to the first &lt;code&gt;ai-pair-coding-checkpoint&lt;&#x2F;code&gt; it finds.&lt;&#x2F;p&gt;
+&lt;p&gt;If you pushed the commits to the remote, then you will need to do some cleanup:&lt;&#x2F;p&gt;
+&lt;pre class=&quot;giallo&quot; style=&quot;color: #CDD6F4; background-color: #1E1E2E;&quot;&gt;&lt;code data-lang=&quot;shellscript&quot;&gt;&lt;span class=&quot;giallo-l&quot;&gt;&lt;span style=&quot;color: #9399B2;font-style: italic;&quot;&gt;# Find the commit you want to reset &lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span style=&quot;color: #9399B2;font-style: italic;&quot;&gt;# even though you reset to before it.&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span style=&quot;color: #89B4FA;font-style: italic;&quot;&gt;git&lt;&#x2F;span&gt;&lt;span style=&quot;color: #A6E3A1;&quot;&gt; log --all&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span style=&quot;color: #9399B2;font-style: italic;&quot;&gt;# Reset to that commit&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span style=&quot;color: #89B4FA;font-style: italic;&quot;&gt;git&lt;&#x2F;span&gt;&lt;span style=&quot;color: #A6E3A1;&quot;&gt; reset --soft&lt;&#x2F;span&gt;&lt;span&gt; $commit_hash&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span style=&quot;color: #9399B2;font-style: italic;&quot;&gt;# Find the ai-pair-coding-checkpoint commit hash &lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span style=&quot;color: #9399B2;font-style: italic;&quot;&gt;# to reword.&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span style=&quot;color: #89B4FA;font-style: italic;&quot;&gt;git&lt;&#x2F;span&gt;&lt;span style=&quot;color: #A6E3A1;&quot;&gt; log&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span style=&quot;color: #9399B2;font-style: italic;&quot;&gt;# Rebase that commit interactively.&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span style=&quot;color: #9399B2;font-style: italic;&quot;&gt;# Change &amp;quot;pick&amp;quot; to &amp;quot;reword&amp;quot; and save.&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span style=&quot;color: #89B4FA;font-style: italic;&quot;&gt;git&lt;&#x2F;span&gt;&lt;span style=&quot;color: #A6E3A1;&quot;&gt; rebase -i&lt;&#x2F;span&gt;&lt;span&gt; $commit_hash&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span style=&quot;color: #9399B2;font-style: italic;&quot;&gt;# Force push to the remote, if&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span style=&quot;color: #9399B2;font-style: italic;&quot;&gt;#   you pushed the offending commits to the remote&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span style=&quot;color: #9399B2;font-style: italic;&quot;&gt;#   and you have permission to force push!&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span style=&quot;color: #89B4FA;font-style: italic;&quot;&gt;git&lt;&#x2F;span&gt;&lt;span style=&quot;color: #A6E3A1;&quot;&gt; push -f&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;</content>
         
     </entry>
     <entry xml:lang="en">
