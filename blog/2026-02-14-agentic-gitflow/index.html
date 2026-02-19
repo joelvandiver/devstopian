@@ -43,7 +43,8 @@
   
   
   <div>
-    <p>Wow, agentic AI is crazy! The rate of its changes is staggering. Tasks that used to take me hours or days now take the agent a few seconds or minutes to make progress. However, there are engineering concerns to address anytime code is produced by human or agent. The code should be:</p>
+    <p>Wow, agentic AI is crazy! The rate of its changes is staggering. With its help, tasks that used to take me hours or days now take me a few seconds or minutes. However, learning to use agentic AI rigorously is a skill that requires discipline, reflection, and trial and error.</p>
+<p>A while ago, I chose to use an AI agent to help me in an unfamiliar problem space and to experiment with how far I could push that agent beyond my understanding. I gave it a few prompts. It made lots of changes. I made a few more prompts. It made more changes. The result was a lot of slop. Given my lack of understanding in the problem space, I wasn't sure how much of the slop was a result of my misunderstanding and poorly written prompts or the agent's lack of training. I did know that all code, whether written by human or agent, should be:</p>
 <ol>
 <li>easy to read,</li>
 <li>performant,</li>
@@ -52,9 +53,8 @@
 <li>idiomatic</li>
 <li>...</li>
 </ol>
-<p>While I was a newbie human working with an AI agent, I picked an unfamiliar problem space. I wanted to see how far I could push the agent beyond my understanding. I gave it a few prompts. It made a lot of changes. I made a few more prompts. And, repeat. Wow, how I ended up with slop! I'm not sure that it was the agent's fault, though; I didn't understand the problem space, after all! I'm not sure how much of the slop was a result of my misunderstanding in my poorly written prompts, or how much the agent hadn't been trained on that problem space.</p>
-<p>That's when I realized that I need to take more control of the flow of changes. I need to press into all of the changes to make sure that I understand. I may need to prompt it to refactor the code to make it more legible and to follow good engineering practices. If subsequent prompts and changes do not add clarity, then I need a way to easily set those changes aside or throw them away forever.</p>
-<p>The pull-request and reset-rebase flows from my post on <a href="https://devstopian.com/blog/2021-06-08-gitflow/">gitflows</a> are great when I'm making the changes that I want to share with my team, but what about when there's an agent wreaking havoc on my repo? I don't want to push changes from the agent that aren't fully vetted. I want to use an agent to accelerate my rigor and my understanding, not produce slop.</p>
+<p>That's when I realized that I needed to take more control of the flow of changes. I needed to press into all of the changes to make sure that I understood. I needed to prompt it to refactor the code to make it more legible and to follow good engineering practices. If subsequent prompts and changes did not add clarity, then I needed a way to easily set those changes aside or throw them away forever.</p>
+<p>The pull-request and reset-rebase flows from my post on <a href="https://devstopian.com/blog/2021-06-08-gitflow/">gitflows</a> are great when I'm making the changes that I want to share with my team, but what about when there was an agent wreaking havoc on my repo? I didn't want to push changes from the agent that weren't fully vetted. I wanted to use an agent to accelerate my rigor and my understanding, not produce slop.</p>
 <p>So, I came up with this custom flow specifically to work with agents:</p>
 <ol>
 <li>Prompt for changes.</li>
