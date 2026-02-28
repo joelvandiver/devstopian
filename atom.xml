@@ -5,8 +5,105 @@
     <link rel="self" type="application/atom+xml" href="https://devstopian.com/atom.xml"/>
     <link rel="alternate" type="text/html" href="https://devstopian.com"/>
     <generator uri="https://www.getzola.org/">Zola</generator>
-    <updated>2026-02-14T00:00:00+00:00</updated>
+    <updated>2026-02-28T00:00:00+00:00</updated>
     <id>https://devstopian.com/atom.xml</id>
+    <entry xml:lang="en">
+        <title>Tech Stack 2026</title>
+        <published>2026-02-28T00:00:00+00:00</published>
+        <updated>2026-02-28T00:00:00+00:00</updated>
+        
+        <author>
+          <name>
+            
+              Unknown
+            
+          </name>
+        </author>
+        
+        <link rel="alternate" type="text/html" href="https://devstopian.com/blog/2026-02-28-techstack/"/>
+        <id>https://devstopian.com/blog/2026-02-28-techstack/</id>
+        
+        <content type="html" xml:base="https://devstopian.com/blog/2026-02-28-techstack/">&lt;p&gt;Even with the depth and breadth of technology today, it&#x27;s import to take stock of your preferred technologies. Here&#x27;s my reflection of my go-to techstack. [Checkout my &lt;a href=&quot;https:&#x2F;&#x2F;devstopian.com&#x2F;about&#x2F;&quot;&gt;about page&lt;&#x2F;a&gt; to see my journey through technology of the years.]&lt;&#x2F;p&gt;
+&lt;h2 id=&quot;language-principles&quot;&gt;Language Principles&lt;&#x2F;h2&gt;
+&lt;p&gt;Before considering the techstack, I first should layout some guiding principles in a programming language choice.&lt;&#x2F;p&gt;
+&lt;h3 id=&quot;principle-1-i-prefer-open-source&quot;&gt;Principle 1. I prefer open source.&lt;&#x2F;h3&gt;
+&lt;p&gt;To be honest, I have a hard time even thinking of software that I could work in &lt;em&gt;that is not open source.&lt;&#x2F;em&gt; Though I had a short stint with the Microsoft proprietary .NET Framework, it was soon open-sourced as &lt;code&gt;dotnet&lt;&#x2F;code&gt;. There have been just a few times over the years that I have collaborated with teams that use proprietary software for their development, and I have cringed every time. The quality of both the software used and produced were subpar.&lt;&#x2F;p&gt;
+&lt;h3 id=&quot;principle-2-i-prefer-clarity-and-simplicity&quot;&gt;Principle 2. I prefer clarity and simplicity.&lt;&#x2F;h3&gt;
+&lt;p&gt;At face value, I think most people would assume that Python is the logical answer for a language that promotes clarity and simplicity. However, I would claim that the language should be evaluated on both its simplicity in reading and writing. I would agree that Python is easier to write (at least initially in project), but I have had nightmares reading Python including my own!&lt;&#x2F;p&gt;
+&lt;p&gt;To me, a statically typed language is the only way to promote clarity and simplicity. Dynamically typed language, such as Python, may support annotations, but they don&#x27;t provide the guarantees like a statically typed language.&lt;&#x2F;p&gt;
+&lt;h3 id=&quot;principle-3-i-prefer-linux-friendly-technologies&quot;&gt;Principle 3. I prefer Linux friendly technologies.&lt;&#x2F;h3&gt;
+&lt;p&gt;Windows is great, at least for a season, but I have run into problems setting up build servers—not to mention my own development system. I made the switch to Linux-&lt;em&gt;only&lt;&#x2F;em&gt; for development about 10 years ago, and I haven&#x27;t looked back.&lt;&#x2F;p&gt;
+&lt;h3 id=&quot;principle-4-i-prefer-rigorous-thinking&quot;&gt;Principle 4. I prefer rigorous thinking.&lt;&#x2F;h3&gt;
+&lt;p&gt;I got my programming start in my high school Math class programming my TI-83 back in the 90s. Later, I fostered my love for Mathematics and programming while working as a high school Math teacher in 2000s. I enjoyed proving things and starting from first principles, and I enjoyed teaching others how to prove things as well. When I became a software engineer, I sought out technology that reflected the Mathematical rigor I was accustomed to.&lt;&#x2F;p&gt;
+&lt;hr &#x2F;&gt;
+&lt;h2 id=&quot;final-language-considerations&quot;&gt;Final Language Considerations&lt;&#x2F;h2&gt;
+&lt;ul&gt;
+&lt;li&gt;JavaScript is ubiquitous, but it&#x27;s riddled with issues. (How is this even &lt;code&gt;true&lt;&#x2F;code&gt;? &lt;code&gt;false != !&quot;&quot;&lt;&#x2F;code&gt;)&lt;&#x2F;li&gt;
+&lt;li&gt;Haskell is great for its strictness, but it hasn&#x27;t seen the industry support like a myriad of other choices.&lt;&#x2F;li&gt;
+&lt;li&gt;Python is great for communicating basic ideas, but it cannot lead you to the strictness required by rigorous thinking.&lt;&#x2F;li&gt;
+&lt;li&gt;Other garbage collected languages may be great at static typing (e.g. C#, F#, and Java), however, they don&#x27;t force you to consider how a computer processes memory.&lt;&#x2F;li&gt;
+&lt;li&gt;Some languages require programming memory (e.g. C&#x2F;C++) but don&#x27;t guide you down the rigorous path. [You&#x27;re free to call &lt;code&gt;free&lt;&#x2F;code&gt; whenever (or not) you want to, after all.]&lt;&#x2F;li&gt;
+&lt;&#x2F;ul&gt;
+&lt;blockquote&gt;
+&lt;p&gt;The &lt;em&gt;only&lt;&#x2F;em&gt; logical answer for me is Rust.&lt;&#x2F;p&gt;
+&lt;&#x2F;blockquote&gt;
+&lt;ul&gt;
+&lt;li&gt;Rust has broad industry support. It&#x27;s now in the &lt;a rel=&quot;external&quot; href=&quot;https:&#x2F;&#x2F;docs.kernel.org&#x2F;rust&#x2F;index.html&quot;&gt;Linux kernel&lt;&#x2F;a&gt;, and even Windows has &lt;a rel=&quot;external&quot; href=&quot;https:&#x2F;&#x2F;techcommunity.microsoft.com&#x2F;blog&#x2F;windowsdriverdev&#x2F;towards-rust-in-windows-drivers&#x2F;4449718&quot;&gt;embraced it&lt;&#x2F;a&gt;.&lt;&#x2F;li&gt;
+&lt;li&gt;Rust foregoes the non-determinism of the garbage collector by introducing the idea of &lt;a rel=&quot;external&quot; href=&quot;https:&#x2F;&#x2F;doc.rust-lang.org&#x2F;book&#x2F;ch04-01-what-is-ownership.html&quot;&gt;Ownership and Borrowing&lt;&#x2F;a&gt; to manage memory.&lt;&#x2F;li&gt;
+&lt;li&gt;Rust&#x27;s rigor is its simplicity. Reading Rust means you don&#x27;t have to consider a whole host of issues.&lt;&#x2F;li&gt;
+&lt;&#x2F;ul&gt;
+&lt;hr &#x2F;&gt;
+&lt;h2 id=&quot;rust-techstack&quot;&gt;Rust Techstack&lt;&#x2F;h2&gt;
+&lt;p&gt;Great! Now that the language is settled, I can consider the techstack for Rust.&lt;&#x2F;p&gt;
+&lt;h3 id=&quot;1-web-api-rocket&quot;&gt;1. Web API: &lt;a rel=&quot;external&quot; href=&quot;https:&#x2F;&#x2F;rocket.rs&#x2F;&quot;&gt;Rocket&lt;&#x2F;a&gt;&lt;&#x2F;h3&gt;
+&lt;p&gt;I really like the simplicity of Rocket&#x27;s API. The macros are straightforward:&lt;&#x2F;p&gt;
+&lt;pre class=&quot;giallo&quot; style=&quot;color: #CDD6F4; background-color: #1E1E2E;&quot;&gt;&lt;code data-lang=&quot;rust&quot;&gt;&lt;span class=&quot;giallo-l&quot;&gt;&lt;span style=&quot;color: #9399B2;font-style: italic;&quot;&gt;&#x2F;&#x2F; See https:&#x2F;&#x2F;rocket.rs&#x2F;overview&#x2F;&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span style=&quot;color: #F9E2AF;font-style: italic;&quot;&gt;#&lt;&#x2F;span&gt;&lt;span style=&quot;color: #9399B2;&quot;&gt;[&lt;&#x2F;span&gt;&lt;span style=&quot;color: #F9E2AF;font-style: italic;&quot;&gt;post&lt;&#x2F;span&gt;&lt;span style=&quot;color: #9399B2;&quot;&gt;(&lt;&#x2F;span&gt;&lt;span style=&quot;color: #A6E3A1;&quot;&gt;&amp;quot;&#x2F;user&amp;quot;&lt;&#x2F;span&gt;&lt;span style=&quot;color: #9399B2;&quot;&gt;,&lt;&#x2F;span&gt;&lt;span style=&quot;color: #F9E2AF;font-style: italic;&quot;&gt; data &lt;&#x2F;span&gt;&lt;span style=&quot;color: #94E2D5;&quot;&gt;=&lt;&#x2F;span&gt;&lt;span style=&quot;color: #A6E3A1;&quot;&gt; &amp;quot;&amp;lt;new_user&amp;gt;&amp;quot;&lt;&#x2F;span&gt;&lt;span style=&quot;color: #9399B2;&quot;&gt;)]&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span style=&quot;color: #CBA6F7;&quot;&gt;fn&lt;&#x2F;span&gt;&lt;span style=&quot;color: #89B4FA;font-style: italic;&quot;&gt; new_user&lt;&#x2F;span&gt;&lt;span style=&quot;color: #9399B2;&quot;&gt;(&lt;&#x2F;span&gt;&lt;span style=&quot;color: #EBA0AC;&quot;&gt;admin&lt;&#x2F;span&gt;&lt;span style=&quot;color: #94E2D5;&quot;&gt;:&lt;&#x2F;span&gt;&lt;span style=&quot;color: #F9E2AF;font-style: italic;&quot;&gt; AdminUser&lt;&#x2F;span&gt;&lt;span style=&quot;color: #9399B2;&quot;&gt;,&lt;&#x2F;span&gt;&lt;span style=&quot;color: #EBA0AC;&quot;&gt; new_user&lt;&#x2F;span&gt;&lt;span style=&quot;color: #94E2D5;&quot;&gt;:&lt;&#x2F;span&gt;&lt;span style=&quot;color: #F9E2AF;font-style: italic;&quot;&gt; Form&lt;&#x2F;span&gt;&lt;span style=&quot;color: #89DCEB;&quot;&gt;&amp;lt;&lt;&#x2F;span&gt;&lt;span style=&quot;color: #F9E2AF;font-style: italic;&quot;&gt;User&lt;&#x2F;span&gt;&lt;span style=&quot;color: #89DCEB;&quot;&gt;&amp;gt;&lt;&#x2F;span&gt;&lt;span style=&quot;color: #9399B2;&quot;&gt;)&lt;&#x2F;span&gt;&lt;span style=&quot;color: #94E2D5;&quot;&gt; -&amp;gt;&lt;&#x2F;span&gt;&lt;span style=&quot;color: #F9E2AF;font-style: italic;&quot;&gt; T&lt;&#x2F;span&gt;&lt;span style=&quot;color: #9399B2;&quot;&gt; {&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span style=&quot;color: #94E2D5;&quot;&gt;    ...&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span style=&quot;color: #9399B2;&quot;&gt;}&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
+&lt;p&gt;You get type-safety out of the box.  See &lt;code&gt;admin: AdminUser&lt;&#x2F;code&gt; in the example above.&lt;&#x2F;p&gt;
+&lt;p&gt;Other Rust web frameworks fit the bill as well (&lt;a rel=&quot;external&quot; href=&quot;https:&#x2F;&#x2F;docs.rs&#x2F;axum&#x2F;latest&#x2F;axum&#x2F;&quot;&gt;Axum&lt;&#x2F;a&gt; and &lt;a rel=&quot;external&quot; href=&quot;https:&#x2F;&#x2F;actix.rs&#x2F;&quot;&gt;Actix&lt;&#x2F;a&gt;), so I think I&#x27;ll take them out for a spin this year.&lt;&#x2F;p&gt;
+&lt;h3 id=&quot;2-database-postgresql&quot;&gt;2. Database: PostgreSQL&lt;&#x2F;h3&gt;
+&lt;p&gt;PostgreSQL seems to be the one of the most well-supported, open-source databases available. It pairs nicely with the &lt;a rel=&quot;external&quot; href=&quot;https:&#x2F;&#x2F;docs.rs&#x2F;sqlx&#x2F;latest&#x2F;sqlx&#x2F;&quot;&gt;&lt;code&gt;sqlx&lt;&#x2F;code&gt; crate&lt;&#x2F;a&gt;. SQLx &lt;a rel=&quot;external&quot; href=&quot;https:&#x2F;&#x2F;github.com&#x2F;launchbadge&#x2F;sqlx?tab=readme-ov-file#compile-time-verification&quot;&gt;provides static typing&lt;&#x2F;a&gt; in Rust for SQL. I think it&#x27;s insane! It&#x27;s worth copying here because of its beauty:&lt;&#x2F;p&gt;
+&lt;pre class=&quot;giallo&quot; style=&quot;color: #CDD6F4; background-color: #1E1E2E;&quot;&gt;&lt;code data-lang=&quot;rust&quot;&gt;&lt;span class=&quot;giallo-l&quot;&gt;&lt;span style=&quot;color: #9399B2;font-style: italic;&quot;&gt;&#x2F;&#x2F; See https:&#x2F;&#x2F;github.com&#x2F;launchbadge&#x2F;sqlx?tab=readme-ov-file#compile-time-verification&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span style=&quot;color: #CBA6F7;&quot;&gt;struct&lt;&#x2F;span&gt;&lt;span style=&quot;color: #F9E2AF;font-style: italic;&quot;&gt; Country&lt;&#x2F;span&gt;&lt;span style=&quot;color: #9399B2;&quot;&gt; {&lt;&#x2F;span&gt;&lt;span&gt; country&lt;&#x2F;span&gt;&lt;span style=&quot;color: #94E2D5;&quot;&gt;:&lt;&#x2F;span&gt;&lt;span style=&quot;color: #F9E2AF;font-style: italic;&quot;&gt; String&lt;&#x2F;span&gt;&lt;span style=&quot;color: #9399B2;&quot;&gt;,&lt;&#x2F;span&gt;&lt;span&gt; count&lt;&#x2F;span&gt;&lt;span style=&quot;color: #94E2D5;&quot;&gt;:&lt;&#x2F;span&gt;&lt;span style=&quot;color: #CBA6F7;&quot;&gt; i64&lt;&#x2F;span&gt;&lt;span style=&quot;color: #9399B2;&quot;&gt; }&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span style=&quot;color: #CBA6F7;&quot;&gt;let&lt;&#x2F;span&gt;&lt;span&gt; countries&lt;&#x2F;span&gt;&lt;span style=&quot;color: #94E2D5;&quot;&gt; =&lt;&#x2F;span&gt;&lt;span style=&quot;color: #F9E2AF;&quot;&gt; sqlx&lt;&#x2F;span&gt;&lt;span style=&quot;color: #94E2D5;&quot;&gt;::&lt;&#x2F;span&gt;&lt;span style=&quot;color: #89B4FA;font-style: italic;&quot;&gt;query_as!&lt;&#x2F;span&gt;&lt;span style=&quot;color: #9399B2;&quot;&gt;(&lt;&#x2F;span&gt;&lt;span style=&quot;color: #F9E2AF;font-style: italic;&quot;&gt;Country&lt;&#x2F;span&gt;&lt;span style=&quot;color: #9399B2;&quot;&gt;,&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span style=&quot;color: #A6E3A1;&quot;&gt;        &amp;quot;&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span style=&quot;color: #A6E3A1;&quot;&gt;SELECT country, COUNT(*) as count&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span style=&quot;color: #A6E3A1;&quot;&gt;FROM users&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span style=&quot;color: #A6E3A1;&quot;&gt;GROUP BY country&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span style=&quot;color: #A6E3A1;&quot;&gt;WHERE organization = ?&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span style=&quot;color: #A6E3A1;&quot;&gt;        &amp;quot;&lt;&#x2F;span&gt;&lt;span style=&quot;color: #9399B2;&quot;&gt;,&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;        organization&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span style=&quot;color: #9399B2;&quot;&gt;    )&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span style=&quot;color: #94E2D5;&quot;&gt;    .&lt;&#x2F;span&gt;&lt;span style=&quot;color: #89B4FA;font-style: italic;&quot;&gt;fetch_all&lt;&#x2F;span&gt;&lt;span style=&quot;color: #9399B2;&quot;&gt;(&lt;&#x2F;span&gt;&lt;span style=&quot;color: #94E2D5;&quot;&gt;&amp;amp;&lt;&#x2F;span&gt;&lt;span&gt;pool&lt;&#x2F;span&gt;&lt;span style=&quot;color: #9399B2;&quot;&gt;)&lt;&#x2F;span&gt;&lt;span style=&quot;color: #9399B2;font-style: italic;&quot;&gt; &#x2F;&#x2F; -&amp;gt; Vec&amp;lt;Country&amp;gt;&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span style=&quot;color: #94E2D5;&quot;&gt;    .&lt;&#x2F;span&gt;&lt;span style=&quot;color: #CBA6F7;&quot;&gt;await&lt;&#x2F;span&gt;&lt;span style=&quot;color: #94E2D5;&quot;&gt;?&lt;&#x2F;span&gt;&lt;span style=&quot;color: #9399B2;&quot;&gt;;&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span style=&quot;color: #9399B2;font-style: italic;&quot;&gt;&#x2F;&#x2F; countries[0].country&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span style=&quot;color: #9399B2;font-style: italic;&quot;&gt;&#x2F;&#x2F; countries[0].count&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
+&lt;p&gt;I have dealt with the pain of ORMs and the looseness of SQL-as-strings over the years, and I find this capability &lt;strong&gt;THE&lt;&#x2F;strong&gt; reason to switch to Rust.&lt;&#x2F;p&gt;
+&lt;h3 id=&quot;3-browser-frontend-typescript-reactjs&quot;&gt;3. Browser Frontend: TypeScript &amp;amp; ReactJS&lt;&#x2F;h3&gt;
+&lt;p&gt;I know, I know, in my discourse above, it would seem clear that my language of choice in all things would be Rust. But, in my opinion, Web Assembly (WASM) has not come of age. I have dabbled with several of the WASM Rust frameworks (e.g. &lt;a rel=&quot;external&quot; href=&quot;https:&#x2F;&#x2F;yew.rs&#x2F;&quot;&gt;Yew&lt;&#x2F;a&gt; and &lt;a rel=&quot;external&quot; href=&quot;https:&#x2F;&#x2F;chinedufn.github.io&#x2F;percy&#x2F;&quot;&gt;Percy&lt;&#x2F;a&gt;), but none of them seems to have garnered the industry support I&#x27;d prefer. So, if I am to develop a web app in the browser, I will lean heavily on TypeScript to bring some of the rigor to JavaScript.&lt;&#x2F;p&gt;
+&lt;p&gt;I choose &lt;a rel=&quot;external&quot; href=&quot;https:&#x2F;&#x2F;react.dev&#x2F;&quot;&gt;ReactJS&lt;&#x2F;a&gt; for the web framework. I have worked with several other JS frameworks over the years, and I haven&#x27;t found any of them to be as simple as React.&lt;&#x2F;p&gt;
+&lt;h3 id=&quot;4-containers-docker-buildah-k3s&quot;&gt;4. Containers: Docker, Buildah, &amp;amp; K3S&lt;&#x2F;h3&gt;
+&lt;p&gt;Is there any choice to build containers besides Docker? Okay, just kidding.&lt;&#x2F;p&gt;
+&lt;ol&gt;
+&lt;li&gt;I use Docker for its awesome cli to develop container images, though I&#x27;m considering taking &lt;a rel=&quot;external&quot; href=&quot;https:&#x2F;&#x2F;podman.io&#x2F;&quot;&gt;Podman&lt;&#x2F;a&gt; out for a spin this year.&lt;&#x2F;li&gt;
+&lt;li&gt;I use &lt;a rel=&quot;external&quot; href=&quot;https:&#x2F;&#x2F;buildah.io&#x2F;&quot;&gt;Buildah&lt;&#x2F;a&gt; for building images in a CI primarily because it avoids the need for a daemon running as root.&lt;&#x2F;li&gt;
+&lt;li&gt;I use &lt;a rel=&quot;external&quot; href=&quot;https:&#x2F;&#x2F;cri-o.io&#x2F;&quot;&gt;CRI-O&lt;&#x2F;a&gt; in &lt;a rel=&quot;external&quot; href=&quot;https:&#x2F;&#x2F;k3s.io&#x2F;&quot;&gt;K3S&lt;&#x2F;a&gt; for Kubernetes. That was a mouthful! But, I like the simplicity of K3S as a ready-built Kubernetes platform, and you get CRI-O for free-&lt;em&gt;ish&lt;&#x2F;em&gt;.&lt;&#x2F;li&gt;
+&lt;&#x2F;ol&gt;
+&lt;h3 id=&quot;5-cli-frontend-clap&quot;&gt;5. CLI Frontend: Clap&lt;&#x2F;h3&gt;
+&lt;p&gt;&lt;a rel=&quot;external&quot; href=&quot;https:&#x2F;&#x2F;docs.rs&#x2F;clap&#x2F;latest&#x2F;clap&#x2F;&quot;&gt;Clap&lt;&#x2F;a&gt; seems to be obvious choice for developing CLIs in Rust. But, I think I&#x27;d like to level-up my game this year with &lt;a rel=&quot;external&quot; href=&quot;https:&#x2F;&#x2F;ratatui.rs&#x2F;&quot;&gt;RATATUI&lt;&#x2F;a&gt;. [Who says you can&#x27;t make a UI in a terminal?]&lt;&#x2F;p&gt;
+&lt;!-- 
+Design Your Personal Preferred Tech Stack
+Identify and describe your preferred tools, languages, and frameworks for building software projects. Justify your choices based on experience or curiosity. Turn this into a post and publish it on Substack, Medium, DEV.to, or similar.
+
+What to submit: A link to your published post and a short summary of one tool or language you plan to explore next.
+--&gt;</content>
+        
+    </entry>
     <entry xml:lang="en">
         <title>Agentic GitFlow</title>
         <published>2026-02-14T00:00:00+00:00</published>

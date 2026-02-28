@@ -46,6 +46,10 @@
         <lastmod>2026-02-14</lastmod>
     </url>
     <url>
+        <loc>https://devstopian.com/blog/2026-02-28-techstack/</loc>
+        <lastmod>2026-02-28</lastmod>
+    </url>
+    <url>
         <loc>https://devstopian.com/blog/page/1/</loc>
     </url>
     <url>
@@ -56,6 +60,9 @@
     </url>
     <url>
         <loc>https://devstopian.com/tags/bash/</loc>
+    </url>
+    <url>
+        <loc>https://devstopian.com/tags/dev/</loc>
     </url>
     <url>
         <loc>https://devstopian.com/tags/devops/</loc>

@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Tech Stack 2026 | Dev·stopian</title>
+    
+    
+    <meta name="description" content="My 2026 tech stack">
+    
+    
+    <meta name="keywords" content="Dev">
+    
+    
+    <link rel="canonical" href="https:&#x2F;&#x2F;devstopian.com&#x2F;blog&#x2F;2026-02-28-techstack&#x2F;" />
+    
+    <link rel="stylesheet" href="https://devstopian.com/style.css">
+    
+  </head>
+  <body class="theme-tokiostopian">
+    
+    <header>
+      <nav>
+        <a href="/">/home/</a>
+
+        
+        
+        
+        <a href="https:&#x2F;&#x2F;devstopian.com&#x2F;blog&#x2F;">&#x2F;blog&#x2F;</a>
+        
+
+        
+        
+        <a href="https:&#x2F;&#x2F;devstopian.com&#x2F;about&#x2F;">&#x2F;about&#x2F;</a>
+        
+      </nav>
+    </header>
+    <hr>
+    <main>
+      
+<section>
+  <h1>Tech Stack 2026</h1>
+  
+  <p>Originally Published: <time>2026-02-28</time></p>
+  
+  
+  <p class="tags">
+  Tags: [
+  
+  <a href="https://devstopian.com/tags/dev/">#Dev</a>
+  
+  ]
+    <hr />
+  </p>
+  
+  <div>
+    <p>Even with the depth and breadth of technology today, it's import to take stock of your preferred technologies. Here's my reflection of my go-to techstack. [Checkout my <a href="https://devstopian.com/about/">about page</a> to see my journey through technology of the years.]</p>
+<h2 id="language-principles">Language Principles</h2>
+<p>Before considering the techstack, I first should layout some guiding principles in a programming language choice.</p>
+<h3 id="principle-1-i-prefer-open-source">Principle 1. I prefer open source.</h3>
+<p>To be honest, I have a hard time even thinking of software that I could work in <em>that is not open source.</em> Though I had a short stint with the Microsoft proprietary .NET Framework, it was soon open-sourced as <code>dotnet</code>. There have been just a few times over the years that I have collaborated with teams that use proprietary software for their development, and I have cringed every time. The quality of both the software used and produced were subpar.</p>
+<h3 id="principle-2-i-prefer-clarity-and-simplicity">Principle 2. I prefer clarity and simplicity.</h3>
+<p>At face value, I think most people would assume that Python is the logical answer for a language that promotes clarity and simplicity. However, I would claim that the language should be evaluated on both its simplicity in reading and writing. I would agree that Python is easier to write (at least initially in project), but I have had nightmares reading Python including my own!</p>
+<p>To me, a statically typed language is the only way to promote clarity and simplicity. Dynamically typed language, such as Python, may support annotations, but they don't provide the guarantees like a statically typed language.</p>
+<h3 id="principle-3-i-prefer-linux-friendly-technologies">Principle 3. I prefer Linux friendly technologies.</h3>
+<p>Windows is great, at least for a season, but I have run into problems setting up build servers—not to mention my own development system. I made the switch to Linux-<em>only</em> for development about 10 years ago, and I haven't looked back.</p>
+<h3 id="principle-4-i-prefer-rigorous-thinking">Principle 4. I prefer rigorous thinking.</h3>
+<p>I got my programming start in my high school Math class programming my TI-83 back in the 90s. Later, I fostered my love for Mathematics and programming while working as a high school Math teacher in 2000s. I enjoyed proving things and starting from first principles, and I enjoyed teaching others how to prove things as well. When I became a software engineer, I sought out technology that reflected the Mathematical rigor I was accustomed to.</p>
+<hr />
+<h2 id="final-language-considerations">Final Language Considerations</h2>
+<ul>
+<li>JavaScript is ubiquitous, but it's riddled with issues. (How is this even <code>true</code>? <code>false != !""</code>)</li>
+<li>Haskell is great for its strictness, but it hasn't seen the industry support like a myriad of other choices.</li>
+<li>Python is great for communicating basic ideas, but it cannot lead you to the strictness required by rigorous thinking.</li>
+<li>Other garbage collected languages may be great at static typing (e.g. C#, F#, and Java), however, they don't force you to consider how a computer processes memory.</li>
+<li>Some languages require programming memory (e.g. C/C++) but don't guide you down the rigorous path. [You're free to call <code>free</code> whenever (or not) you want to, after all.]</li>
+</ul>
+<blockquote>
+<p>The <em>only</em> logical answer for me is Rust.</p>
+</blockquote>
+<ul>
+<li>Rust has broad industry support. It's now in the <a rel="external" href="https://docs.kernel.org/rust/index.html">Linux kernel</a>, and even Windows has <a rel="external" href="https://techcommunity.microsoft.com/blog/windowsdriverdev/towards-rust-in-windows-drivers/4449718">embraced it</a>.</li>
+<li>Rust foregoes the non-determinism of the garbage collector by introducing the idea of <a rel="external" href="https://doc.rust-lang.org/book/ch04-01-what-is-ownership.html">Ownership and Borrowing</a> to manage memory.</li>
+<li>Rust's rigor is its simplicity. Reading Rust means you don't have to consider a whole host of issues.</li>
+</ul>
+<hr />
+<h2 id="rust-techstack">Rust Techstack</h2>
+<p>Great! Now that the language is settled, I can consider the techstack for Rust.</p>
+<h3 id="1-web-api-rocket">1. Web API: <a rel="external" href="https://rocket.rs/">Rocket</a></h3>
+<p>I really like the simplicity of Rocket's API. The macros are straightforward:</p>
+<pre class="giallo" style="color: #CDD6F4; background-color: #1E1E2E;"><code data-lang="rust"><span class="giallo-l"><span style="color: #9399B2;font-style: italic;">// See https://rocket.rs/overview/</span></span>
+<span class="giallo-l"><span style="color: #F9E2AF;font-style: italic;">#</span><span style="color: #9399B2;">[</span><span style="color: #F9E2AF;font-style: italic;">post</span><span style="color: #9399B2;">(</span><span style="color: #A6E3A1;">&quot;/user&quot;</span><span style="color: #9399B2;">,</span><span style="color: #F9E2AF;font-style: italic;"> data </span><span style="color: #94E2D5;">=</span><span style="color: #A6E3A1;"> &quot;&lt;new_user&gt;&quot;</span><span style="color: #9399B2;">)]</span></span>
+<span class="giallo-l"><span style="color: #CBA6F7;">fn</span><span style="color: #89B4FA;font-style: italic;"> new_user</span><span style="color: #9399B2;">(</span><span style="color: #EBA0AC;">admin</span><span style="color: #94E2D5;">:</span><span style="color: #F9E2AF;font-style: italic;"> AdminUser</span><span style="color: #9399B2;">,</span><span style="color: #EBA0AC;"> new_user</span><span style="color: #94E2D5;">:</span><span style="color: #F9E2AF;font-style: italic;"> Form</span><span style="color: #89DCEB;">&lt;</span><span style="color: #F9E2AF;font-style: italic;">User</span><span style="color: #89DCEB;">&gt;</span><span style="color: #9399B2;">)</span><span style="color: #94E2D5;"> -&gt;</span><span style="color: #F9E2AF;font-style: italic;"> T</span><span style="color: #9399B2;"> {</span></span>
+<span class="giallo-l"><span style="color: #94E2D5;">    ...</span></span>
+<span class="giallo-l"><span style="color: #9399B2;">}</span></span></code></pre>
+<p>You get type-safety out of the box.  See <code>admin: AdminUser</code> in the example above.</p>
+<p>Other Rust web frameworks fit the bill as well (<a rel="external" href="https://docs.rs/axum/latest/axum/">Axum</a> and <a rel="external" href="https://actix.rs/">Actix</a>), so I think I'll take them out for a spin this year.</p>
+<h3 id="2-database-postgresql">2. Database: PostgreSQL</h3>
+<p>PostgreSQL seems to be the one of the most well-supported, open-source databases available. It pairs nicely with the <a rel="external" href="https://docs.rs/sqlx/latest/sqlx/"><code>sqlx</code> crate</a>. SQLx <a rel="external" href="https://github.com/launchbadge/sqlx?tab=readme-ov-file#compile-time-verification">provides static typing</a> in Rust for SQL. I think it's insane! It's worth copying here because of its beauty:</p>
+<pre class="giallo" style="color: #CDD6F4; background-color: #1E1E2E;"><code data-lang="rust"><span class="giallo-l"><span style="color: #9399B2;font-style: italic;">// See https://github.com/launchbadge/sqlx?tab=readme-ov-file#compile-time-verification</span></span>
+<span class="giallo-l"><span style="color: #CBA6F7;">struct</span><span style="color: #F9E2AF;font-style: italic;"> Country</span><span style="color: #9399B2;"> {</span><span> country</span><span style="color: #94E2D5;">:</span><span style="color: #F9E2AF;font-style: italic;"> String</span><span style="color: #9399B2;">,</span><span> count</span><span style="color: #94E2D5;">:</span><span style="color: #CBA6F7;"> i64</span><span style="color: #9399B2;"> }</span></span>
+<span class="giallo-l"></span>
+<span class="giallo-l"><span style="color: #CBA6F7;">let</span><span> countries</span><span style="color: #94E2D5;"> =</span><span style="color: #F9E2AF;"> sqlx</span><span style="color: #94E2D5;">::</span><span style="color: #89B4FA;font-style: italic;">query_as!</span><span style="color: #9399B2;">(</span><span style="color: #F9E2AF;font-style: italic;">Country</span><span style="color: #9399B2;">,</span></span>
+<span class="giallo-l"><span style="color: #A6E3A1;">        &quot;</span></span>
+<span class="giallo-l"><span style="color: #A6E3A1;">SELECT country, COUNT(*) as count</span></span>
+<span class="giallo-l"><span style="color: #A6E3A1;">FROM users</span></span>
+<span class="giallo-l"><span style="color: #A6E3A1;">GROUP BY country</span></span>
+<span class="giallo-l"><span style="color: #A6E3A1;">WHERE organization = ?</span></span>
+<span class="giallo-l"><span style="color: #A6E3A1;">        &quot;</span><span style="color: #9399B2;">,</span></span>
+<span class="giallo-l"><span>        organization</span></span>
+<span class="giallo-l"><span style="color: #9399B2;">    )</span></span>
+<span class="giallo-l"><span style="color: #94E2D5;">    .</span><span style="color: #89B4FA;font-style: italic;">fetch_all</span><span style="color: #9399B2;">(</span><span style="color: #94E2D5;">&amp;</span><span>pool</span><span style="color: #9399B2;">)</span><span style="color: #9399B2;font-style: italic;"> // -&gt; Vec&lt;Country&gt;</span></span>
+<span class="giallo-l"><span style="color: #94E2D5;">    .</span><span style="color: #CBA6F7;">await</span><span style="color: #94E2D5;">?</span><span style="color: #9399B2;">;</span></span>
+<span class="giallo-l"></span>
+<span class="giallo-l"><span style="color: #9399B2;font-style: italic;">// countries[0].country</span></span>
+<span class="giallo-l"><span style="color: #9399B2;font-style: italic;">// countries[0].count</span></span></code></pre>
+<p>I have dealt with the pain of ORMs and the looseness of SQL-as-strings over the years, and I find this capability <strong>THE</strong> reason to switch to Rust.</p>
+<h3 id="3-browser-frontend-typescript-reactjs">3. Browser Frontend: TypeScript &amp; ReactJS</h3>
+<p>I know, I know, in my discourse above, it would seem clear that my language of choice in all things would be Rust. But, in my opinion, Web Assembly (WASM) has not come of age. I have dabbled with several of the WASM Rust frameworks (e.g. <a rel="external" href="https://yew.rs/">Yew</a> and <a rel="external" href="https://chinedufn.github.io/percy/">Percy</a>), but none of them seems to have garnered the industry support I'd prefer. So, if I am to develop a web app in the browser, I will lean heavily on TypeScript to bring some of the rigor to JavaScript.</p>
+<p>I choose <a rel="external" href="https://react.dev/">ReactJS</a> for the web framework. I have worked with several other JS frameworks over the years, and I haven't found any of them to be as simple as React.</p>
+<h3 id="4-containers-docker-buildah-k3s">4. Containers: Docker, Buildah, &amp; K3S</h3>
+<p>Is there any choice to build containers besides Docker? Okay, just kidding.</p>
+<ol>
+<li>I use Docker for its awesome cli to develop container images, though I'm considering taking <a rel="external" href="https://podman.io/">Podman</a> out for a spin this year.</li>
+<li>I use <a rel="external" href="https://buildah.io/">Buildah</a> for building images in a CI primarily because it avoids the need for a daemon running as root.</li>
+<li>I use <a rel="external" href="https://cri-o.io/">CRI-O</a> in <a rel="external" href="https://k3s.io/">K3S</a> for Kubernetes. That was a mouthful! But, I like the simplicity of K3S as a ready-built Kubernetes platform, and you get CRI-O for free-<em>ish</em>.</li>
+</ol>
+<h3 id="5-cli-frontend-clap">5. CLI Frontend: Clap</h3>
+<p><a rel="external" href="https://docs.rs/clap/latest/clap/">Clap</a> seems to be obvious choice for developing CLIs in Rust. But, I think I'd like to level-up my game this year with <a rel="external" href="https://ratatui.rs/">RATATUI</a>. [Who says you can't make a UI in a terminal?]</p>
+<!-- 
+Design Your Personal Preferred Tech Stack
+Identify and describe your preferred tools, languages, and frameworks for building software projects. Justify your choices based on experience or curiosity. Turn this into a post and publish it on Substack, Medium, DEV.to, or similar.
+
+What to submit: A link to your published post and a short summary of one tool or language you plan to explore next.
+-->
+  </div>
+</section>
+
+    </main>
+    <hr>
+    <footer>
+      <!-- <p>Powered by <a href="https://www.getzola.org/">Zola</a> and inspired by the <a href="https://github.com/mxaddict/zolanight">ZolaNight Theme</a></p>
+       -->
+    </footer>
+  </body>
+</html>
