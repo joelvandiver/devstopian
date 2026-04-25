@@ -1,0 +1,17 @@
+{
+  "name": "polaris-core",
+  "type": "module",
+  "description": "Core geometry engine for Polaris – a Rust WASM artistic vector graphics app",
+  "version": "0.1.0",
+  "license": "MIT",
+  "files": [
+    "polaris_core_bg.wasm",
+    "polaris_core.js",
+    "polaris_core.d.ts"
+  ],
+  "main": "polaris_core.js",
+  "types": "polaris_core.d.ts",
+  "sideEffects": [
+    "./snippets/*"
+  ]
+}
