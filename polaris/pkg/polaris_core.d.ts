@@ -51,6 +51,18 @@ export class Color {
     r: number;
 }
 
+export class Editor {
+    free(): void;
+    [Symbol.dispose](): void;
+    clear(): string;
+    click(x: number, y: number, style: Style): string;
+    load_demo_scene(): string;
+    constructor(width: number, height: number);
+    resize_viewport(width: number, height: number): void;
+    set_tool(tool: string): string;
+    to_json(): string;
+}
+
 /**
  * An infinite line passing through two distinct points.
  */
@@ -149,6 +161,10 @@ export class Scene {
      */
     constructor(width: number, height: number);
     /**
+     * Update the viewport dimensions used by the renderer.
+     */
+    resize_viewport(width: number, height: number): void;
+    /**
      * Serialize the scene to a JSON string so the JavaScript renderer can
      * consume it without needing direct access to the Rust structs.
      */
@@ -232,6 +248,7 @@ export interface InitOutput {
     readonly scene_is_empty: (a: number) => number;
     readonly scene_len: (a: number) => number;
     readonly scene_new: (a: number, b: number) => number;
+    readonly scene_resize_viewport: (a: number, b: number, c: number) => void;
     readonly scene_to_json: (a: number) => [number, number, number, number];
     readonly scene_width: (a: number) => number;
     readonly style_default_style: () => number;
@@ -239,17 +256,36 @@ export interface InitOutput {
     readonly __wbg_circle_free: (a: number, b: number) => void;
     readonly __wbg_get_circle_center: (a: number) => number;
     readonly __wbg_get_circle_radius: (a: number) => number;
-    readonly __wbg_get_line_p2: (a: number) => number;
-    readonly __wbg_line_free: (a: number, b: number) => void;
-    readonly __wbg_segment_free: (a: number, b: number) => void;
+    readonly __wbg_get_point_x: (a: number) => number;
+    readonly __wbg_get_point_y: (a: number) => number;
+    readonly __wbg_point_free: (a: number, b: number) => void;
     readonly __wbg_set_circle_center: (a: number, b: number) => void;
     readonly __wbg_set_circle_radius: (a: number, b: number) => void;
-    readonly __wbg_set_line_p2: (a: number, b: number) => void;
+    readonly __wbg_set_point_x: (a: number, b: number) => void;
+    readonly __wbg_set_point_y: (a: number, b: number) => void;
     readonly circle_area: (a: number) => number;
     readonly circle_circumference: (a: number) => number;
     readonly circle_contains: (a: number, b: number) => number;
     readonly circle_intersects: (a: number, b: number) => number;
     readonly circle_new: (a: number, b: number) => number;
+    readonly point_distance_to: (a: number, b: number) => number;
+    readonly point_midpoint: (a: number, b: number) => number;
+    readonly point_new: (a: number, b: number) => number;
+    readonly point_translate: (a: number, b: number, c: number) => number;
+    readonly __wbg_editor_free: (a: number, b: number) => void;
+    readonly editor_clear: (a: number) => [number, number];
+    readonly editor_click: (a: number, b: number, c: number, d: number) => [number, number];
+    readonly editor_load_demo_scene: (a: number) => [number, number];
+    readonly editor_new: (a: number, b: number) => number;
+    readonly editor_resize_viewport: (a: number, b: number, c: number) => void;
+    readonly editor_set_tool: (a: number, b: number, c: number) => [number, number, number, number];
+    readonly editor_to_json: (a: number) => [number, number, number, number];
+    readonly __wbg_get_line_p1: (a: number) => number;
+    readonly __wbg_get_line_p2: (a: number) => number;
+    readonly __wbg_line_free: (a: number, b: number) => void;
+    readonly __wbg_segment_free: (a: number, b: number) => void;
+    readonly __wbg_set_line_p1: (a: number, b: number) => void;
+    readonly __wbg_set_line_p2: (a: number, b: number) => void;
     readonly line_distance_to_point: (a: number, b: number) => number;
     readonly line_length: (a: number) => number;
     readonly line_new: (a: number, b: number) => number;
@@ -257,23 +293,14 @@ export interface InitOutput {
     readonly segment_length: (a: number) => number;
     readonly segment_midpoint: (a: number) => number;
     readonly segment_new: (a: number, b: number) => number;
-    readonly __wbg_set_line_p1: (a: number, b: number) => void;
     readonly __wbg_set_segment_end: (a: number, b: number) => void;
     readonly __wbg_set_segment_start: (a: number, b: number) => void;
-    readonly __wbg_get_line_p1: (a: number) => number;
     readonly __wbg_get_segment_end: (a: number) => number;
     readonly __wbg_get_segment_start: (a: number) => number;
-    readonly __wbg_get_point_x: (a: number) => number;
-    readonly __wbg_get_point_y: (a: number) => number;
-    readonly __wbg_point_free: (a: number, b: number) => void;
-    readonly __wbg_set_point_x: (a: number, b: number) => void;
-    readonly __wbg_set_point_y: (a: number, b: number) => void;
-    readonly point_distance_to: (a: number, b: number) => number;
-    readonly point_midpoint: (a: number, b: number) => number;
-    readonly point_new: (a: number, b: number) => number;
-    readonly point_translate: (a: number, b: number, c: number) => number;
     readonly __wbindgen_externrefs: WebAssembly.Table;
     readonly __wbindgen_free: (a: number, b: number, c: number) => void;
+    readonly __wbindgen_malloc: (a: number, b: number) => number;
+    readonly __wbindgen_realloc: (a: number, b: number, c: number, d: number) => number;
     readonly __externref_table_dealloc: (a: number) => void;
     readonly __wbindgen_start: () => void;
 }

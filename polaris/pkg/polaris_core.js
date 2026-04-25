@@ -199,6 +199,132 @@ export class Color {
 }
 if (Symbol.dispose) Color.prototype[Symbol.dispose] = Color.prototype.free;
 
+export class Editor {
+    __destroy_into_raw() {
+        const ptr = this.__wbg_ptr;
+        this.__wbg_ptr = 0;
+        EditorFinalization.unregister(this);
+        return ptr;
+    }
+    free() {
+        const ptr = this.__destroy_into_raw();
+        wasm.__wbg_editor_free(ptr, 0);
+    }
+    /**
+     * @returns {string}
+     */
+    clear() {
+        let deferred1_0;
+        let deferred1_1;
+        try {
+            const ret = wasm.editor_clear(this.__wbg_ptr);
+            deferred1_0 = ret[0];
+            deferred1_1 = ret[1];
+            return getStringFromWasm0(ret[0], ret[1]);
+        } finally {
+            wasm.__wbindgen_free(deferred1_0, deferred1_1, 1);
+        }
+    }
+    /**
+     * @param {number} x
+     * @param {number} y
+     * @param {Style} style
+     * @returns {string}
+     */
+    click(x, y, style) {
+        let deferred2_0;
+        let deferred2_1;
+        try {
+            _assertClass(style, Style);
+            var ptr0 = style.__destroy_into_raw();
+            const ret = wasm.editor_click(this.__wbg_ptr, x, y, ptr0);
+            deferred2_0 = ret[0];
+            deferred2_1 = ret[1];
+            return getStringFromWasm0(ret[0], ret[1]);
+        } finally {
+            wasm.__wbindgen_free(deferred2_0, deferred2_1, 1);
+        }
+    }
+    /**
+     * @returns {string}
+     */
+    load_demo_scene() {
+        let deferred1_0;
+        let deferred1_1;
+        try {
+            const ret = wasm.editor_load_demo_scene(this.__wbg_ptr);
+            deferred1_0 = ret[0];
+            deferred1_1 = ret[1];
+            return getStringFromWasm0(ret[0], ret[1]);
+        } finally {
+            wasm.__wbindgen_free(deferred1_0, deferred1_1, 1);
+        }
+    }
+    /**
+     * @param {number} width
+     * @param {number} height
+     */
+    constructor(width, height) {
+        const ret = wasm.editor_new(width, height);
+        this.__wbg_ptr = ret >>> 0;
+        EditorFinalization.register(this, this.__wbg_ptr, this);
+        return this;
+    }
+    /**
+     * @param {number} width
+     * @param {number} height
+     */
+    resize_viewport(width, height) {
+        wasm.editor_resize_viewport(this.__wbg_ptr, width, height);
+    }
+    /**
+     * @param {string} tool
+     * @returns {string}
+     */
+    set_tool(tool) {
+        let deferred3_0;
+        let deferred3_1;
+        try {
+            const ptr0 = passStringToWasm0(tool, wasm.__wbindgen_malloc, wasm.__wbindgen_realloc);
+            const len0 = WASM_VECTOR_LEN;
+            const ret = wasm.editor_set_tool(this.__wbg_ptr, ptr0, len0);
+            var ptr2 = ret[0];
+            var len2 = ret[1];
+            if (ret[3]) {
+                ptr2 = 0; len2 = 0;
+                throw takeFromExternrefTable0(ret[2]);
+            }
+            deferred3_0 = ptr2;
+            deferred3_1 = len2;
+            return getStringFromWasm0(ptr2, len2);
+        } finally {
+            wasm.__wbindgen_free(deferred3_0, deferred3_1, 1);
+        }
+    }
+    /**
+     * @returns {string}
+     */
+    to_json() {
+        let deferred2_0;
+        let deferred2_1;
+        try {
+            const ret = wasm.editor_to_json(this.__wbg_ptr);
+            var ptr1 = ret[0];
+            var len1 = ret[1];
+            if (ret[3]) {
+                ptr1 = 0; len1 = 0;
+                throw takeFromExternrefTable0(ret[2]);
+            }
+            deferred2_0 = ptr1;
+            deferred2_1 = len1;
+            return getStringFromWasm0(ptr1, len1);
+        } finally {
+            wasm.__wbindgen_free(deferred2_0, deferred2_1, 1);
+        }
+    }
+}
+if (Symbol.dispose) Editor.prototype[Symbol.dispose] = Editor.prototype.free;
+
 /**
  * An infinite line passing through two distinct points.
  */
@@ -486,6 +612,14 @@ export class Scene {
         return this;
     }
     /**
+     * Update the viewport dimensions used by the renderer.
+     * @param {number} width
+     * @param {number} height
+     */
+    resize_viewport(width, height) {
+        wasm.scene_resize_viewport(this.__wbg_ptr, width, height);
+    }
+    /**
      * Serialize the scene to a JSON string so the JavaScript renderer can
      * consume it without needing direct access to the Rust structs.
      * @returns {string}
@@ -720,6 +854,9 @@ const CircleFinalization = (typeof FinalizationRegistry === 'undefined')
 const ColorFinalization = (typeof FinalizationRegistry === 'undefined')
     ? { register: () => {}, unregister: () => {} }
     : new FinalizationRegistry(ptr => wasm.__wbg_color_free(ptr >>> 0, 1));
+const EditorFinalization = (typeof FinalizationRegistry === 'undefined')
+    ? { register: () => {}, unregister: () => {} }
+    : new FinalizationRegistry(ptr => wasm.__wbg_editor_free(ptr >>> 0, 1));
 const LineFinalization = (typeof FinalizationRegistry === 'undefined')
     ? { register: () => {}, unregister: () => {} }
     : new FinalizationRegistry(ptr => wasm.__wbg_line_free(ptr >>> 0, 1));
@@ -755,6 +892,43 @@ function getUint8ArrayMemory0() {
     return cachedUint8ArrayMemory0;
 }
 
+function passStringToWasm0(arg, malloc, realloc) {
+    if (realloc === undefined) {
+        const buf = cachedTextEncoder.encode(arg);
+        const ptr = malloc(buf.length, 1) >>> 0;
+        getUint8ArrayMemory0().subarray(ptr, ptr + buf.length).set(buf);
+        WASM_VECTOR_LEN = buf.length;
+        return ptr;
+    }
+
+    let len = arg.length;
+    let ptr = malloc(len, 1) >>> 0;
+
+    const mem = getUint8ArrayMemory0();
+
+    let offset = 0;
+
+    for (; offset < len; offset++) {
+        const code = arg.charCodeAt(offset);
+        if (code > 0x7F) break;
+        mem[ptr + offset] = code;
+    }
+    if (offset !== len) {
+        if (offset !== 0) {
+            arg = arg.slice(offset);
+        }
+        ptr = realloc(ptr, len, len = offset + arg.length * 3, 1) >>> 0;
+        const view = getUint8ArrayMemory0().subarray(ptr + offset, ptr + len);
+        const ret = cachedTextEncoder.encodeInto(arg, view);
+
+        offset += ret.written;
+        ptr = realloc(ptr, len, offset, 1) >>> 0;
+    }
+
+    WASM_VECTOR_LEN = offset;
+    return ptr;
+}
+
 function takeFromExternrefTable0(idx) {
     const value = wasm.__wbindgen_externrefs.get(idx);
     wasm.__externref_table_dealloc(idx);
@@ -774,6 +948,21 @@ function decodeText(ptr, len) {
     }
     return cachedTextDecoder.decode(getUint8ArrayMemory0().subarray(ptr, ptr + len));
 }
+
+const cachedTextEncoder = new TextEncoder();
+
+if (!('encodeInto' in cachedTextEncoder)) {
+    cachedTextEncoder.encodeInto = function (arg, view) {
+        const buf = cachedTextEncoder.encode(arg);
+        view.set(buf);
+        return {
+            read: arg.length,
+            written: buf.length
+        };
+    };
+}
+
+let WASM_VECTOR_LEN = 0;
 
 let wasmModule, wasm;
 function __wbg_finalize_init(instance, module) {
