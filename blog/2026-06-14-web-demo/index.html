@@ -75,7 +75,7 @@
 </tbody></table>
 <p>The scenarios could be extended to any arbitrary dataset to meet customer needs and edge cases to test. Some of the scenarios require backend compute, such as simulating slow traffic to verify loading spinners to optimize the user experience. The scenarios are an incredibly powerful way to build frontends. They allow the frontend developer to build their solution without the availability of the rest of the stack. The development team can still collaborate on the interface, specification, and requirements.</p>
 <h2 id="solution-2-2026">Solution 2 (2026)</h2>
-<p>I learned of the Mock Service Worker (MSW) [https://mswjs.io/] through the <a rel="external" href="https://oxide-and-friends.transistor.fm/episodes/the-frontend-of-the-computer">The Frontend of the Computer episode of Oxide and Friends</a>. Since I was already using NodeJS to provide a middleware to parse the scenario and provider handlers, it was relatively straightforward to leverage the MSW in the browser.</p>
+<p>I learned of the Mock Service Worker <a rel="external" href="https://mswjs.io/">MSW</a> through the <a rel="external" href="https://oxide-and-friends.transistor.fm/episodes/the-frontend-of-the-computer">The Frontend of the Computer episode of Oxide and Friends</a>. Since I was already using NodeJS to provide a middleware to parse the scenario and provider handlers, it was relatively straightforward to leverage the MSW in the browser.</p>
 <p>The primary change was moving the <code>scenario_slug</code> into local storage.</p>
 <p>Using MSW has improved frontend development in multiple ways:</p>
 <ol>
