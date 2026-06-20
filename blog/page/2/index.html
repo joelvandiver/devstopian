@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-theme="dark">
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -10,94 +10,123 @@
     
     <link rel="canonical" href="https:&#x2F;&#x2F;devstopian.com&#x2F;blog&#x2F;" />
     
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Spectral:ital,wght@0,300;0,400;0,500;0,600;1,400;1,500&family=JetBrains+Mono:wght@400;500;700&display=swap">
     <link rel="stylesheet" href="https://devstopian.com/style.css">
     
   </head>
-  <body class="theme-tokiostopian">
+  <body>
     
-    <header>
-      <nav>
-        <a href="/">/home/</a>
-
+    
+    <header class="site-header">
+      <a class="brand" href="/" aria-label="Dev·stopian home">
+        <img src="/assets/logo-mark.svg" width="34" height="34" alt="">
+        <span class="wordmark">Dev<span class="dot">·</span>stopian</span>
+      </a>
+      <nav class="site-nav">
+        <a class="nav-link" href="/">home</a>
         
         
         
-        <a href="https:&#x2F;&#x2F;devstopian.com&#x2F;blog&#x2F;">&#x2F;blog&#x2F;</a>
-        
-
+        <a class="nav-link is-active" href="https:&#x2F;&#x2F;devstopian.com&#x2F;blog&#x2F;">blog</a>
         
         
-        <a href="https:&#x2F;&#x2F;devstopian.com&#x2F;about&#x2F;">&#x2F;about&#x2F;</a>
+        
+        
+        <a class="nav-link" href="https:&#x2F;&#x2F;devstopian.com&#x2F;about&#x2F;">about</a>
         
       </nav>
     </header>
-    <hr>
-    <main>
-      
-<h1>Blog</h1>
-<div>
-  <p><a href="/tags/">#tags</a></p>
 
+    <main class="site-main">
+      
+<div class="wrap section-head">
+    <h1>Blog</h1>
+    
+    <div class="section-intro"><p><a href="/tags/">#tags</a></p>
 </div>
-<ul class="blog">
-  
-  <li>
-    <article>
-      <h2><a href="https:&#x2F;&#x2F;devstopian.com&#x2F;blog&#x2F;2019-07-13-immutability&#x2F;">Power of Immutability</a></h2>
-      
-      <p>Originally Published: <time datetime="2019-07-13">2019-07-13</time></p>
-      
-      
-      <p class="tags">
-      Tags: [
-      
-      <a href="https://devstopian.com/tags/rust/">#Rust</a>
-      
-      ]
-      
-      
-      <p>Immutability reduces possibilities.</p>
-      
-    </article>
-</li>
+    
 
-  <li>
-    <article>
-      <h2><a href="https:&#x2F;&#x2F;devstopian.com&#x2F;blog&#x2F;2019-04-06-test-gen&#x2F;">Test Gen</a></h2>
-      
-      <p>Originally Published: <time datetime="2019-04-06">2019-04-06</time></p>
-      
-      
-      <p class="tags">
-      Tags: [
-      
-      <a href="https://devstopian.com/tags/testing/">#Testing</a>, 
-      
-      <a href="https://devstopian.com/tags/rust/">#Rust</a>
-      
-      ]
-      
-      
-      <p>Decouple the your test from source.</p>
-      
-    </article>
-</li>
+    <ul class="blog-grid">
+        
+        <li>
+            <a
+                class="card card--interactive post-card"
+                href="https:&#x2F;&#x2F;devstopian.com&#x2F;blog&#x2F;2019-07-13-immutability&#x2F;"
+            >
+                <div class="post-card__meta">
+                    <span
+                        >2019-07-13</span
+                    >
+                </div>
+                <h2>Power of Immutability</h2>
+                
+                <p class="post-card__excerpt">Immutability reduces possibilities.</p>
+                 
+                <div class="post-card__tags">
+                    <span
+                        class="tag tag--sm"
+                        ><span class="hash">#</span>Rust</span
+                    >
+                </div>
+                
+            </a>
+        </li>
+        
+        <li>
+            <a
+                class="card card--interactive post-card"
+                href="https:&#x2F;&#x2F;devstopian.com&#x2F;blog&#x2F;2019-04-06-test-gen&#x2F;"
+            >
+                <div class="post-card__meta">
+                    <span
+                        >2019-04-06</span
+                    >
+                </div>
+                <h2>Test Gen</h2>
+                
+                <p class="post-card__excerpt">Decouple the your test from source.</p>
+                 
+                <div class="post-card__tags">
+                    <span
+                        class="tag tag--sm"
+                        ><span class="hash">#</span>Testing</span
+                    ><span
+                        class="tag tag--sm"
+                        ><span class="hash">#</span>Rust</span
+                    >
+                </div>
+                
+            </a>
+        </li>
+        
+    </ul>
 
-</ul>
-
-<nav>
-  
-  <a href="https:&#x2F;&#x2F;devstopian.com&#x2F;blog&#x2F;">&lt; Prev</a>
-  
-  <span>Page 2 of 2</span>
-  
-</nav>
+    
+    <nav class="pager">
+        <a href="https:&#x2F;&#x2F;devstopian.com&#x2F;blog&#x2F;"
+            >&larr; Prev</a
+        >
+        <span
+            >Page 2 of 2</span
+        >
+        
+    </nav>
+    
+</div>
 
     </main>
-    <hr>
-    <footer>
-      <!-- <p>Powered by <a href="https://www.getzola.org/">Zola</a> and inspired by the <a href="https://github.com/mxaddict/zolanight">ZolaNight Theme</a></p>
-       -->
+
+    <footer class="site-footer">
+      <div class="footer-brand">
+        <img src="/assets/logo-mark.svg" width="22" height="22" alt="">
+        <span>© 2026 Joel Vandiver · the future for devs in the age of AI</span>
+      </div>
+      <div class="footer-links">
+        <a href="https://www.linkedin.com/in/joelvandiver/" target="_blank" rel="noreferrer">LinkedIn</a>
+        <a href="https://github.com/joelvandiver" target="_blank" rel="noreferrer">GitHub</a>
+      </div>
     </footer>
   </body>
 </html>

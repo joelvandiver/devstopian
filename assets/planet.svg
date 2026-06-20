@@ -1,0 +1,18 @@
+<svg width="360" height="300" viewBox="0 0 360 300" fill="none" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Ringed planet illustration">
+  <defs>
+    <clipPath id="globe"><circle cx="180" cy="150" r="74"></circle></clipPath>
+  </defs>
+  <ellipse cx="180" cy="150" rx="158" ry="40" stroke="#5566aa" stroke-width="2" fill="none" opacity="0.5" transform="rotate(-18 180 150)"></ellipse>
+  <circle cx="180" cy="150" r="74" fill="#13182a"></circle>
+  <circle cx="180" cy="150" r="74" stroke="#38d9e0" stroke-width="1.5" opacity="0.8"></circle>
+  <g clip-path="url(#globe)" stroke-width="6" fill="none" opacity="0.7">
+    <path d="M100 120 q80 -16 160 0" stroke="#2a3147"></path>
+    <path d="M96 150 q84 18 168 0" stroke="#38d9e0" opacity="0.25"></path>
+    <path d="M104 182 q76 -14 152 0" stroke="#2a3147"></path>
+    <ellipse cx="150" cy="138" rx="14" ry="9" stroke="#f2a73a" opacity="0.5" stroke-width="3"></ellipse>
+  </g>
+  <path d="M180 76 a74 74 0 0 1 0 148 a52 74 0 0 0 0 -148" fill="#0c0f1a" opacity="0.45" clip-path="url(#globe)"></path>
+  <path d="M22 165 A158 40 0 0 0 338 135" stroke="#f2a73a" stroke-width="2.5" fill="none" transform="rotate(-18 180 150)"></path>
+  <circle cx="312" cy="70" r="8" fill="#cdd2de"></circle>
+  <circle cx="312" cy="70" r="13" stroke="#cdd2de" stroke-width="1" opacity="0.3"></circle>
+</svg>

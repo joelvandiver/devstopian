@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-theme="dark">
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -14,50 +14,58 @@
     
     <link rel="canonical" href="https:&#x2F;&#x2F;devstopian.com&#x2F;blog&#x2F;2023-12-10-run-script&#x2F;" />
     
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Spectral:ital,wght@0,300;0,400;0,500;0,600;1,400;1,500&family=JetBrains+Mono:wght@400;500;700&display=swap">
     <link rel="stylesheet" href="https://devstopian.com/style.css">
     
   </head>
-  <body class="theme-tokiostopian">
+  <body>
     
-    <header>
-      <nav>
-        <a href="/">/home/</a>
-
+    
+    <header class="site-header">
+      <a class="brand" href="/" aria-label="Dev·stopian home">
+        <img src="/assets/logo-mark.svg" width="34" height="34" alt="">
+        <span class="wordmark">Dev<span class="dot">·</span>stopian</span>
+      </a>
+      <nav class="site-nav">
+        <a class="nav-link" href="/">home</a>
         
         
         
-        <a href="https:&#x2F;&#x2F;devstopian.com&#x2F;blog&#x2F;">&#x2F;blog&#x2F;</a>
-        
-
+        <a class="nav-link is-active" href="https:&#x2F;&#x2F;devstopian.com&#x2F;blog&#x2F;">blog</a>
         
         
-        <a href="https:&#x2F;&#x2F;devstopian.com&#x2F;about&#x2F;">&#x2F;about&#x2F;</a>
+        
+        
+        <a class="nav-link" href="https:&#x2F;&#x2F;devstopian.com&#x2F;about&#x2F;">about</a>
         
       </nav>
     </header>
-    <hr>
-    <main>
+
+    <main class="site-main">
       
-<section>
-  <h1>Run Script</h1>
-  
-  <p>Originally Published: <time>2023-12-10</time></p>
-  
-  
-  <p class="tags">
-  Tags: [
-  
-  <a href="https://devstopian.com/tags/dx/">#DX</a>, 
-  
-  <a href="https://devstopian.com/tags/devops/">#DevOps</a>, 
-  
-  <a href="https://devstopian.com/tags/bash/">#Bash</a>
-  
-  ]
-    <hr />
-  </p>
-  
-  <div>
+<article class="wrap prose">
+  <header class="post-head">
+    
+    <div class="eyebrow">// originally published · 2023-12-10</div>
+    
+    <h1>Run Script</h1>
+    
+    <div class="post-meta">
+      
+      <a class="tag tag--sm" href="https://devstopian.com/tags/dx/"><span class="hash">#</span>DX</a>
+      
+      <a class="tag tag--sm" href="https://devstopian.com/tags/devops/"><span class="hash">#</span>DevOps</a>
+      
+      <a class="tag tag--sm" href="https://devstopian.com/tags/bash/"><span class="hash">#</span>Bash</a>
+      
+    </div>
+    
+    <hr>
+  </header>
+
+  <div class="post-body">
     <h2 id="why-run">Why <code>run</code>?</h2>
 <p>The <code>run</code> script was inspired by the <code>npm run</code> scripts.  I found the <code>npm</code> development flow transformative in how I think about organizing the automation my code repositories. Moving your development flow to a <code>run</code> script allows you to consolidate your scripts that you likely have scattered through your repo. Examples may include:</p>
 <ol>
@@ -245,13 +253,19 @@
 <p>My original post from 2023-12-10 had a run script example from my blob build at time using the <a rel="external" href="https://squidfunk.github.io/mkdocs-material/">Material for MkDocs</a> from the python community. Also, I added the <code>$PS1</code> optional enhancement as this has significantly improved my dev-flow while switching repositories.</p>
 
   </div>
-</section>
+</article>
 
     </main>
-    <hr>
-    <footer>
-      <!-- <p>Powered by <a href="https://www.getzola.org/">Zola</a> and inspired by the <a href="https://github.com/mxaddict/zolanight">ZolaNight Theme</a></p>
-       -->
+
+    <footer class="site-footer">
+      <div class="footer-brand">
+        <img src="/assets/logo-mark.svg" width="22" height="22" alt="">
+        <span>© 2026 Joel Vandiver · the future for devs in the age of AI</span>
+      </div>
+      <div class="footer-links">
+        <a href="https://www.linkedin.com/in/joelvandiver/" target="_blank" rel="noreferrer">LinkedIn</a>
+        <a href="https://github.com/joelvandiver" target="_blank" rel="noreferrer">GitHub</a>
+      </div>
     </footer>
   </body>
 </html>

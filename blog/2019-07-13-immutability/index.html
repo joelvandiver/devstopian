@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-theme="dark">
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -14,46 +14,54 @@
     
     <link rel="canonical" href="https:&#x2F;&#x2F;devstopian.com&#x2F;blog&#x2F;2019-07-13-immutability&#x2F;" />
     
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Spectral:ital,wght@0,300;0,400;0,500;0,600;1,400;1,500&family=JetBrains+Mono:wght@400;500;700&display=swap">
     <link rel="stylesheet" href="https://devstopian.com/style.css">
     
   </head>
-  <body class="theme-tokiostopian">
+  <body>
     
-    <header>
-      <nav>
-        <a href="/">/home/</a>
-
+    
+    <header class="site-header">
+      <a class="brand" href="/" aria-label="Dev·stopian home">
+        <img src="/assets/logo-mark.svg" width="34" height="34" alt="">
+        <span class="wordmark">Dev<span class="dot">·</span>stopian</span>
+      </a>
+      <nav class="site-nav">
+        <a class="nav-link" href="/">home</a>
         
         
         
-        <a href="https:&#x2F;&#x2F;devstopian.com&#x2F;blog&#x2F;">&#x2F;blog&#x2F;</a>
-        
-
+        <a class="nav-link is-active" href="https:&#x2F;&#x2F;devstopian.com&#x2F;blog&#x2F;">blog</a>
         
         
-        <a href="https:&#x2F;&#x2F;devstopian.com&#x2F;about&#x2F;">&#x2F;about&#x2F;</a>
+        
+        
+        <a class="nav-link" href="https:&#x2F;&#x2F;devstopian.com&#x2F;about&#x2F;">about</a>
         
       </nav>
     </header>
-    <hr>
-    <main>
+
+    <main class="site-main">
       
-<section>
-  <h1>Power of Immutability</h1>
-  
-  <p>Originally Published: <time>2019-07-13</time></p>
-  
-  
-  <p class="tags">
-  Tags: [
-  
-  <a href="https://devstopian.com/tags/rust/">#Rust</a>
-  
-  ]
-    <hr />
-  </p>
-  
-  <div>
+<article class="wrap prose">
+  <header class="post-head">
+    
+    <div class="eyebrow">// originally published · 2019-07-13</div>
+    
+    <h1>Power of Immutability</h1>
+    
+    <div class="post-meta">
+      
+      <a class="tag tag--sm" href="https://devstopian.com/tags/rust/"><span class="hash">#</span>Rust</a>
+      
+    </div>
+    
+    <hr>
+  </header>
+
+  <div class="post-body">
     <p>I have heard many developers coming from imperative programming languages like Python, C#, and C++ say that immutability is overly restrictive. It is true that immutability is restrictive, but this restriction comes with one huge benefit: reduction of possible outcomes.</p>
 <p><code>Information</code> may be informally defined as the element of surprise.  The more surprises a system has, the more information it contains.  Note the distinction between actual information and possible information.  Typically as developers we focus our algorithms on the actual information that our system processes.  But, of equal (or greater) concern is of the possible information the system will process.  Let's call this the <code>Information Domain</code>.  Effectively, it is the concern of the developer to process the <code>Information Domain</code>.  We have to anticipate all of the possible outcomes of our system or at least the edges of our system.</p>
 <h2 id="simple-immutability">Simple Immutability</h2>
@@ -130,13 +138,19 @@
 <p>My original post had a focus on how functional programming languages such as Haskell and F# improve legibility by requiring immutability. I decided to place the focus on immutability in general. Rust, for example, implements immutability by default without being a strict, functional programming language.</p>
 
   </div>
-</section>
+</article>
 
     </main>
-    <hr>
-    <footer>
-      <!-- <p>Powered by <a href="https://www.getzola.org/">Zola</a> and inspired by the <a href="https://github.com/mxaddict/zolanight">ZolaNight Theme</a></p>
-       -->
+
+    <footer class="site-footer">
+      <div class="footer-brand">
+        <img src="/assets/logo-mark.svg" width="22" height="22" alt="">
+        <span>© 2026 Joel Vandiver · the future for devs in the age of AI</span>
+      </div>
+      <div class="footer-links">
+        <a href="https://www.linkedin.com/in/joelvandiver/" target="_blank" rel="noreferrer">LinkedIn</a>
+        <a href="https://github.com/joelvandiver" target="_blank" rel="noreferrer">GitHub</a>
+      </div>
     </footer>
   </body>
 </html>

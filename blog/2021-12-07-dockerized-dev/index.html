@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-theme="dark">
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -14,48 +14,56 @@
     
     <link rel="canonical" href="https:&#x2F;&#x2F;devstopian.com&#x2F;blog&#x2F;2021-12-07-dockerized-dev&#x2F;" />
     
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Spectral:ital,wght@0,300;0,400;0,500;0,600;1,400;1,500&family=JetBrains+Mono:wght@400;500;700&display=swap">
     <link rel="stylesheet" href="https://devstopian.com/style.css">
     
   </head>
-  <body class="theme-tokiostopian">
+  <body>
     
-    <header>
-      <nav>
-        <a href="/">/home/</a>
-
+    
+    <header class="site-header">
+      <a class="brand" href="/" aria-label="Dev·stopian home">
+        <img src="/assets/logo-mark.svg" width="34" height="34" alt="">
+        <span class="wordmark">Dev<span class="dot">·</span>stopian</span>
+      </a>
+      <nav class="site-nav">
+        <a class="nav-link" href="/">home</a>
         
         
         
-        <a href="https:&#x2F;&#x2F;devstopian.com&#x2F;blog&#x2F;">&#x2F;blog&#x2F;</a>
-        
-
+        <a class="nav-link is-active" href="https:&#x2F;&#x2F;devstopian.com&#x2F;blog&#x2F;">blog</a>
         
         
-        <a href="https:&#x2F;&#x2F;devstopian.com&#x2F;about&#x2F;">&#x2F;about&#x2F;</a>
+        
+        
+        <a class="nav-link" href="https:&#x2F;&#x2F;devstopian.com&#x2F;about&#x2F;">about</a>
         
       </nav>
     </header>
-    <hr>
-    <main>
+
+    <main class="site-main">
       
-<section>
-  <h1>Dockerized Dev</h1>
-  
-  <p>Originally Published: <time>2021-12-07</time></p>
-  
-  
-  <p class="tags">
-  Tags: [
-  
-  <a href="https://devstopian.com/tags/dx/">#DX</a>, 
-  
-  <a href="https://devstopian.com/tags/docker/">#Docker</a>
-  
-  ]
-    <hr />
-  </p>
-  
-  <div>
+<article class="wrap prose">
+  <header class="post-head">
+    
+    <div class="eyebrow">// originally published · 2021-12-07</div>
+    
+    <h1>Dockerized Dev</h1>
+    
+    <div class="post-meta">
+      
+      <a class="tag tag--sm" href="https://devstopian.com/tags/dx/"><span class="hash">#</span>DX</a>
+      
+      <a class="tag tag--sm" href="https://devstopian.com/tags/docker/"><span class="hash">#</span>Docker</a>
+      
+    </div>
+    
+    <hr>
+  </header>
+
+  <div class="post-body">
     <h2 id="docker-toolchains">Docker Toolchains</h2>
 <p>I'm sure that you've heard of Docker, but have you considered running your development toolchains in Docker?</p>
 <p>Docker is great for containerizing your application tools that run in production, but it's also great at containerizing your development environment. Using docker during development allows more freedom to explore different languages and tech stacks without worrying about maintaining the tools on my system over time. When I'm done running a development container, I simply throw it away and spin it back up when I'm ready to get back at it.</p>
@@ -200,13 +208,19 @@
 <p>I have used VSCode Dev Containers for a few years now, but I thought I add it to this dockerized dev post!</p>
 
   </div>
-</section>
+</article>
 
     </main>
-    <hr>
-    <footer>
-      <!-- <p>Powered by <a href="https://www.getzola.org/">Zola</a> and inspired by the <a href="https://github.com/mxaddict/zolanight">ZolaNight Theme</a></p>
-       -->
+
+    <footer class="site-footer">
+      <div class="footer-brand">
+        <img src="/assets/logo-mark.svg" width="22" height="22" alt="">
+        <span>© 2026 Joel Vandiver · the future for devs in the age of AI</span>
+      </div>
+      <div class="footer-links">
+        <a href="https://www.linkedin.com/in/joelvandiver/" target="_blank" rel="noreferrer">LinkedIn</a>
+        <a href="https://github.com/joelvandiver" target="_blank" rel="noreferrer">GitHub</a>
+      </div>
     </footer>
   </body>
 </html>

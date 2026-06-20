@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-theme="dark">
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -14,48 +14,56 @@
     
     <link rel="canonical" href="https:&#x2F;&#x2F;devstopian.com&#x2F;blog&#x2F;2026-06-14-web-demo&#x2F;" />
     
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Spectral:ital,wght@0,300;0,400;0,500;0,600;1,400;1,500&family=JetBrains+Mono:wght@400;500;700&display=swap">
     <link rel="stylesheet" href="https://devstopian.com/style.css">
     
   </head>
-  <body class="theme-tokiostopian">
+  <body>
     
-    <header>
-      <nav>
-        <a href="/">/home/</a>
-
+    
+    <header class="site-header">
+      <a class="brand" href="/" aria-label="Dev·stopian home">
+        <img src="/assets/logo-mark.svg" width="34" height="34" alt="">
+        <span class="wordmark">Dev<span class="dot">·</span>stopian</span>
+      </a>
+      <nav class="site-nav">
+        <a class="nav-link" href="/">home</a>
         
         
         
-        <a href="https:&#x2F;&#x2F;devstopian.com&#x2F;blog&#x2F;">&#x2F;blog&#x2F;</a>
-        
-
+        <a class="nav-link is-active" href="https:&#x2F;&#x2F;devstopian.com&#x2F;blog&#x2F;">blog</a>
         
         
-        <a href="https:&#x2F;&#x2F;devstopian.com&#x2F;about&#x2F;">&#x2F;about&#x2F;</a>
+        
+        
+        <a class="nav-link" href="https:&#x2F;&#x2F;devstopian.com&#x2F;about&#x2F;">about</a>
         
       </nav>
     </header>
-    <hr>
-    <main>
+
+    <main class="site-main">
       
-<section>
-  <h1>Web Demos</h1>
-  
-  <p>Originally Published: <time>2026-06-14</time></p>
-  
-  
-  <p class="tags">
-  Tags: [
-  
-  <a href="https://devstopian.com/tags/dev/">#Dev</a>, 
-  
-  <a href="https://devstopian.com/tags/frontend/">#Frontend</a>
-  
-  ]
-    <hr />
-  </p>
-  
-  <div>
+<article class="wrap prose">
+  <header class="post-head">
+    
+    <div class="eyebrow">// originally published · 2026-06-14</div>
+    
+    <h1>Web Demos</h1>
+    
+    <div class="post-meta">
+      
+      <a class="tag tag--sm" href="https://devstopian.com/tags/dev/"><span class="hash">#</span>Dev</a>
+      
+      <a class="tag tag--sm" href="https://devstopian.com/tags/frontend/"><span class="hash">#</span>Frontend</a>
+      
+    </div>
+    
+    <hr>
+  </header>
+
+  <div class="post-body">
     <h2 id="problem-statement">Problem Statement</h2>
 <p>Years ago, while working as a frontend developer with teams where the backend developers could not keep pace, I realized the importance of providing fake backend endpoints to call. These fake endpoints allowed me to progress my work, and more importantly, define the interface via an OpenAPI specification. I needed the endpoints to represent different data scenarios that I could use to exercise the edge cases in the browser. At the same time, our users needed a way to provide quick feedback on different user flows during development.</p>
 <h2 id="solution-1-2018">Solution 1 (2018)</h2>
@@ -86,13 +94,19 @@ b. <strong>Reduction in Security Debt:</strong> They no longer have to deal with
 </ol>
 
   </div>
-</section>
+</article>
 
     </main>
-    <hr>
-    <footer>
-      <!-- <p>Powered by <a href="https://www.getzola.org/">Zola</a> and inspired by the <a href="https://github.com/mxaddict/zolanight">ZolaNight Theme</a></p>
-       -->
+
+    <footer class="site-footer">
+      <div class="footer-brand">
+        <img src="/assets/logo-mark.svg" width="22" height="22" alt="">
+        <span>© 2026 Joel Vandiver · the future for devs in the age of AI</span>
+      </div>
+      <div class="footer-links">
+        <a href="https://www.linkedin.com/in/joelvandiver/" target="_blank" rel="noreferrer">LinkedIn</a>
+        <a href="https://github.com/joelvandiver" target="_blank" rel="noreferrer">GitHub</a>
+      </div>
     </footer>
   </body>
 </html>

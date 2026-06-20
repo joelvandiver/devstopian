@@ -1,0 +1,61 @@
+<svg width="520" height="520" viewBox="0 0 520 520" fill="none" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Nebula illustration">
+  <defs>
+    <radialGradient id="n-cyan" cx="45%" cy="40%" r="60%">
+      <stop offset="0" stop-color="#bff8f0"></stop>
+      <stop offset="0.28" stop-color="#38d9e0" stop-opacity="0.85"></stop>
+      <stop offset="0.62" stop-color="#9a72ec" stop-opacity="0.5"></stop>
+      <stop offset="1" stop-color="#e85a9b" stop-opacity="0"></stop>
+    </radialGradient>
+    <radialGradient id="n-mag" cx="50%" cy="50%" r="50%">
+      <stop offset="0" stop-color="#ff7ab6" stop-opacity="0.7"></stop>
+      <stop offset="1" stop-color="#e85a9b" stop-opacity="0"></stop>
+    </radialGradient>
+    <radialGradient id="n-amber" cx="50%" cy="50%" r="50%">
+      <stop offset="0" stop-color="#ffcf8f" stop-opacity="0.55"></stop>
+      <stop offset="1" stop-color="#f2a73a" stop-opacity="0"></stop>
+    </radialGradient>
+    <radialGradient id="n-violet" cx="50%" cy="50%" r="50%">
+      <stop offset="0" stop-color="#b69bff" stop-opacity="0.5"></stop>
+      <stop offset="1" stop-color="#9a72ec" stop-opacity="0"></stop>
+    </radialGradient>
+    <radialGradient id="n-core" cx="50%" cy="50%" r="50%">
+      <stop offset="0" stop-color="#ffffff"></stop>
+      <stop offset="0.45" stop-color="#bff8f0" stop-opacity="0.8"></stop>
+      <stop offset="1" stop-color="#38d9e0" stop-opacity="0"></stop>
+    </radialGradient>
+    <filter id="n-soft" x="-30%" y="-30%" width="160%" height="160%">
+      <feGaussianBlur stdDeviation="20"></feGaussianBlur>
+    </filter>
+  </defs>
+
+  <!-- nebula clouds -->
+  <g filter="url(#n-soft)">
+    <ellipse cx="250" cy="232" rx="186" ry="132" transform="rotate(-22 250 232)" fill="url(#n-cyan)"></ellipse>
+    <ellipse cx="330" cy="312" rx="118" ry="150" transform="rotate(20 330 312)" fill="url(#n-mag)" opacity="0.85"></ellipse>
+    <ellipse cx="168" cy="300" rx="120" ry="84" transform="rotate(-12 168 300)" fill="url(#n-amber)" opacity="0.7"></ellipse>
+    <ellipse cx="318" cy="170" rx="96" ry="74" transform="rotate(28 318 170)" fill="url(#n-violet)" opacity="0.8"></ellipse>
+  </g>
+
+  <!-- bright core + companion -->
+  <circle cx="236" cy="212" r="84" fill="url(#n-core)"></circle>
+  <circle cx="236" cy="210" r="5.5" fill="#ffffff"></circle>
+  <circle cx="276" cy="246" r="3" fill="#f2a73a"></circle>
+
+  <!-- scattered stars -->
+  <g fill="#cdd2de">
+    <circle cx="64" cy="70" r="1.6" opacity="0.9"></circle>
+    <circle cx="448" cy="92" r="2" opacity="0.85"></circle>
+    <circle cx="402" cy="408" r="1.5" opacity="0.8"></circle>
+    <circle cx="92" cy="424" r="1.8" opacity="0.8"></circle>
+    <circle cx="158" cy="78" r="1.2" opacity="0.7"></circle>
+    <circle cx="372" cy="150" r="1.2" opacity="0.7"></circle>
+    <circle cx="120" cy="220" r="1" opacity="0.6"></circle>
+    <circle cx="430" cy="270" r="1.4" opacity="0.75"></circle>
+    <circle cx="300" cy="430" r="1.1" opacity="0.65"></circle>
+    <circle cx="210" cy="120" r="1" opacity="0.6"></circle>
+  </g>
+
+  <!-- twinkles -->
+  <path d="M120 96 C 121 102, 121.6 102.6, 128 104 C 121.6 105.4, 121 106, 120 112 C 119 106, 118.4 105.4, 112 104 C 118.4 102.6, 119 102, 120 96 Z" fill="#ffffff" opacity="0.85"></path>
+  <path d="M398 332 C 398.8 336.4, 399.2 336.8, 404 338 C 399.2 339.2, 398.8 339.6, 398 344 C 397.2 339.6, 396.8 339.2, 392 338 C 396.8 336.8, 397.2 336.4, 398 332 Z" fill="#bff8f0" opacity="0.8"></path>
+</svg>
