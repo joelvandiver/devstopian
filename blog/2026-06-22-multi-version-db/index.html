@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Multi Version Database | Dev·stopian</title>
+    
+    
+    <meta name="description" content="Multi Version Database">
+    
+    
+    <meta name="keywords" content="DB, Rust">
+    
+    
+    <link rel="canonical" href="https:&#x2F;&#x2F;devstopian.com&#x2F;blog&#x2F;2026-06-22-multi-version-db&#x2F;" />
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Spectral:ital,wght@0,300;0,400;0,500;0,600;1,400;1,500&family=JetBrains+Mono:wght@400;500;700&display=swap">
+    <link rel="stylesheet" href="https://devstopian.com/style.css">
+    
+  </head>
+  <body>
+    
+    
+    <header class="site-header">
+      <a class="brand" href="/" aria-label="Dev·stopian home">
+        <img src="/assets/logo-mark.svg" width="34" height="34" alt="">
+        <span class="wordmark">Dev<span class="dot">·</span>stopian</span>
+      </a>
+      <nav class="site-nav">
+        <a class="nav-link" href="/">home</a>
+        
+        
+        
+        <a class="nav-link is-active" href="https:&#x2F;&#x2F;devstopian.com&#x2F;blog&#x2F;">blog</a>
+        
+        
+        
+        
+        <a class="nav-link" href="https:&#x2F;&#x2F;devstopian.com&#x2F;about&#x2F;">about</a>
+        
+      </nav>
+    </header>
+
+    <main class="site-main">
+      
+<article class="wrap prose">
+  <header class="post-head">
+    
+    <div class="eyebrow">// originally published · 2026-06-22</div>
+    
+    <h1>Multi Version Database</h1>
+    
+    <div class="post-meta">
+      
+      <a class="tag tag--sm" href="https://devstopian.com/tags/db/"><span class="hash">#</span>DB</a>
+      
+      <a class="tag tag--sm" href="https://devstopian.com/tags/rust/"><span class="hash">#</span>Rust</a>
+      
+    </div>
+    
+    <hr>
+  </header>
+
+  <div class="post-body">
+    <p><strong>Problem Statement:</strong> Introducing any form of statefulness to an application introduces a new layer of complexity during deployment and operations. A cache such as Redis is stateful and has a relatively low cost in maintenance; the cache can simply be thrown away and restarted upon deployment of the application. A database, however, can lead to many problems at deployment as the database schema and the data may require a migration upon release of a new version of the application. The database needs to be versioned and needs to support rollbacks in the application without rolling back the database. In a cloud native environment, it may seem trivial to rollback the database, however, the rollbacks cannot easily capture data-lossy transitions. Also, testing rollback scenarios is extremely difficult as it requires a combinatorial explosion of test cases. Developers, therefore, rarely test rollback behavior.</p>
+<p><strong>Solution:</strong> Build a database repository (dbrepo) in Rust to expose different versions of gRPC endpoints to a single target database. This allows migrating the database more broadly against the application versions.</p>
+<p><strong>Architecture:</strong></p>
+<ol>
+<li><em>SQLx:</em> Use the SQLx (https://github.com/launchbadge/sqlx) crate to compile SQL queries for PostgreSQL in source. Write migrations as standard SQL DDL commands (as SQLx recommends). Avoid ORMs because they do not discourage developers from issuing queries from within loops. Also, ORMs provide a whole new DSL to learn and maintain (https://github.com/launchbadge/sqlx?tab=readme-ov-file#sqlx-is-not-an-orm).</li>
+<li><em>Tonic:</em> Use the tonic crate (https://github.com/hyperium/tonic) to provide the gRPC endpoints for other services in the namespaces. gRPC (https://grpc.io/) is a highly performant protocol and provides well-typed interfaces via protobuf files. Tonic provides the code generation of the interface traits and types via prost (https://github.com/tokio-rs/prost).</li>
+</ol>
+<p>When a new version of a consuming client is under development, introduce a newly versioned protobuf file. The dbrepo then migrates the database to accommodate both versions at the same time and maps each version into a single target db module. The gRPC client developers are then free to build their application with their language of choice. You now have the freedom to rollback the client without risk to the database release and transitively to other services that depend on the dbrepo.</p>
+<p>The code in the dbrepo is organized as follows. [Note the **/mod.rs have been omitted for brevity.] The terms “app” and “manager” relate to example schemas in PostgreSQL for organizing tables.</p>
+<pre class="giallo" style="color: #CDD6F4; background-color: #1E1E2E;"><code data-lang="shellscript"><span class="giallo-l"><span style="color: #89B4FA;font-style: italic;">$</span><span style="color: #A6E3A1;"> tree</span></span>
+<span class="giallo-l"><span style="color: #F38BA8;font-style: italic;">.</span></span>
+<span class="giallo-l"><span style="color: #89B4FA;font-style: italic;">├──</span><span style="color: #A6E3A1;"> Cargo.toml</span></span>
+<span class="giallo-l"><span style="color: #89B4FA;font-style: italic;">├──</span><span style="color: #A6E3A1;"> Dockerfile</span></span>
+<span class="giallo-l"><span style="color: #89B4FA;font-style: italic;">├──</span><span style="color: #A6E3A1;"> Migrations.Dockerfile</span></span>
+<span class="giallo-l"><span style="color: #89B4FA;font-style: italic;">├──</span><span style="color: #A6E3A1;"> build.rs</span></span>
+<span class="giallo-l"><span style="color: #89B4FA;font-style: italic;">├──</span><span style="color: #A6E3A1;"> crates</span></span>
+<span class="giallo-l"><span style="color: #89B4FA;font-style: italic;">│</span><span style="color: #A6E3A1;">   └── migrations</span></span>
+<span class="giallo-l"><span style="color: #89B4FA;font-style: italic;">│</span><span style="color: #A6E3A1;">       ├── Cargo.toml</span></span>
+<span class="giallo-l"><span style="color: #89B4FA;font-style: italic;">│</span><span style="color: #A6E3A1;">       └── src</span></span>
+<span class="giallo-l"><span style="color: #89B4FA;font-style: italic;">│</span><span style="color: #A6E3A1;">           └── main.rs</span></span>
+<span class="giallo-l"><span style="color: #89B4FA;font-style: italic;">├──</span><span style="color: #A6E3A1;"> migrations</span></span>
+<span class="giallo-l"><span style="color: #89B4FA;font-style: italic;">│</span><span style="color: #A6E3A1;">   ├── 0001_init.down.sql</span></span>
+<span class="giallo-l"><span style="color: #89B4FA;font-style: italic;">│</span><span style="color: #A6E3A1;">   └── 0001_init.up.sql</span></span>
+<span class="giallo-l"><span style="color: #89B4FA;font-style: italic;">├──</span><span style="color: #A6E3A1;"> proto</span></span>
+<span class="giallo-l"><span style="color: #89B4FA;font-style: italic;">│</span><span style="color: #A6E3A1;">   ├── app</span></span>
+<span class="giallo-l"><span style="color: #89B4FA;font-style: italic;">│</span><span style="color: #A6E3A1;">   │   └── v1.proto</span></span>
+<span class="giallo-l"><span style="color: #89B4FA;font-style: italic;">│</span><span style="color: #A6E3A1;">   └── manager</span></span>
+<span class="giallo-l"><span style="color: #89B4FA;font-style: italic;">│</span><span style="color: #A6E3A1;">       ├── v1.proto</span></span>
+<span class="giallo-l"><span style="color: #89B4FA;font-style: italic;">│</span><span style="color: #A6E3A1;">       └── v2.proto</span></span>
+<span class="giallo-l"><span style="color: #89B4FA;font-style: italic;">├──</span><span style="color: #A6E3A1;"> src</span></span>
+<span class="giallo-l"><span style="color: #89B4FA;font-style: italic;">│</span><span style="color: #A6E3A1;">   ├── api</span></span>
+<span class="giallo-l"><span style="color: #89B4FA;font-style: italic;">│</span><span style="color: #A6E3A1;">   │   ├── app</span></span>
+<span class="giallo-l"><span style="color: #89B4FA;font-style: italic;">│</span><span style="color: #A6E3A1;">   │   │   └── v1.rs</span></span>
+<span class="giallo-l"><span style="color: #89B4FA;font-style: italic;">│</span><span style="color: #A6E3A1;">   │   └── manager</span></span>
+<span class="giallo-l"><span style="color: #89B4FA;font-style: italic;">│</span><span style="color: #A6E3A1;">   │       ├── v1.rs</span></span>
+<span class="giallo-l"><span style="color: #89B4FA;font-style: italic;">│</span><span style="color: #A6E3A1;">   │       └── v2.rs</span></span>
+<span class="giallo-l"><span style="color: #89B4FA;font-style: italic;">│</span><span style="color: #A6E3A1;">   ├── core</span></span>
+<span class="giallo-l"><span style="color: #89B4FA;font-style: italic;">│</span><span style="color: #A6E3A1;">   │   ├── error.rs</span></span>
+<span class="giallo-l"><span style="color: #89B4FA;font-style: italic;">│</span><span style="color: #A6E3A1;">   │   └── sql</span></span>
+<span class="giallo-l"><span style="color: #89B4FA;font-style: italic;">│</span><span style="color: #A6E3A1;">   │       ├── app.rs</span></span>
+<span class="giallo-l"><span style="color: #89B4FA;font-style: italic;">│</span><span style="color: #A6E3A1;">   │       └── manager.rs</span></span>
+<span class="giallo-l"><span style="color: #89B4FA;font-style: italic;">│</span><span style="color: #A6E3A1;">   ├── io</span></span>
+<span class="giallo-l"><span style="color: #89B4FA;font-style: italic;">│</span><span style="color: #A6E3A1;">   │   └── db</span></span>
+<span class="giallo-l"><span style="color: #89B4FA;font-style: italic;">│</span><span style="color: #A6E3A1;">   │       ├── appdb.rs</span></span>
+<span class="giallo-l"><span style="color: #89B4FA;font-style: italic;">│</span><span style="color: #A6E3A1;">   │       └── managerdb.rs</span></span>
+<span class="giallo-l"><span style="color: #89B4FA;font-style: italic;">│</span><span style="color: #A6E3A1;">   ├── lib.rs</span></span>
+<span class="giallo-l"><span style="color: #89B4FA;font-style: italic;">│</span><span style="color: #A6E3A1;">   └── main.rs</span></span>
+<span class="giallo-l"><span style="color: #89B4FA;font-style: italic;">├──</span><span style="color: #A6E3A1;"> target</span></span>
+<span class="giallo-l"><span style="color: #89B4FA;font-style: italic;">└──</span><span style="color: #A6E3A1;"> tests</span></span>
+<span class="giallo-l"><span style="color: #89B4FA;font-style: italic;">    ├──</span><span style="color: #A6E3A1;"> integration.rs</span></span>
+<span class="giallo-l"><span style="color: #89B4FA;font-style: italic;">    └──</span><span style="color: #A6E3A1;"> real</span></span>
+<span class="giallo-l"><span style="color: #89B4FA;font-style: italic;">        ├──</span><span style="color: #A6E3A1;"> appdb.rs</span></span>
+<span class="giallo-l"><span style="color: #89B4FA;font-style: italic;">        └──</span><span style="color: #A6E3A1;"> managerdb.rs</span></span></code></pre>
+<p><em>Notes</em></p>
+<ul>
+<li>The migrations crate is a secondary crate with full DDL permissions against the PostgreSQL database when deployed in its own docker container with the supplied <code>migrations/*</code>.sql files.</li>
+<li>The <code>migrations/*</code> are written in standard SQL for PostgreSQL.</li>
+<li>The dbrepo crate is built as a docker image and only given DML permissions at runtime in the PostgreSQL db.</li>
+<li>The <code>build.rs</code> script provides the pre-built gRPC endpoints via prost for tonic.</li>
+<li>The <code>proto/**.proto</code> (protobuf) files provide the versioned interfaces for the consuming clients.</li>
+<li>The <code>src/api/**.rs</code> modules provide the mapping of the gRPC endpoints from tonic to the <code>core/sql/**.rs</code> in-memory types.</li>
+<li>The <code>core/sql/**.rs</code> modules provide Rust structs that bind to the db queries at compile time via sqlx and traits of the IO for dependency injection.</li>
+<li>The <code>io/db/*.rs</code> modules provide the runtime IO implementations (impls) of the traits defined in the <code>core/sql/*.rs</code> to the database via sqlx. The <code>io/db/*.rs</code> modules provide the queries and the command execution against the live database.</li>
+<li>The <code>lib.rs</code> rolls up the modules to provide a public interface for both <code>main.rs</code> and the integration tests.</li>
+<li>The <code>main.rs</code> module provides the entrypoint and construction of the runtime implementations (impl) with the IO.</li>
+<li>The <code>tests/integration.rs</code> provides tests with a fake, in-memory implementation (impl) of the <code>core/sql/*.rs</code> module traits.</li>
+<li>The <code>tests/real/*.rs</code> provide real tests against a running db. The database instances are managed by the Testcontainers for Rust (https://rust.testcontainers.org/) crate. This crate spins up PostgreSQL containers for each test.</li>
+</ul>
+
+  </div>
+</article>
+
+    </main>
+
+    <footer class="site-footer">
+      <div class="footer-brand">
+        <img src="/assets/logo-mark.svg" width="22" height="22" alt="">
+        <span>© 2026 Joel Vandiver · the future for devs in the age of AI</span>
+      </div>
+      <div class="footer-links">
+        <a href="https://www.linkedin.com/in/joelvandiver/" target="_blank" rel="noreferrer">LinkedIn</a>
+        <a href="https://github.com/joelvandiver" target="_blank" rel="noreferrer">GitHub</a>
+      </div>
+    </footer>
+  </body>
+</html>
