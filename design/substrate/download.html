@@ -1,0 +1,262 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Substrate — Download</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&family=Roboto+Mono:wght@400;500&display=swap" rel="stylesheet">
+<script>(function(){try{var t=localStorage.getItem('ds-theme')||(matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light');document.documentElement.classList.toggle('dark',t==='dark');document.documentElement.setAttribute('data-theme',t);}catch(e){}})();</script>
+<script src="theme.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+<script src="ds.js" defer></script>
+<script src="model.js"></script>
+</head>
+<body style="background:var(--color-surface);color:var(--color-fg)" class="bg-surface text-fg min-h-screen antialiased">
+
+<!-- APP BAR -->
+<header class="sticky top-0 z-30 border-b border-border bg-surface-raised/90 backdrop-blur">
+  <div class="mx-auto flex h-12 max-w-[1480px] items-center gap-4 px-4">
+    <a href="index.html" class="flex items-center gap-2 font-semibold text-fg">
+      <span class="grid size-6 place-items-center rounded bg-accent text-fg-on-accent text-2xs font-bold tracking-tight">DC</span>
+      <span>Substrate</span><span class="hidden font-normal text-fg-subtle sm:inline">/ Design System</span>
+    </a>
+    <nav class="ml-3 hidden items-center gap-0.5 text-sm lg:flex">
+      <a href="index.html" class="rounded px-2 py-1 text-fg-muted hover:bg-hover hover:text-fg">Overview</a>
+      <a href="tables.html" class="rounded px-2 py-1 text-fg-muted hover:bg-hover hover:text-fg">Tables</a>
+      <a href="tree.html" class="rounded px-2 py-1 text-fg-muted hover:bg-hover hover:text-fg">Tree</a>
+      <span class="mx-1 h-4 w-px bg-border"></span>
+      <a href="upload.html" class="rounded px-2 py-1 text-fg-muted hover:bg-hover hover:text-fg">Upload</a>
+      <a href="observability.html" class="rounded px-2 py-1 text-fg-muted hover:bg-hover hover:text-fg">Agents</a>
+      <a href="promotion.html" class="rounded px-2 py-1 text-fg-muted hover:bg-hover hover:text-fg">Promote</a>
+      <a href="download.html" class="rounded px-2 py-1 font-medium text-fg hover:bg-hover">Download</a>
+    </nav>
+    <div class="ml-auto flex items-center gap-2">
+      <button data-theme-toggle aria-pressed="false" aria-label="Toggle color theme"
+        class="inline-flex items-center gap-1.5 rounded-md border border-border bg-surface px-2.5 py-1 text-xs font-medium text-fg-muted hover:bg-hover hover:text-fg">
+        <span class="size-2 rounded-full bg-accent"></span><span data-theme-label>Light</span>
+      </button>
+    </div>
+  </div>
+</header>
+
+<main class="mx-auto max-w-[1480px] px-4 py-5">
+
+  <!-- BREADCRUMB -->
+  <nav class="mb-3 flex items-center gap-1.5 text-2xs font-mono" aria-label="Pipeline stage">
+    <a href="upload.html" class="inline-flex items-center gap-1 rounded-sm px-1.5 py-0.5 text-fg-subtle hover:bg-hover hover:text-fg"><span class="text-success">✓</span> Upload</a>
+    <span class="text-fg-subtle">→</span>
+    <a href="observability.html" class="inline-flex items-center gap-1 rounded-sm px-1.5 py-0.5 text-fg-subtle hover:bg-hover hover:text-fg"><span class="text-success">✓</span> Agents</a>
+    <span class="text-fg-subtle">→</span>
+    <a href="promotion.html" class="inline-flex items-center gap-1 rounded-sm px-1.5 py-0.5 text-fg-subtle hover:bg-hover hover:text-fg"><span class="text-success">✓</span> Promote</a>
+    <span class="text-fg-subtle">→</span>
+    <span class="inline-flex items-center gap-1 rounded-sm border border-accent-border bg-accent-muted px-1.5 py-0.5 font-medium text-accent">● Download</span>
+  </nav>
+
+  <div class="mb-4 flex flex-wrap items-end justify-between gap-4 border-b border-border pb-3">
+    <div>
+      <div class="flex items-center gap-2">
+        <h1 class="text-2xl font-bold tracking-tight text-fg" id="modelName">Fleet Information Model</h1>
+        <span id="versionBadge" class="inline-flex items-center rounded-sm border border-border bg-surface-sunken px-1.5 py-0.5 font-mono text-2xs text-fg-muted"></span>
+      </div>
+      <p class="mt-1 text-sm text-fg-muted">The reviewed model, assembled from your uploaded files and the agent pipeline — ready to export.</p>
+    </div>
+    <button id="downloadBtn" class="inline-flex items-center gap-2 rounded-md bg-accent px-4 py-2 text-sm font-medium text-fg-on-accent hover:bg-accent-hover">
+      <span>↓</span> Download <span id="dlFormat" class="font-mono">JSON</span>
+    </button>
+  </div>
+
+  <!-- OPEN-FIELDS WARNING (shown when not fully confirmed) -->
+  <div id="openWarn" class="mb-4 hidden items-start gap-3 rounded-md border border-warning-border bg-warning-bg px-3 py-2.5 text-warning">
+    <span class="mt-0.5 grid size-4 shrink-0 place-items-center rounded-full border border-warning text-2xs font-bold">!</span>
+    <div class="min-w-0">
+      <p class="text-sm font-semibold"><span id="warnCount">0</span> fields are still unconfirmed</p>
+      <p class="text-xs text-warning/80">The model is exportable, but gaps and pending surveys are marked <span class="font-mono">null</span>. Resolve them in promotion for a complete export.</p>
+    </div>
+    <a href="promotion.html" class="ml-auto shrink-0 rounded-md border border-warning/40 px-2.5 py-1 text-xs font-medium hover:bg-warning/10">Back to promote</a>
+  </div>
+
+  <div class="grid gap-4 lg:grid-cols-[1fr_360px]">
+
+    <!-- PREVIEW -->
+    <section class="flex min-h-0 flex-col rounded-lg border border-border bg-surface-raised shadow-sm">
+      <div class="flex flex-wrap items-center gap-2 border-b border-border px-3 py-2">
+        <div id="formatTabs" class="inline-flex items-center gap-0.5 rounded-md border border-border bg-surface p-0.5 text-xs"></div>
+        <span id="fileName" class="font-mono text-2xs text-fg-subtle"></span>
+        <div class="ml-auto flex items-center gap-2">
+          <span id="byteSize" class="font-mono text-2xs text-fg-subtle"></span>
+          <button id="copyBtn" class="rounded-md border border-border bg-surface px-2.5 py-1 text-xs font-medium text-fg-muted hover:bg-hover hover:text-fg"><span id="copyLabel">Copy</span></button>
+        </div>
+      </div>
+      <div class="relative">
+        <pre id="preview" class="max-h-[560px] overflow-auto bg-surface-inset px-3 py-3 font-mono text-2xs leading-relaxed text-fg-muted"></pre>
+      </div>
+    </section>
+
+    <!-- SIDEBAR -->
+    <aside class="space-y-4">
+      <!-- SEAL -->
+      <div class="rounded-lg border border-border bg-surface-raised p-4 shadow-sm">
+        <div class="flex items-center gap-3">
+          <div id="ring" class="grid size-16 shrink-0 place-items-center rounded-full" style="background:conic-gradient(var(--color-accent) 0%, var(--color-surface-inset) 0)">
+            <div class="grid size-12 place-items-center rounded-full bg-surface-raised">
+              <span id="ringPct" class="text-sm font-semibold tabular-nums text-fg">0%</span>
+            </div>
+          </div>
+          <div class="min-w-0">
+            <p class="text-sm font-semibold text-fg">Completeness</p>
+            <p id="ringSub" class="text-xs text-fg-muted">0 of 0 fields confirmed</p>
+            <p class="mt-1 font-mono text-2xs text-fg-subtle">checksum <span id="checksum" class="text-fg-muted">—</span></p>
+          </div>
+        </div>
+        <dl class="mt-3 grid grid-cols-2 gap-px overflow-hidden rounded-md border border-border bg-border text-center">
+          <div class="bg-surface-raised px-2 py-2"><dt class="text-2xs font-mono uppercase tracking-wide text-fg-subtle">Entities</dt><dd id="kEntities" class="mt-0.5 text-lg font-semibold tabular-nums text-fg">0</dd></div>
+          <div class="bg-surface-raised px-2 py-2"><dt class="text-2xs font-mono uppercase tracking-wide text-fg-subtle">Fields</dt><dd id="kFields" class="mt-0.5 text-lg font-semibold tabular-nums text-fg">0</dd></div>
+          <div class="bg-surface-raised px-2 py-2"><dt class="text-2xs font-mono uppercase tracking-wide text-fg-subtle">Sources</dt><dd id="kSources" class="mt-0.5 text-lg font-semibold tabular-nums text-fg">0</dd></div>
+          <div class="bg-surface-raised px-2 py-2"><dt class="text-2xs font-mono uppercase tracking-wide text-fg-subtle">Generated</dt><dd id="kGen" class="mt-0.5 text-sm font-semibold text-fg">—</dd></div>
+        </dl>
+      </div>
+
+      <!-- ENTITY SUMMARY -->
+      <div class="rounded-lg border border-border bg-surface-raised shadow-sm">
+        <div class="border-b border-border px-3 py-2"><h2 class="text-sm font-semibold text-fg">Entities</h2></div>
+        <ul id="entitySummary" class="divide-y divide-border"></ul>
+      </div>
+
+      <!-- SOURCE FILES -->
+      <div class="rounded-lg border border-border bg-surface-raised shadow-sm">
+        <div class="border-b border-border px-3 py-2"><h2 class="text-sm font-semibold text-fg">Mapped from</h2></div>
+        <ul id="sourceList" class="grid grid-cols-1 gap-1 p-2.5 text-xs"></ul>
+      </div>
+
+      <!-- API SNIPPET -->
+      <div class="rounded-lg border border-border bg-surface-raised shadow-sm">
+        <div class="border-b border-border px-3 py-2"><h2 class="text-sm font-semibold text-fg">Fetch via API</h2></div>
+        <pre class="overflow-x-auto px-3 py-2.5 font-mono text-2xs leading-relaxed text-fg-muted"><span class="text-fg-subtle"># pull the promoted model</span>
+curl -fsSL <span class="text-accent">https://api.helios.example</span>/v1/models/\
+  <span id="apiSlug" class="text-accent">fleet-information-model</span>.<span id="apiExt">json</span> \
+  -H <span class="text-success">"Authorization: Bearer $HELIOS_TOKEN"</span> \
+  -o fleet.<span id="apiExt2">json</span></pre>
+      </div>
+    </aside>
+  </div>
+</main>
+
+<footer class="border-t border-border bg-surface-sunken">
+  <div class="mx-auto flex max-w-[1480px] items-center gap-2 px-4 py-6 text-sm text-fg-muted">
+    <span class="grid size-5 place-items-center rounded bg-accent text-fg-on-accent text-2xs font-bold">DC</span>
+    <span class="font-semibold text-fg">Substrate</span>
+    <a href="index.html" class="ml-auto text-xs text-fg-subtle hover:text-fg">← Back to overview</a>
+  </div>
+</footer>
+
+<script>
+(function () {
+  "use strict";
+  var SM = window.SubstrateModel;
+  var MODEL = SM.load();
+  var fmt = SM.formats[0]; // json
+
+  function fmtBytes(b) {
+    if (b < 1024) return b + ' B';
+    var u = ['KB', 'MB'], i = -1; do { b /= 1024; i++; } while (b >= 1024 && i < u.length - 1);
+    return b.toFixed(1) + ' ' + u[i];
+  }
+  function esc(s) { return s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;'); }
+
+  function renderTabs() {
+    document.getElementById('formatTabs').innerHTML = SM.formats.map(function (f) {
+      var on = f.id === fmt.id;
+      return '<button data-fmt="' + f.id + '" aria-pressed="' + on + '" class="rounded px-2.5 py-1 font-medium ' +
+        (on ? 'bg-accent text-fg-on-accent' : 'text-fg-muted hover:text-fg') + '">' + f.label + '</button>';
+    }).join('');
+  }
+
+  function renderPreview() {
+    var text = fmt.fn(MODEL);
+    document.getElementById('preview').innerHTML = esc(text);
+    document.getElementById('fileName').textContent = MODEL.meta.slug + '.' + fmt.ext;
+    document.getElementById('byteSize').textContent = fmtBytes(new Blob([text]).size);
+    document.getElementById('dlFormat').textContent = fmt.label;
+    document.getElementById('apiExt').textContent = fmt.ext;
+    document.getElementById('apiExt2').textContent = fmt.ext;
+    return text;
+  }
+
+  function renderMeta() {
+    var c = SM.counts(MODEL), pct = SM.completeness(MODEL);
+    document.getElementById('modelName').textContent = MODEL.meta.name;
+    var draft = /draft/.test(MODEL.meta.version);
+    var vb = document.getElementById('versionBadge');
+    vb.textContent = 'v' + MODEL.meta.version;
+    vb.className = 'inline-flex items-center rounded-sm border px-1.5 py-0.5 font-mono text-2xs ' +
+      (draft ? 'border-warning-border bg-warning-bg text-warning' : 'border-success-border bg-success-bg text-success');
+
+    document.getElementById('ringPct').textContent = pct + '%';
+    document.getElementById('ring').style.background = 'conic-gradient(var(--color-accent) ' + pct + '%, var(--color-surface-inset) 0)';
+    document.getElementById('ringSub').textContent = c.confirmed + ' of ' + c.total + ' fields confirmed';
+    document.getElementById('checksum').textContent = SM.checksum(MODEL);
+
+    document.getElementById('kEntities').textContent = MODEL.entities.length;
+    document.getElementById('kFields').textContent = c.total;
+    document.getElementById('kSources').textContent = MODEL.meta.sourceFiles.length;
+    document.getElementById('kGen').textContent = new Date(MODEL.meta.generated).toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
+
+    var open = c.review + c.conflict + c.gap + c.awaiting;
+    var warn = document.getElementById('openWarn');
+    warn.classList.toggle('hidden', open === 0);
+    warn.classList.toggle('flex', open > 0);
+    document.getElementById('warnCount').textContent = open;
+
+    document.getElementById('entitySummary').innerHTML = MODEL.entities.map(function (e) {
+      var conf = e.fields.filter(function (f) { return f.status === 'confirmed'; }).length;
+      var epct = Math.round(conf / e.fields.length * 100);
+      var col = epct === 100 ? 'text-success' : 'text-fg-muted';
+      return '<li class="flex items-center gap-2 px-3 py-2">' +
+        '<span class="min-w-0 flex-1"><span class="text-sm font-medium text-fg">' + e.label + '</span>' +
+        '<span class="ml-1.5 font-mono text-2xs text-fg-subtle">' + e.type + '</span></span>' +
+        '<span class="font-mono text-2xs ' + col + ' tabular-nums">' + conf + '/' + e.fields.length + '</span>' +
+        '<span class="h-1 w-10 overflow-hidden rounded-full bg-surface-inset"><span class="block h-full rounded-full ' + (epct === 100 ? 'bg-success' : 'bg-accent') + '" style="width:' + epct + '%"></span></span>' +
+      '</li>';
+    }).join('');
+
+    document.getElementById('sourceList').innerHTML = MODEL.meta.sourceFiles.map(function (f) {
+      return '<li class="flex items-center gap-2 text-fg-muted"><span class="grid size-5 shrink-0 place-items-center rounded bg-surface-inset font-mono text-2xs text-fg-subtle">◈</span><span class="truncate font-mono">' + f + '</span></li>';
+    }).join('');
+
+    document.getElementById('apiSlug').textContent = MODEL.meta.slug;
+  }
+
+  function renderAll() { renderTabs(); renderPreview(); renderMeta(); }
+
+  // ---- events ----
+  document.getElementById('formatTabs').addEventListener('click', function (e) {
+    var b = e.target.closest('[data-fmt]'); if (!b) return;
+    fmt = SM.formats.find(function (f) { return f.id === b.getAttribute('data-fmt'); });
+    renderTabs(); renderPreview();
+  });
+
+  document.getElementById('downloadBtn').addEventListener('click', function () {
+    var text = fmt.fn(MODEL);
+    var blob = new Blob([text], { type: fmt.mime });
+    var url = URL.createObjectURL(blob);
+    var a = document.createElement('a');
+    a.href = url; a.download = MODEL.meta.slug + '.' + fmt.ext;
+    document.body.appendChild(a); a.click(); a.remove();
+    setTimeout(function () { URL.revokeObjectURL(url); }, 1000);
+  });
+
+  document.getElementById('copyBtn').addEventListener('click', function () {
+    if (!navigator.clipboard) return;
+    navigator.clipboard.writeText(fmt.fn(MODEL)).then(function () {
+      var l = document.getElementById('copyLabel'); l.textContent = 'Copied';
+      setTimeout(function () { l.textContent = 'Copy'; }, 1200);
+    }).catch(function () {});
+  });
+
+  renderAll();
+})();
+</script>
+</body>
+</html>

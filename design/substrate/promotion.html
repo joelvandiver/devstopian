@@ -1,0 +1,539 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Substrate — Promotion (HITL)</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&family=Roboto+Mono:wght@400;500&display=swap" rel="stylesheet">
+<script>(function(){try{var t=localStorage.getItem('ds-theme')||(matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light');document.documentElement.classList.toggle('dark',t==='dark');document.documentElement.setAttribute('data-theme',t);}catch(e){}})();</script>
+<script src="theme.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+<script src="ds.js" defer></script>
+<script src="model.js"></script>
+<style>
+  @keyframes ds-pulse { 0%,100% { opacity: 1; } 50% { opacity: .4; } }
+  .ds-live { animation: ds-pulse 1.1s ease-in-out infinite; }
+  .drawer { transition: transform .22s ease; }
+</style>
+</head>
+<body style="background:var(--color-surface);color:var(--color-fg)" class="bg-surface text-fg min-h-screen antialiased">
+
+<!-- APP BAR -->
+<header class="sticky top-0 z-30 border-b border-border bg-surface-raised/90 backdrop-blur">
+  <div class="mx-auto flex h-12 max-w-[1600px] items-center gap-4 px-4">
+    <a href="index.html" class="flex items-center gap-2 font-semibold text-fg">
+      <span class="grid size-6 place-items-center rounded bg-accent text-fg-on-accent text-2xs font-bold tracking-tight">DC</span>
+      <span>Substrate</span><span class="hidden font-normal text-fg-subtle sm:inline">/ Design System</span>
+    </a>
+    <nav class="ml-3 hidden items-center gap-0.5 text-sm lg:flex">
+      <a href="index.html" class="rounded px-2 py-1 text-fg-muted hover:bg-hover hover:text-fg">Overview</a>
+      <a href="tables.html" class="rounded px-2 py-1 text-fg-muted hover:bg-hover hover:text-fg">Tables</a>
+      <a href="tree.html" class="rounded px-2 py-1 text-fg-muted hover:bg-hover hover:text-fg">Tree</a>
+      <span class="mx-1 h-4 w-px bg-border"></span>
+      <a href="upload.html" class="rounded px-2 py-1 text-fg-muted hover:bg-hover hover:text-fg">Upload</a>
+      <a href="observability.html" class="rounded px-2 py-1 text-fg-muted hover:bg-hover hover:text-fg">Agents</a>
+      <a href="promotion.html" class="rounded px-2 py-1 font-medium text-fg hover:bg-hover">Promote</a>
+      <a href="download.html" class="rounded px-2 py-1 text-fg-muted hover:bg-hover hover:text-fg">Download</a>
+    </nav>
+    <div class="ml-auto flex items-center gap-2">
+      <button data-theme-toggle aria-pressed="false" aria-label="Toggle color theme"
+        class="inline-flex items-center gap-1.5 rounded-md border border-border bg-surface px-2.5 py-1 text-xs font-medium text-fg-muted hover:bg-hover hover:text-fg">
+        <span class="size-2 rounded-full bg-accent"></span><span data-theme-label>Light</span>
+      </button>
+    </div>
+  </div>
+</header>
+
+<main class="mx-auto max-w-[1600px] px-4 py-5">
+
+  <!-- PIPELINE BREADCRUMB -->
+  <nav class="mb-3 flex items-center gap-1.5 text-2xs font-mono" aria-label="Pipeline stage">
+    <a href="upload.html" class="inline-flex items-center gap-1 rounded-sm px-1.5 py-0.5 text-fg-subtle hover:bg-hover hover:text-fg"><span class="text-success">✓</span> Upload</a>
+    <span class="text-fg-subtle">→</span>
+    <a href="observability.html" class="inline-flex items-center gap-1 rounded-sm px-1.5 py-0.5 text-fg-subtle hover:bg-hover hover:text-fg"><span class="text-success">✓</span> Agents</a>
+    <span class="text-fg-subtle">→</span>
+    <span class="inline-flex items-center gap-1 rounded-sm border border-accent-border bg-accent-muted px-1.5 py-0.5 font-medium text-accent">● Promote</span>
+    <span class="text-fg-subtle">→</span>
+    <a href="download.html" class="rounded-sm px-1.5 py-0.5 text-fg-subtle hover:bg-hover hover:text-fg">Download</a>
+  </nav>
+
+  <!-- HEADER + READINESS -->
+  <div class="mb-4 flex flex-wrap items-end justify-between gap-4 border-b border-border pb-3">
+    <div class="min-w-0">
+      <h1 class="text-2xl font-bold tracking-tight text-fg">Promote information model</h1>
+      <p class="mt-1 max-w-2xl text-sm text-fg-muted text-pretty">
+        Your uploaded files and the agents' output are mapped into the final
+        <span class="font-medium text-fg">fleet information model</span> below. Review each field, resolve conflicts,
+        and send customers surveys to close the gaps — then promote for download.
+      </p>
+    </div>
+    <div class="flex shrink-0 items-center gap-4">
+      <div class="w-56">
+        <div class="mb-1 flex items-baseline justify-between">
+          <span class="text-2xs font-mono uppercase tracking-wide text-fg-subtle">Model readiness</span>
+          <span id="readyPct" class="text-sm font-semibold tabular-nums text-fg">0%</span>
+        </div>
+        <div class="h-2 overflow-hidden rounded-full bg-surface-inset"><div id="readyBar" class="h-full w-0 rounded-full bg-accent transition-[width] duration-300"></div></div>
+        <div id="readyCounts" class="mt-1.5 flex flex-wrap gap-x-3 gap-y-0.5 text-2xs"></div>
+      </div>
+      <button id="promoteBtn" class="inline-flex items-center gap-1.5 rounded-md bg-accent px-3.5 py-2 text-sm font-medium text-fg-on-accent hover:bg-accent-hover">Promote model →</button>
+    </div>
+  </div>
+
+  <!-- MAIN GRID -->
+  <div class="grid gap-4 xl:grid-cols-[250px_1fr_340px]">
+
+    <!-- ENTITY NAV -->
+    <section class="rounded-lg border border-border bg-surface-raised shadow-sm">
+      <div class="border-b border-border px-3 py-2"><h2 class="text-sm font-semibold text-fg">Model entities</h2></div>
+      <ul id="entityList" class="divide-y divide-border"></ul>
+    </section>
+
+    <!-- FIELD EDITOR -->
+    <section class="rounded-lg border border-border bg-surface-raised shadow-sm">
+      <div class="flex items-center justify-between border-b border-border px-3 py-2">
+        <div class="flex items-center gap-2">
+          <h2 id="entHead" class="text-sm font-semibold text-fg">—</h2>
+          <span id="entType" class="inline-flex items-center rounded-sm border border-border bg-surface-sunken px-1.5 py-0.5 font-mono text-2xs text-fg-muted"></span>
+        </div>
+        <span id="entMeta" class="font-mono text-2xs text-fg-subtle"></span>
+      </div>
+      <!-- column header -->
+      <div class="hidden items-center gap-3 border-b border-border bg-surface-sunken px-3 py-1.5 text-2xs font-mono uppercase tracking-wide text-fg-subtle md:flex">
+        <span class="w-40 shrink-0">Field</span>
+        <span class="min-w-[180px] flex-1">Value</span>
+        <span class="w-64 shrink-0 text-right">Provenance · status</span>
+      </div>
+      <div id="fields" class="divide-y divide-border"></div>
+    </section>
+
+    <!-- GAPS + SURVEYS -->
+    <section class="flex flex-col gap-4">
+      <!-- open items -->
+      <div class="rounded-lg border border-border bg-surface-raised shadow-sm">
+        <div class="flex items-center justify-between border-b border-border px-3 py-2">
+          <h2 class="text-sm font-semibold text-fg">Open items</h2>
+          <span id="openCount" class="inline-flex items-center rounded-full bg-warning-bg px-2 py-0.5 text-2xs font-medium text-warning">0</span>
+        </div>
+        <ul id="openList" class="max-h-64 divide-y divide-border overflow-y-auto"></ul>
+      </div>
+
+      <!-- survey cart -->
+      <div class="rounded-lg border border-border bg-surface-raised shadow-sm">
+        <div class="flex items-center justify-between border-b border-border px-3 py-2">
+          <h2 class="text-sm font-semibold text-fg">Customer survey</h2>
+          <span id="cartCount" class="inline-flex items-center rounded-full bg-accent-muted px-2 py-0.5 text-2xs font-medium text-accent">0 fields</span>
+        </div>
+        <ul id="cartList" class="divide-y divide-border"></ul>
+        <div id="cartEmpty" class="px-3 py-6 text-center text-xs text-fg-subtle">Flag gap fields with <span class="font-medium text-fg">Survey</span> to build a questionnaire for your customer.</div>
+        <div class="border-t border-border p-2.5">
+          <button id="buildSurveyBtn" class="w-full rounded-md bg-accent px-3 py-1.5 text-sm font-medium text-fg-on-accent opacity-50 hover:bg-accent-hover pointer-events-none">Build survey →</button>
+        </div>
+      </div>
+
+      <!-- sent surveys -->
+      <div class="rounded-lg border border-border bg-surface-raised shadow-sm">
+        <div class="flex items-center justify-between border-b border-border px-3 py-2">
+          <h2 class="text-sm font-semibold text-fg">Surveys sent</h2>
+          <span id="surveyCount" class="font-mono text-2xs text-fg-subtle">0</span>
+        </div>
+        <ul id="surveyList" class="divide-y divide-border"></ul>
+        <div id="surveyEmpty" class="px-3 py-6 text-center text-xs text-fg-subtle">No surveys sent yet.</div>
+      </div>
+    </section>
+  </div>
+</main>
+
+<!-- SURVEY DRAWER -->
+<div id="drawerWrap" class="fixed inset-0 z-50 hidden">
+  <div id="drawerBackdrop" class="absolute inset-0 bg-gray-950/50"></div>
+  <aside class="drawer absolute right-0 top-0 flex h-full w-full max-w-md translate-x-full flex-col border-l border-border bg-surface-raised shadow-overlay" role="dialog" aria-modal="true" aria-label="Build survey">
+    <div class="flex items-center justify-between border-b border-border px-4 py-3">
+      <div>
+        <h2 class="text-md font-semibold text-fg">New customer survey</h2>
+        <p class="text-xs text-fg-muted">Auto-drafted from <span id="drawerN" class="font-medium text-fg">0</span> gap fields.</p>
+      </div>
+      <button id="drawerClose" class="rounded p-1 text-fg-subtle hover:bg-hover hover:text-fg" aria-label="Close">✕</button>
+    </div>
+    <div class="flex-1 overflow-y-auto px-4 py-3">
+      <label class="block">
+        <span class="mb-1 block text-xs font-medium text-fg-muted">Send to</span>
+        <select id="drawerRecipient" class="w-full rounded-md border border-border bg-surface px-2.5 py-1.5 text-sm text-fg focus:border-accent focus:outline-none focus:ring-2 focus:ring-ring/40"></select>
+      </label>
+      <label class="mt-3 block">
+        <span class="mb-1 block text-xs font-medium text-fg-muted">Survey title</span>
+        <input id="drawerTitle" type="text" class="w-full rounded-md border border-border bg-surface px-2.5 py-1.5 text-sm text-fg focus:border-accent focus:outline-none focus:ring-2 focus:ring-ring/40">
+      </label>
+      <p class="mt-4 mb-2 text-2xs font-mono uppercase tracking-wide text-fg-subtle">Questions</p>
+      <ol id="drawerQuestions" class="space-y-2"></ol>
+    </div>
+    <div class="flex items-center gap-2 border-t border-border px-4 py-3">
+      <span id="drawerMeta" class="font-mono text-2xs text-fg-subtle"></span>
+      <button id="drawerSend" class="ml-auto inline-flex items-center gap-1.5 rounded-md bg-accent px-3.5 py-2 text-sm font-medium text-fg-on-accent hover:bg-accent-hover">Send survey</button>
+    </div>
+  </aside>
+</div>
+
+<!-- TOAST -->
+<div id="toast" class="fixed bottom-4 left-1/2 z-[60] hidden -translate-x-1/2"></div>
+
+<footer class="border-t border-border bg-surface-sunken">
+  <div class="mx-auto flex max-w-[1600px] items-center gap-2 px-4 py-6 text-sm text-fg-muted">
+    <span class="grid size-5 place-items-center rounded bg-accent text-fg-on-accent text-2xs font-bold">DC</span>
+    <span class="font-semibold text-fg">Substrate</span>
+    <a href="download.html" class="ml-auto text-xs text-fg-subtle hover:text-fg">Continue to download →</a>
+  </div>
+</footer>
+
+<script>
+(function () {
+  "use strict";
+  var SM = window.SubstrateModel;
+  var MODEL = SM.seed();               // always review from the freshly-mapped seed
+  var sel = MODEL.entities[0].id;
+  var cart = [];                       // [{entityId, fieldKey}]
+  var surveys = [];                    // [{id, recipient, title, items, status}]
+  var sid = 0;
+
+  var ANSWERS = {
+    complianceTier: "SOC 2 Type II", dataResidency: "US-only",
+    address: "21715 Filigree Ct, Ashburn, VA 20147", assetTag: "AST-RK04A1-0098",
+    warrantyExpiry: "2027-03-31", supportContract: "ProSupport Plus · exp 2027-06",
+    maintenanceVendor: "Vertiv · contract VX-2231"
+  };
+
+  function field(eid, key) {
+    var e = MODEL.entities.find(function (x) { return x.id === eid; });
+    return e && e.fields.find(function (f) { return f.key === key; });
+  }
+  function entity(eid) { return MODEL.entities.find(function (x) { return x.id === eid; }); }
+  function inCart(eid, key) { return cart.some(function (c) { return c.entityId === eid && c.fieldKey === key; }); }
+
+  // ---- status presentation ----
+  var BADGE = {
+    confirmed: ['border-success-border bg-success-bg text-success', 'CONFIRMED'],
+    review:    ['border-warning-border bg-warning-bg text-warning', 'REVIEW'],
+    conflict:  ['border-danger-border bg-danger-bg text-danger', 'CONFLICT'],
+    gap:       ['border-border bg-surface-sunken text-fg-subtle', 'GAP'],
+    awaiting:  ['border-info-border bg-info-bg text-info', 'AWAITING']
+  };
+  function badge(status) {
+    var b = BADGE[status] || BADGE.gap;
+    var live = status === 'awaiting' ? '<span class="size-1.5 rounded-full bg-info ds-live"></span>' : '';
+    return '<span class="inline-flex items-center gap-1 rounded-sm border px-1.5 py-0.5 text-2xs font-medium ' + b[0] + '">' + live + b[1] + '</span>';
+  }
+  function conf(c) {
+    if (!c) return '<span class="font-mono text-2xs text-fg-subtle">—</span>';
+    var col = c >= 0.8 ? 'bg-success' : c >= 0.55 ? 'bg-warning' : 'bg-danger';
+    return '<span class="inline-flex items-center gap-1" title="confidence ' + Math.round(c*100) + '%">' +
+      '<span class="h-1 w-8 overflow-hidden rounded-full bg-surface-inset"><span class="block h-full ' + col + '" style="width:' + Math.round(c*100) + '%"></span></span>' +
+      '<span class="font-mono text-2xs text-fg-subtle">' + Math.round(c*100) + '</span></span>';
+  }
+  function srcChip(src) {
+    if (!src) return '';
+    var glyph = src.agent === 'human' ? '✎' : src.agent === 'survey' ? '✉' : '◈';
+    return '<span class="inline-flex items-center gap-1 rounded-sm border border-border bg-surface px-1.5 py-0.5 font-mono text-2xs text-fg-muted" title="' + (src.file || '') + ' · ' + src.agent + '">' +
+      '<span class="text-fg-subtle">' + glyph + '</span>' + (src.file ? shortFile(src.file) : src.agent) + '</span>';
+  }
+  function shortFile(f) { return f.length > 16 ? f.slice(0, 14) + '…' : f; }
+
+  // ---- renderers ----
+  function entityStats(e) {
+    var s = { confirmed: 0, total: e.fields.length };
+    e.fields.forEach(function (f) { if (f.status === 'confirmed') s.confirmed++; });
+    return s;
+  }
+  function renderEntities() {
+    document.getElementById('entityList').innerHTML = MODEL.entities.map(function (e) {
+      var s = entityStats(e), pct = Math.round(s.confirmed / s.total * 100);
+      var open = e.fields.filter(function (f) { return f.status !== 'confirmed'; }).length;
+      var on = e.id === sel;
+      return '<li><button data-ent="' + e.id + '" class="w-full px-3 py-2 text-left ' + (on ? 'bg-selected' : 'hover:bg-hover') + '">' +
+        '<div class="flex items-center gap-2">' +
+          '<span class="truncate text-sm font-medium ' + (on ? 'text-accent' : 'text-fg') + '">' + e.label + '</span>' +
+          (open ? '<span class="ml-auto inline-flex items-center rounded-full bg-warning-bg px-1.5 text-2xs font-medium text-warning">' + open + '</span>' : '<span class="ml-auto text-success">✓</span>') +
+        '</div>' +
+        '<div class="mt-0.5 font-mono text-2xs text-fg-subtle">' + e.type + '</div>' +
+        '<div class="mt-1.5 h-1 overflow-hidden rounded-full bg-surface-inset"><div class="h-full rounded-full bg-accent" style="width:' + pct + '%"></div></div>' +
+      '</button></li>';
+    }).join('');
+  }
+
+  function renderFields() {
+    var e = entity(sel);
+    document.getElementById('entHead').textContent = e.label;
+    document.getElementById('entType').textContent = e.type;
+    document.getElementById('entMeta').textContent = e.sublabel || '';
+    document.getElementById('fields').innerHTML = e.fields.map(function (f) {
+      return '<div class="flex flex-wrap items-start gap-3 px-3 py-2.5">' +
+        // label
+        '<div class="w-40 shrink-0 pt-1">' +
+          '<p class="text-sm font-medium text-fg">' + f.label + '</p>' +
+          (f.note ? '<p class="mt-0.5 text-2xs text-fg-subtle text-pretty">' + f.note + '</p>' : '') +
+        '</div>' +
+        // value editor
+        '<div class="min-w-[180px] flex-1">' + valueEditor(e.id, f) + '</div>' +
+        // provenance + status + actions
+        '<div class="flex w-64 shrink-0 flex-col items-end gap-1.5">' +
+          '<div class="flex items-center gap-1.5">' + (f.source ? srcChip(f.source) : '') + conf(f.confidence) + '</div>' +
+          '<div class="flex items-center gap-1.5">' + badge(f.status) + fieldActions(e.id, f) + '</div>' +
+        '</div>' +
+      '</div>';
+    }).join('');
+  }
+
+  function valueEditor(eid, f) {
+    if (f.status === 'conflict') {
+      var chips = f.candidates.map(function (c, i) {
+        return '<button data-act="choose" data-ent="' + eid + '" data-key="' + f.key + '" data-i="' + i + '" ' +
+          'class="inline-flex items-center gap-1.5 rounded-md border border-danger-border bg-danger-bg px-2 py-1 text-sm text-fg hover:border-accent hover:bg-accent-muted">' +
+          '<span class="font-medium">' + c.value + '</span>' +
+          '<span class="font-mono text-2xs text-fg-subtle">' + shortFile(c.source.file) + '</span></button>';
+      }).join('');
+      return '<p class="mb-1 text-2xs text-danger">Two sources disagree — choose one or type a value:</p>' +
+        '<div class="flex flex-wrap gap-1.5">' + chips + '</div>' +
+        '<input data-act="value" data-ent="' + eid + '" data-key="' + f.key + '" type="text" placeholder="or enter the correct value" ' +
+        'class="mt-1.5 w-full rounded-md border border-border bg-surface px-2 py-1 text-sm text-fg placeholder:text-fg-subtle focus:border-accent focus:outline-none focus:ring-2 focus:ring-ring/40">';
+    }
+    if (f.status === 'gap') {
+      return '<input data-act="value" data-ent="' + eid + '" data-key="' + f.key + '" type="text" placeholder="— missing —" ' +
+        'class="w-full rounded-md border border-dashed border-border bg-surface-sunken px-2 py-1 text-sm text-fg placeholder:text-fg-subtle focus:border-accent focus:bg-surface focus:outline-none focus:ring-2 focus:ring-ring/40">';
+    }
+    if (f.status === 'awaiting') {
+      return '<input data-act="value" data-ent="' + eid + '" data-key="' + f.key + '" type="text" placeholder="awaiting customer response…" disabled ' +
+        'class="w-full cursor-not-allowed rounded-md border border-info-border bg-info-bg px-2 py-1 text-sm text-info/70">';
+    }
+    // confirmed / review
+    return '<input data-act="value" data-ent="' + eid + '" data-key="' + f.key + '" type="text" value="' + (f.value || '').replace(/"/g, '&quot;') + '" ' +
+      (f.unit ? '' : '') +
+      'class="w-full rounded-md border border-border bg-surface px-2 py-1 text-sm text-fg focus:border-accent focus:outline-none focus:ring-2 focus:ring-ring/40">' +
+      (f.unit ? '<span class="mt-0.5 block font-mono text-2xs text-fg-subtle">unit: ' + f.unit + '</span>' : '');
+  }
+
+  function fieldActions(eid, f) {
+    var out = '';
+    if (f.status === 'review' || f.status === 'conflict') {
+      out += '<button data-act="confirm" data-ent="' + eid + '" data-key="' + f.key + '" class="rounded px-1.5 py-0.5 text-2xs font-medium text-success hover:bg-success-bg">Confirm</button>';
+    }
+    if (f.status === 'gap') {
+      out += inCart(eid, f.key)
+        ? '<span class="rounded px-1.5 py-0.5 text-2xs font-medium text-accent">In survey ✓</span>'
+        : '<button data-act="survey" data-ent="' + eid + '" data-key="' + f.key + '" class="rounded border border-border px-1.5 py-0.5 text-2xs font-medium text-fg-muted hover:bg-hover hover:text-fg">+ Survey</button>';
+    }
+    return out;
+  }
+
+  function renderOpen() {
+    var items = [];
+    MODEL.entities.forEach(function (e) {
+      e.fields.forEach(function (f) {
+        if (f.status !== 'confirmed') items.push({ e: e, f: f });
+      });
+    });
+    document.getElementById('openCount').textContent = items.length;
+    document.getElementById('openList').innerHTML = items.map(function (it) {
+      return '<li><button data-ent="' + it.e.id + '" data-jump="1" class="flex w-full items-center gap-2 px-3 py-1.5 text-left hover:bg-hover">' +
+        '<span class="min-w-0 flex-1"><span class="truncate text-xs font-medium text-fg">' + it.f.label + '</span>' +
+        '<span class="ml-1 font-mono text-2xs text-fg-subtle">' + it.e.label + '</span></span>' +
+        badge(it.f.status) + '</button></li>';
+    }).join('') || '<li class="px-3 py-6 text-center text-xs text-success">All fields confirmed ✓</li>';
+  }
+
+  function renderCart() {
+    document.getElementById('cartCount').textContent = cart.length + (cart.length === 1 ? ' field' : ' fields');
+    document.getElementById('cartEmpty').classList.toggle('hidden', cart.length > 0);
+    document.getElementById('cartList').innerHTML = cart.map(function (c) {
+      var f = field(c.entityId, c.fieldKey), e = entity(c.entityId);
+      return '<li class="flex items-center gap-2 px-3 py-1.5">' +
+        '<span class="min-w-0 flex-1"><span class="text-xs font-medium text-fg">' + f.label + '</span>' +
+        '<span class="ml-1 font-mono text-2xs text-fg-subtle">' + e.label + '</span></span>' +
+        '<button data-act="uncart" data-ent="' + c.entityId + '" data-key="' + c.fieldKey + '" class="rounded p-0.5 text-fg-subtle hover:text-danger" aria-label="Remove">✕</button></li>';
+    }).join('');
+    var btn = document.getElementById('buildSurveyBtn');
+    var on = cart.length > 0;
+    btn.classList.toggle('pointer-events-none', !on);
+    btn.classList.toggle('opacity-50', !on);
+  }
+
+  function renderSurveys() {
+    document.getElementById('surveyCount').textContent = surveys.length;
+    document.getElementById('surveyEmpty').classList.toggle('hidden', surveys.length > 0);
+    document.getElementById('surveyList').innerHTML = surveys.map(function (s) {
+      var st = s.status === 'responded'
+        ? '<span class="inline-flex items-center gap-1 rounded-sm border border-success-border bg-success-bg px-1.5 py-0.5 text-2xs font-medium text-success"><span class="size-1.5 rounded-full bg-success"></span>RESPONDED</span>'
+        : '<span class="inline-flex items-center gap-1 rounded-sm border border-info-border bg-info-bg px-1.5 py-0.5 text-2xs font-medium text-info"><span class="size-1.5 rounded-full bg-info ds-live"></span>AWAITING</span>';
+      return '<li class="px-3 py-2">' +
+        '<div class="flex items-center gap-2">' +
+          '<span class="min-w-0 flex-1 truncate text-sm font-medium text-fg">' + s.title + '</span>' + st +
+        '</div>' +
+        '<div class="mt-0.5 flex items-center gap-1.5 text-2xs text-fg-subtle">' +
+          '<span class="font-mono">✉ ' + s.recipient.name + '</span><span>·</span><span>' + s.items.length + ' questions</span>' +
+        '</div>' +
+        (s.status === 'responded' ? '' :
+          '<button data-act="respond" data-sid="' + s.id + '" class="mt-1.5 rounded border border-border px-2 py-0.5 text-2xs font-medium text-fg-muted hover:bg-hover hover:text-fg">Simulate response</button>') +
+      '</li>';
+    }).join('');
+  }
+
+  function renderReadiness() {
+    var c = SM.counts(MODEL), pct = SM.completeness(MODEL);
+    document.getElementById('readyPct').textContent = pct + '%';
+    document.getElementById('readyBar').style.width = pct + '%';
+    var parts = [
+      ['confirmed', c.confirmed, 'text-success'],
+      ['review', c.review, 'text-warning'],
+      ['conflict', c.conflict, 'text-danger'],
+      ['awaiting', c.awaiting, 'text-info'],
+      ['gap', c.gap, 'text-fg-subtle']
+    ].filter(function (p) { return p[1] > 0; });
+    document.getElementById('readyCounts').innerHTML = parts.map(function (p) {
+      return '<span class="' + p[2] + '"><span class="font-semibold tabular-nums">' + p[1] + '</span> ' + p[0] + '</span>';
+    }).join('');
+  }
+
+  function renderAll() { renderEntities(); renderFields(); renderOpen(); renderCart(); renderSurveys(); renderReadiness(); }
+
+  // ---- mutations ----
+  function setValue(eid, key, val, source, status) {
+    var f = field(eid, key);
+    f.value = val;
+    f.status = status || 'confirmed';
+    f.source = source || { file: null, agent: 'human' };
+    f.confidence = source && source.confidence ? source.confidence : 1;
+    // drop from cart if present
+    cart = cart.filter(function (c) { return !(c.entityId === eid && c.fieldKey === key); });
+  }
+
+  // ---- events ----
+  document.addEventListener('click', function (ev) {
+    var b = ev.target.closest('[data-ent]'); var act;
+    var actEl = ev.target.closest('[data-act]');
+    if (actEl) {
+      act = actEl.getAttribute('data-act');
+      var eid = actEl.getAttribute('data-ent'), key = actEl.getAttribute('data-key');
+      if (act === 'choose') {
+        var f = field(eid, key), cand = f.candidates[+actEl.getAttribute('data-i')];
+        setValue(eid, key, cand.value, { file: cand.source.file, agent: cand.source.agent, confidence: 1 }, 'confirmed');
+        renderAll(); return;
+      }
+      if (act === 'confirm') { var ff = field(eid, key); ff.status = 'confirmed'; ff.confidence = 1; renderAll(); return; }
+      if (act === 'survey') { if (!inCart(eid, key)) cart.push({ entityId: eid, fieldKey: key }); renderAll(); return; }
+      if (act === 'uncart') { cart = cart.filter(function (c) { return !(c.entityId === eid && c.fieldKey === key); }); renderAll(); return; }
+      if (act === 'respond') { respond(+actEl.getAttribute('data-sid')); return; }
+    }
+    // entity selection / jump
+    if (b && (b.hasAttribute('data-ent')) && !actEl) {
+      sel = b.getAttribute('data-ent');
+      renderEntities(); renderFields();
+      if (b.hasAttribute('data-jump')) document.getElementById('fields').scrollTop = 0;
+      return;
+    }
+  });
+
+  // value edits
+  document.addEventListener('change', function (ev) {
+    var inp = ev.target.closest('input[data-act="value"]');
+    if (!inp) return;
+    var eid = inp.getAttribute('data-ent'), key = inp.getAttribute('data-key'), val = inp.value.trim();
+    if (val === '') return;
+    setValue(eid, key, val, { file: null, agent: 'human', confidence: 1 }, 'confirmed');
+    renderAll();
+  });
+
+  // ---- survey drawer ----
+  var drawerWrap = document.getElementById('drawerWrap');
+  var drawer = drawerWrap.querySelector('.drawer');
+  function openDrawer() {
+    var recSel = document.getElementById('drawerRecipient');
+    recSel.innerHTML = MODEL.contacts.map(function (c) { return '<option value="' + c.id + '">' + c.name + ' — ' + c.role + ', ' + c.org + '</option>'; }).join('');
+    document.getElementById('drawerTitle').value = 'Fleet data request · ' + new Date().toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
+    document.getElementById('drawerN').textContent = cart.length;
+    document.getElementById('drawerMeta').textContent = cart.length + ' questions';
+    document.getElementById('drawerQuestions').innerHTML = cart.map(function (c, i) {
+      var f = field(c.entityId, c.fieldKey), e = entity(c.entityId);
+      var q = 'What is the ' + f.label.toLowerCase() + ' for ' + e.type.toLowerCase() + ' ' + e.label + '?';
+      return '<li class="rounded-md border border-border bg-surface px-2.5 py-2">' +
+        '<div class="mb-1 flex items-center gap-1.5"><span class="grid size-4 place-items-center rounded-full bg-accent-muted font-mono text-2xs text-accent">' + (i + 1) + '</span>' +
+        '<span class="font-mono text-2xs text-fg-subtle">' + e.label + ' · ' + f.key + '</span></div>' +
+        '<input data-q="' + i + '" type="text" value="' + q.replace(/"/g, '&quot;') + '" class="w-full rounded border border-border bg-surface-sunken px-2 py-1 text-sm text-fg focus:border-accent focus:outline-none focus:ring-2 focus:ring-ring/40"></li>';
+    }).join('');
+    drawerWrap.classList.remove('hidden');
+    requestAnimationFrame(function () { drawer.classList.remove('translate-x-full'); });
+  }
+  function closeDrawer() {
+    drawer.classList.add('translate-x-full');
+    setTimeout(function () { drawerWrap.classList.add('hidden'); }, 220);
+  }
+  document.getElementById('buildSurveyBtn').addEventListener('click', function () { if (cart.length) openDrawer(); });
+  document.getElementById('drawerClose').addEventListener('click', closeDrawer);
+  document.getElementById('drawerBackdrop').addEventListener('click', closeDrawer);
+
+  document.getElementById('drawerSend').addEventListener('click', function () {
+    var recId = document.getElementById('drawerRecipient').value;
+    var recipient = MODEL.contacts.find(function (c) { return c.id === recId; });
+    var title = document.getElementById('drawerTitle').value || 'Fleet data request';
+    var qInputs = document.getElementById('drawerQuestions').querySelectorAll('[data-q]');
+    var items = cart.map(function (c, i) {
+      return { entityId: c.entityId, fieldKey: c.fieldKey, question: qInputs[i] ? qInputs[i].value : '' };
+    });
+    surveys.push({ id: ++sid, recipient: recipient, title: title, items: items, status: 'sent' });
+    // mark surveyed fields awaiting
+    items.forEach(function (it) {
+      var f = field(it.entityId, it.fieldKey);
+      f.status = 'awaiting';
+      f.source = { file: null, agent: 'survey' };
+    });
+    cart = [];
+    closeDrawer();
+    renderAll();
+    toast('Survey sent to ' + recipient.name + ' · ' + items.length + ' questions', 'info');
+  });
+
+  function respond(id) {
+    var s = surveys.find(function (x) { return x.id === id; });
+    if (!s) return;
+    s.status = 'responded';
+    s.items.forEach(function (it) {
+      var f = field(it.entityId, it.fieldKey);
+      var ans = ANSWERS[it.fieldKey] || 'Provided by ' + s.recipient.name;
+      setValue(it.entityId, it.fieldKey, ans, { file: null, agent: 'survey', confidence: 1 }, 'confirmed');
+    });
+    renderAll();
+    toast('Response received from ' + s.recipient.name + ' — ' + s.items.length + ' gaps filled', 'success');
+  }
+
+  // ---- promote ----
+  document.getElementById('promoteBtn').addEventListener('click', function () {
+    MODEL.meta.version = '1.0.0';
+    MODEL.meta.generated = new Date().toISOString();
+    SM.save(MODEL);
+    var c = SM.counts(MODEL);
+    var open = c.review + c.conflict + c.gap + c.awaiting;
+    toast(open === 0
+      ? 'Model promoted · 100% confirmed — ready to download'
+      : 'Model promoted with ' + open + ' open field' + (open === 1 ? '' : 's') + ' · download anytime', open === 0 ? 'success' : 'info', true);
+  });
+
+  // ---- toast ----
+  var toastT;
+  function toast(msg, kind, withLink) {
+    var el = document.getElementById('toast');
+    var c = kind === 'success' ? 'border-success-border bg-success-bg text-success'
+      : kind === 'info' ? 'border-info-border bg-info-bg text-info'
+      : 'border-border bg-surface-overlay text-fg';
+    el.innerHTML = '<div class="flex items-center gap-3 rounded-lg border px-3.5 py-2 text-sm font-medium shadow-overlay ' + c + '">' +
+      '<span>' + msg + '</span>' +
+      (withLink ? '<a href="download.html" class="rounded-md bg-accent px-2.5 py-1 text-xs font-medium text-fg-on-accent hover:bg-accent-hover">Download →</a>' : '') +
+      '</div>';
+    el.classList.remove('hidden');
+    clearTimeout(toastT);
+    toastT = setTimeout(function () { el.classList.add('hidden'); }, withLink ? 6000 : 3200);
+  }
+
+  renderAll();
+})();
+</script>
+</body>
+</html>

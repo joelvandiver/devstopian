@@ -1,0 +1,305 @@
+/* =============================================================================
+   DC GRID — Design System Tokens (Tailwind CSS v4)
+   -----------------------------------------------------------------------------
+   Single source of truth for the design system. Imported AFTER `tailwindcss`:
+
+       <style type="text/tailwindcss">
+         @import "tailwindcss";
+         @import "./tokens.css";
+       </style>
+
+   LAYERS
+     1. @custom-variant dark  -> enables `dark:` utilities via `.dark` class
+     2. @theme                -> PRIMITIVE tokens. Generate static utilities
+                                 (bg-gray-700, text-brand-500, rounded-md, ...)
+     3. :root / .dark         -> SEMANTIC tokens. Plain CSS vars that swap at
+                                 runtime between light & dark.
+     4. @theme inline         -> maps semantic vars to live utilities
+                                 (bg-surface, text-fg, border-border, ...).
+                                 `inline` keeps the var reference live so the
+                                 same utility resolves to the active theme.
+   ========================================================================== */
+
+@custom-variant dark (&:where(.dark, .dark *));
+
+/* -----------------------------------------------------------------------------
+   2. PRIMITIVES  (@theme  ->  static utilities + CSS custom properties)
+   -------------------------------------------------------------------------- */
+@theme {
+  /* ---- Type families -------------------------------------------------- */
+  --font-sans: "Roboto", system-ui, -apple-system, "Segoe UI", Helvetica, Arial, sans-serif;
+  --font-mono: "Roboto Mono", ui-monospace, "SF Mono", "Cascadia Code", Menlo, monospace;
+
+  /* ---- Type scale (compact, tuned for dense UIs) ---------------------- */
+  --text-2xs: 0.6875rem;   --text-2xs--line-height: 1rem;       /* 11 / 16 */
+  --text-xs:  0.75rem;     --text-xs--line-height: 1rem;        /* 12 / 16 */
+  --text-sm:  0.8125rem;   --text-sm--line-height: 1.125rem;    /* 13 / 18 */
+  --text-base:0.875rem;    --text-base--line-height: 1.25rem;   /* 14 / 20 */
+  --text-md:  0.9375rem;   --text-md--line-height: 1.375rem;    /* 15 / 22 */
+  --text-lg:  1.0625rem;   --text-lg--line-height: 1.5rem;      /* 17 / 24 */
+  --text-xl:  1.3125rem;   --text-xl--line-height: 1.75rem;     /* 21 / 28 */
+  --text-2xl: 1.625rem;    --text-2xl--line-height: 2rem;       /* 26 / 32 */
+  --text-3xl: 2rem;        --text-3xl--line-height: 2.375rem;   /* 32 / 38 */
+  --text-4xl: 2.5rem;      --text-4xl--line-height: 2.75rem;    /* 40 / 44 */
+
+  /* ---- Font weights --------------------------------------------------- */
+  --font-weight-normal: 400;
+  --font-weight-medium: 500;
+  --font-weight-semibold: 600;
+  --font-weight-bold: 700;
+
+  /* ---- Radius --------------------------------------------------------- */
+  --radius-xs: 2px;
+  --radius-sm: 3px;
+  --radius-md: 5px;
+  --radius-lg: 8px;
+  --radius-xl: 12px;
+  --radius-2xl: 16px;
+
+  /* ---- Elevation (subtle; dense UIs lean on borders) ------------------ */
+  --shadow-xs: 0 1px 1px rgb(15 18 22 / 0.04);
+  --shadow-sm: 0 1px 2px rgb(15 18 22 / 0.06), 0 1px 1px rgb(15 18 22 / 0.04);
+  --shadow-md: 0 2px 4px rgb(15 18 22 / 0.06), 0 4px 12px rgb(15 18 22 / 0.08);
+  --shadow-lg: 0 8px 24px rgb(15 18 22 / 0.12), 0 2px 6px rgb(15 18 22 / 0.06);
+  --shadow-overlay: 0 12px 40px rgb(15 18 22 / 0.22), 0 2px 8px rgb(15 18 22 / 0.10);
+
+  /* ---- Neutral scale (cool gray) -------------------------------------- */
+  --color-gray-50:  #f6f7f9;
+  --color-gray-100: #eceef1;
+  --color-gray-200: #dfe3e8;
+  --color-gray-300: #cbd1d9;
+  --color-gray-400: #9aa3ad;
+  --color-gray-500: #6c7682;
+  --color-gray-600: #4d565f;
+  --color-gray-700: #39404880;  /* unused alpha guard */
+  --color-gray-700: #394048;
+  --color-gray-800: #252a31;
+  --color-gray-900: #181c21;
+  --color-gray-950: #0f1216;
+
+  /* ---- Brand scale (cyan — uptime / network) -------------------------- */
+  --color-brand-50:  #ecfbff;
+  --color-brand-100: #d0f3fc;
+  --color-brand-200: #a6e8f7;
+  --color-brand-300: #67d4ee;
+  --color-brand-400: #29b8dd;
+  --color-brand-500: #0e9bc4;
+  --color-brand-600: #0a7ca3;
+  --color-brand-700: #0e6483;
+  --color-brand-800: #14516b;
+  --color-brand-900: #15445a;
+  --color-brand-950: #0a2c3d;
+
+  /* ---- Status scales -------------------------------------------------- */
+  --color-info-400:  #5b8def;
+  --color-info-500:  #2f6fed;
+  --color-info-600:  #1d4fd7;
+
+  --color-success-400: #34c97b;
+  --color-success-500: #1f9d57;
+  --color-success-600: #15803d;
+
+  --color-warning-400: #e3a008;
+  --color-warning-500: #c77d12;
+  --color-warning-600: #a15c07;
+
+  --color-danger-400: #f0616f;
+  --color-danger-500: #e02e42;
+  --color-danger-600: #c4283a;
+}
+
+/* -----------------------------------------------------------------------------
+   3. SEMANTIC TOKENS  ->  utilities
+   Light values are LITERALS inside @theme, so the browser-CDN compiler never
+   tries (and fails) to resolve a var() at build time. Dark mode overrides the
+   SAME --color-* variables under `.dark`, so every utility — bg-surface,
+   text-fg, border-border, the status triads, and opacity modifiers like
+   bg-surface-raised/90 — swaps LIVE at runtime. This is the standard Tailwind
+   v4 theming pattern and is robust to the runtime theme toggle.
+
+   Generated utilities: bg-surface, bg-surface-raised, bg-surface-sunken,
+   text-fg, text-fg-muted, text-fg-subtle, border-border, bg-accent,
+   text-accent, bg-hover, ring-ring, bg-info-bg, text-info, border-info-border …
+   -------------------------------------------------------------------------- */
+@theme {
+  /* Surfaces */
+  --color-surface:         #ffffff;
+  --color-surface-raised:  #ffffff;
+  --color-surface-sunken:  #f6f7f9;
+  --color-surface-overlay: #ffffff;
+  --color-surface-inset:   #eceef1;
+  /* Borders */
+  --color-border:          #dfe3e8;
+  --color-border-strong:   #cbd1d9;
+  --color-border-subtle:   #eceef1;
+  /* Foreground / text */
+  --color-fg:              #181c21;
+  --color-fg-muted:        #4d565f;
+  --color-fg-subtle:       #6c7682;
+  --color-fg-on-accent:    #ffffff;
+  /* Accent (brand) */
+  --color-accent:          #0a7ca3;
+  --color-accent-hover:    #0e6483;
+  --color-accent-muted:    #ecfbff;
+  --color-accent-border:   #a6e8f7;
+  /* Interaction states */
+  --color-hover:           #f6f7f9;
+  --color-active:          #eceef1;
+  --color-selected:        #ecfbff;
+  --color-ring:            #29b8dd;
+  --color-disabled-fg:     #9aa3ad;
+  --color-disabled-bg:     #f6f7f9;
+  /* Status — fg / bg / border */
+  --color-info:    #1d4fd7;  --color-info-bg:    #eaf0ff;  --color-info-border:    #c2d4fb;
+  --color-success: #15803d;  --color-success-bg: #e7f7ee;  --color-success-border: #b6e6c9;
+  --color-warning: #9a5b06;  --color-warning-bg: #fdf3e2;  --color-warning-border: #f1d9a3;
+  --color-danger:  #c4283a;  --color-danger-bg:  #fdecee;  --color-danger-border:  #f5c7cd;
+}
+
+:root { color-scheme: light; }
+
+/* Dark mode — override the SAME theme variables. Unlayered, so it wins over the
+   @theme defaults (which Tailwind emits in @layer theme). */
+.dark {
+  color-scheme: dark;
+  --color-surface:         #0f1216;
+  --color-surface-raised:  #181c21;
+  --color-surface-sunken:  #0b0e11;
+  --color-surface-overlay: #1f242b;
+  --color-surface-inset:   #1c2127;
+  --color-border:          #2a3038;
+  --color-border-strong:   #3a414a;
+  --color-border-subtle:   #20262d;
+  --color-fg:              #eef1f4;
+  --color-fg-muted:        #9aa3ad;
+  --color-fg-subtle:       #6c7682;
+  --color-fg-on-accent:    #04141c;
+  --color-accent:          #29b8dd;
+  --color-accent-hover:    #67d4ee;
+  --color-accent-muted:    #0c2c38;
+  --color-accent-border:   #14516b;
+  --color-hover:           #1c2127;
+  --color-active:          #252b33;
+  --color-selected:        #0c2c38;
+  --color-ring:            #29b8dd;
+  --color-disabled-fg:     #4d565f;
+  --color-disabled-bg:     #181c21;
+  --color-info:    #82a6ff;  --color-info-bg:    #15223d;  --color-info-border:    #2a4072;
+  --color-success: #54d08a;  --color-success-bg: #102a1d;  --color-success-border: #1f5236;
+  --color-warning: #e6b24f;  --color-warning-bg: #2c2410;  --color-warning-border: #574316;
+  --color-danger:  #f3909a;  --color-danger-bg:  #341216;  --color-danger-border:  #6b2630;
+}
+
+/* -----------------------------------------------------------------------------
+   BASE LAYER — global resets tuned for the system
+   -------------------------------------------------------------------------- */
+@layer base {
+  html {
+    font-family: var(--font-sans);
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+  }
+  body {
+    background: var(--color-surface);
+    color: var(--color-fg);
+    font-size: var(--text-base);
+  }
+  *, ::before, ::after { border-color: var(--color-border); }
+
+  /* Visible, consistent focus ring everywhere */
+  :where(a, button, input, select, textarea, [tabindex], [role="treeitem"]):focus-visible {
+    outline: 2px solid var(--color-ring);
+    outline-offset: 1px;
+    border-radius: var(--radius-sm);
+  }
+
+  /* Dense, themeable scrollbars */
+  * { scrollbar-width: thin; scrollbar-color: var(--color-border-strong) transparent; }
+  ::-webkit-scrollbar { width: 10px; height: 10px; }
+  ::-webkit-scrollbar-thumb {
+    background: var(--color-border-strong);
+    border-radius: 6px;
+    border: 2px solid var(--color-surface);
+  }
+  ::-webkit-scrollbar-track { background: transparent; }
+}
+
+/* -----------------------------------------------------------------------------
+   COMPONENT-LEVEL STYLES that pure utilities can't express
+   (table density, sticky cells, tree drag affordances).
+   Everything else is composed from utilities in the markup.
+   -------------------------------------------------------------------------- */
+@layer components {
+
+  /* ---- Table density variants (set on <table data-density="…">) ------- */
+  table[data-density] { border-collapse: separate; border-spacing: 0; }
+  table.ds-table :is(th, td) { white-space: nowrap; }
+  table[data-density="compact"]     :is(th, td) { padding: 2px 8px;  height: 26px; }
+  table[data-density="default"]     :is(th, td) { padding: 5px 10px; height: 32px; }
+  table[data-density="comfortable"] :is(th, td) { padding: 9px 14px; height: 42px; }
+
+  /* Sticky header + sticky first column live together cleanly */
+  table.ds-table thead th { position: sticky; top: 0; z-index: 2; }
+  table.ds-table [data-sticky-col] { position: sticky; left: 0; z-index: 1; }
+  table.ds-table thead [data-sticky-col] { z-index: 3; }
+
+  /* Sortable header caret */
+  th[aria-sort] { cursor: pointer; user-select: none; }
+  th[aria-sort] .ds-caret::after { content: "↕"; opacity: 0.35; }
+  th[aria-sort="ascending"]  .ds-caret::after { content: "↑"; opacity: 1; }
+  th[aria-sort="descending"] .ds-caret::after { content: "↓"; opacity: 1; }
+
+  /* Truncation helper for overflow cells (pairs with title="" tooltip) */
+  .ds-truncate { max-width: 0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+
+  /* ---- Tree structure ------------------------------------------------- */
+  ul[role="tree"], ul[role="group"] { list-style: none; margin: 0; padding: 0; }
+  /* Nesting indentation + guide line in one move */
+  ul[role="group"] { margin-left: 15px; border-left: 1px solid var(--color-border); }
+  [role="treeitem"][aria-expanded="false"] > ul[role="group"] { display: none; }
+
+  /* Chevron rotates open */
+  .ds-chev { display: inline-block; transition: transform .12s ease; color: var(--color-fg-subtle); }
+  [role="treeitem"][aria-expanded="true"] > .ds-tree-row .ds-chev { transform: rotate(90deg); }
+  [role="treeitem"]:not([aria-expanded]) .ds-chev { visibility: hidden; }
+
+  /* ---- Tree drag-and-drop affordances --------------------------------- */
+  [role="treeitem"] .ds-tree-row { position: relative; }
+
+  /* Nesting indentation guides */
+  .ds-tree-guide {
+    position: absolute; top: 0; bottom: 0; width: 1px;
+    background: var(--color-border);
+  }
+
+  /* Drag handle only reveals on row hover (keeps dense rows clean) */
+  .ds-tree-row .ds-drag-handle { opacity: 0; transition: opacity .12s; cursor: grab; }
+  .ds-tree-row:hover .ds-drag-handle,
+  .ds-tree-row:focus-within .ds-drag-handle { opacity: 1; }
+  [aria-grabbed="true"] .ds-drag-handle { cursor: grabbing; }
+
+  /* The element being dragged */
+  .ds-dragging { opacity: 0.45; }
+
+  /* Drop-target states, driven by JS adding data-drop="" */
+  [data-drop="before"] > .ds-tree-row::before,
+  [data-drop="after"]  > .ds-tree-row::after {
+    content: ""; position: absolute; left: 0; right: 0; height: 2px;
+    background: var(--color-accent); z-index: 5;
+  }
+  [data-drop="before"] > .ds-tree-row::before { top: -1px; }
+  [data-drop="after"]  > .ds-tree-row::after  { bottom: -1px; }
+  [data-drop="inside"] > .ds-tree-row {
+    outline: 2px solid var(--color-accent);
+    outline-offset: -2px;
+    background: var(--color-selected);
+    border-radius: var(--radius-sm);
+  }
+  [data-drop="invalid"] > .ds-tree-row {
+    outline: 2px solid var(--color-danger);
+    outline-offset: -2px;
+    background: var(--color-danger-bg);
+    border-radius: var(--radius-sm);
+    cursor: no-drop;
+  }
+}

@@ -1,0 +1,306 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Substrate — Tables</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&family=Roboto+Mono:wght@400;500&display=swap" rel="stylesheet">
+<script>(function(){try{var t=localStorage.getItem('ds-theme')||(matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light');document.documentElement.classList.toggle('dark',t==='dark');document.documentElement.setAttribute('data-theme',t);}catch(e){}})();</script>
+<script src="theme.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+<script src="ds.js" defer></script>
+</head>
+<body style="background:var(--color-surface);color:var(--color-fg)" class="bg-surface text-fg min-h-screen antialiased">
+
+<!-- APP BAR -->
+<header class="sticky top-0 z-30 border-b border-border bg-surface-raised/90 backdrop-blur">
+  <div class="mx-auto flex h-12 max-w-[1480px] items-center gap-4 px-4">
+    <a href="index.html" class="flex items-center gap-2 font-semibold text-fg">
+      <span class="grid size-6 place-items-center rounded bg-accent text-fg-on-accent text-2xs font-bold tracking-tight">DC</span>
+      <span>Substrate</span><span class="hidden font-normal text-fg-subtle sm:inline">/ Design System</span>
+    </a>
+    <nav class="ml-3 hidden items-center gap-0.5 text-sm lg:flex">
+      <a href="index.html" class="rounded px-2 py-1 text-fg-muted hover:bg-hover hover:text-fg">Overview</a>
+      <a href="tables.html" class="rounded px-2 py-1 font-medium text-fg hover:bg-hover">Tables</a>
+      <a href="tree.html" class="rounded px-2 py-1 text-fg-muted hover:bg-hover hover:text-fg">Tree</a>
+      <span class="mx-1 h-4 w-px bg-border"></span>
+      <a href="upload.html" class="rounded px-2 py-1 text-fg-muted hover:bg-hover hover:text-fg">Upload</a>
+      <a href="observability.html" class="rounded px-2 py-1 text-fg-muted hover:bg-hover hover:text-fg">Agents</a>
+      <a href="promotion.html" class="rounded px-2 py-1 text-fg-muted hover:bg-hover hover:text-fg">Promote</a>
+      <a href="download.html" class="rounded px-2 py-1 text-fg-muted hover:bg-hover hover:text-fg">Download</a>
+    </nav>
+    <div class="ml-auto flex items-center gap-2">
+      <button data-theme-toggle aria-pressed="false" aria-label="Toggle color theme"
+        class="inline-flex items-center gap-1.5 rounded-md border border-border bg-surface px-2.5 py-1 text-xs font-medium text-fg-muted hover:bg-hover hover:text-fg">
+        <span class="size-2 rounded-full bg-accent"></span><span data-theme-label>Light</span>
+      </button>
+    </div>
+  </div>
+</header>
+
+<main class="mx-auto max-w-[1480px] px-4 py-8">
+
+  <div class="mb-5 border-b border-border pb-3">
+    <h1 class="text-2xl font-bold tracking-tight text-fg">Condensed tables</h1>
+    <p class="mt-1 max-w-3xl text-base text-fg-muted text-pretty">
+      A first-class dense table: sticky header, sticky first column, horizontal scroll across many columns,
+      zebra striping, sortable headers, and overflow truncation with tooltips. Click any
+      <span class="font-medium text-fg">sortable</span> header (carets) to sort; switch density below.
+    </p>
+  </div>
+
+  <!-- Controls -->
+  <div class="mb-3 flex flex-wrap items-center gap-3">
+    <div class="inline-flex items-center gap-1 rounded-md border border-border bg-surface p-0.5 text-xs" role="group" aria-label="Row density">
+      <button data-density-set="compact" class="rounded px-2.5 py-1 font-medium text-fg-muted hover:text-fg" aria-pressed="false">Compact</button>
+      <button data-density-set="default" class="rounded px-2.5 py-1 font-medium text-fg-on-accent bg-accent" aria-pressed="true">Default</button>
+      <button data-density-set="comfortable" class="rounded px-2.5 py-1 font-medium text-fg-muted hover:text-fg" aria-pressed="false">Comfortable</button>
+    </div>
+    <div class="flex items-center gap-2 text-xs text-fg-subtle">
+      <span class="inline-flex items-center gap-1"><span class="size-1.5 rounded-full bg-success"></span>OK</span>
+      <span class="inline-flex items-center gap-1"><span class="size-1.5 rounded-full bg-warning"></span>Warm</span>
+      <span class="inline-flex items-center gap-1"><span class="size-1.5 rounded-full bg-danger"></span>Down</span>
+    </div>
+    <span class="ml-auto font-mono text-2xs text-fg-subtle">12 racks · 11 columns</span>
+  </div>
+
+  <!-- TABLE: scroll container gives sticky header (vertical) + sticky col (horizontal) -->
+  <div class="overflow-auto rounded-lg border border-border shadow-sm" style="max-height: 540px">
+    <table id="rackTable" class="ds-table w-full text-left text-base" data-density="default">
+      <thead class="bg-surface-sunken text-2xs font-mono uppercase tracking-wide text-fg-muted">
+        <tr class="border-b border-border">
+          <th data-sticky-col aria-sort="none" class="border-r border-border bg-surface-sunken text-left font-medium">
+            <span class="inline-flex items-center gap-1">Rack <span class="ds-caret"></span></span>
+          </th>
+          <th aria-sort="none" class="text-left font-medium"><span class="inline-flex items-center gap-1">Status <span class="ds-caret"></span></span></th>
+          <th class="text-left font-medium">Region</th>
+          <th class="text-left font-medium">Row</th>
+          <th aria-sort="none" data-sort-type="number" class="text-right font-medium"><span class="inline-flex items-center justify-end gap-1">U used <span class="ds-caret"></span></span></th>
+          <th aria-sort="none" data-sort-type="number" class="text-right font-medium"><span class="inline-flex items-center justify-end gap-1">Power kW <span class="ds-caret"></span></span></th>
+          <th aria-sort="none" data-sort-type="number" class="text-right font-medium"><span class="inline-flex items-center justify-end gap-1">Inlet °C <span class="ds-caret"></span></span></th>
+          <th aria-sort="none" data-sort-type="number" class="text-right font-medium"><span class="inline-flex items-center justify-end gap-1">Gb/s <span class="ds-caret"></span></span></th>
+          <th aria-sort="none" data-sort-type="number" class="text-right font-medium"><span class="inline-flex items-center justify-end gap-1">Loss % <span class="ds-caret"></span></span></th>
+          <th class="text-left font-medium">Last seen</th>
+          <th class="text-left font-medium" style="min-width: 200px; max-width: 200px">Owner / note</th>
+        </tr>
+      </thead>
+      <tbody class="divide-y divide-border">
+        <!-- rows: each tr carries an opaque bg so the sticky first cell (bg-inherit) covers scrolled content -->
+        <tr class="bg-surface even:bg-surface-sunken hover:bg-hover">
+          <td data-sticky-col class="border-r border-border bg-inherit font-mono font-medium text-fg">RK-04-A1</td>
+          <td><span class="inline-flex items-center gap-1.5 text-success"><span class="size-1.5 rounded-full bg-success"></span>OK</span></td>
+          <td class="text-fg-muted">us-east-2b</td><td class="text-fg-muted">A</td>
+          <td class="text-right font-mono tabular-nums text-fg">38</td>
+          <td class="text-right font-mono tabular-nums text-fg">7.8</td>
+          <td class="text-right font-mono tabular-nums text-fg">22.1</td>
+          <td class="text-right font-mono tabular-nums text-fg">41.2</td>
+          <td class="text-right font-mono tabular-nums text-fg">0.01</td>
+          <td class="font-mono text-sm text-fg-muted">2s ago</td>
+          <td class="ds-truncate text-fg-muted" title="m.okafor — primary GPU training pool, do not reboot during business hours">m.okafor — primary GPU training pool, do not reboot during business hours</td>
+        </tr>
+        <tr class="bg-surface even:bg-surface-sunken hover:bg-hover">
+          <td data-sticky-col class="border-r border-border bg-inherit font-mono font-medium text-fg">RK-04-A2</td>
+          <td><span class="inline-flex items-center gap-1.5 text-warning"><span class="size-1.5 rounded-full bg-warning"></span>Warm</span></td>
+          <td class="text-fg-muted">us-east-2b</td><td class="text-fg-muted">A</td>
+          <td class="text-right font-mono tabular-nums text-fg">41</td>
+          <td class="text-right font-mono tabular-nums text-fg">8.3</td>
+          <td class="text-right font-mono tabular-nums text-warning">27.4</td>
+          <td class="text-right font-mono tabular-nums text-fg">38.7</td>
+          <td class="text-right font-mono tabular-nums text-fg">0.04</td>
+          <td class="font-mono text-sm text-fg-muted">4s ago</td>
+          <td class="ds-truncate text-fg-muted" title="m.okafor — cooling watch, CRAH-B2 at 94% capacity">m.okafor — cooling watch, CRAH-B2 at 94% capacity</td>
+        </tr>
+        <tr class="bg-surface even:bg-surface-sunken hover:bg-hover">
+          <td data-sticky-col class="border-r border-border bg-inherit font-mono font-medium text-fg">RK-05-B7</td>
+          <td><span class="inline-flex items-center gap-1.5 text-danger"><span class="size-1.5 rounded-full bg-danger"></span>Down</span></td>
+          <td class="text-fg-muted">us-east-2b</td><td class="text-fg-muted">B</td>
+          <td class="text-right font-mono tabular-nums text-fg">42</td>
+          <td class="text-right font-mono tabular-nums text-fg">0.0</td>
+          <td class="text-right font-mono tabular-nums text-fg">19.8</td>
+          <td class="text-right font-mono tabular-nums text-danger">0.0</td>
+          <td class="text-right font-mono tabular-nums text-danger">100</td>
+          <td class="font-mono text-sm text-fg-muted">6m ago</td>
+          <td class="ds-truncate text-fg-muted" title="ops — PDU trip, electrician dispatched, ETA 20m">ops — PDU trip, electrician dispatched, ETA 20m</td>
+        </tr>
+        <tr class="bg-surface even:bg-surface-sunken hover:bg-hover">
+          <td data-sticky-col class="border-r border-border bg-inherit font-mono font-medium text-fg">RK-05-B8</td>
+          <td><span class="inline-flex items-center gap-1.5 text-success"><span class="size-1.5 rounded-full bg-success"></span>OK</span></td>
+          <td class="text-fg-muted">us-east-2b</td><td class="text-fg-muted">B</td>
+          <td class="text-right font-mono tabular-nums text-fg">30</td>
+          <td class="text-right font-mono tabular-nums text-fg">6.1</td>
+          <td class="text-right font-mono tabular-nums text-fg">21.5</td>
+          <td class="text-right font-mono tabular-nums text-fg">33.0</td>
+          <td class="text-right font-mono tabular-nums text-fg">0.00</td>
+          <td class="font-mono text-sm text-fg-muted">1s ago</td>
+          <td class="ds-truncate text-fg-muted" title="s.patel — object storage shard, healthy">s.patel — object storage shard, healthy</td>
+        </tr>
+        <tr class="bg-surface even:bg-surface-sunken hover:bg-hover">
+          <td data-sticky-col class="border-r border-border bg-inherit font-mono font-medium text-fg">RK-06-C3</td>
+          <td><span class="inline-flex items-center gap-1.5 text-success"><span class="size-1.5 rounded-full bg-success"></span>OK</span></td>
+          <td class="text-fg-muted">us-east-2a</td><td class="text-fg-muted">C</td>
+          <td class="text-right font-mono tabular-nums text-fg">36</td>
+          <td class="text-right font-mono tabular-nums text-fg">7.2</td>
+          <td class="text-right font-mono tabular-nums text-fg">23.0</td>
+          <td class="text-right font-mono tabular-nums text-fg">39.5</td>
+          <td class="text-right font-mono tabular-nums text-fg">0.02</td>
+          <td class="font-mono text-sm text-fg-muted">3s ago</td>
+          <td class="ds-truncate text-fg-muted" title="s.patel — inference fleet, autoscaling enabled">s.patel — inference fleet, autoscaling enabled</td>
+        </tr>
+        <tr class="bg-surface even:bg-surface-sunken hover:bg-hover">
+          <td data-sticky-col class="border-r border-border bg-inherit font-mono font-medium text-fg">RK-06-C4</td>
+          <td><span class="inline-flex items-center gap-1.5 text-warning"><span class="size-1.5 rounded-full bg-warning"></span>Warm</span></td>
+          <td class="text-fg-muted">us-east-2a</td><td class="text-fg-muted">C</td>
+          <td class="text-right font-mono tabular-nums text-fg">40</td>
+          <td class="text-right font-mono tabular-nums text-fg">8.0</td>
+          <td class="text-right font-mono tabular-nums text-warning">26.2</td>
+          <td class="text-right font-mono tabular-nums text-fg">37.1</td>
+          <td class="text-right font-mono tabular-nums text-fg">0.06</td>
+          <td class="font-mono text-sm text-fg-muted">5s ago</td>
+          <td class="ds-truncate text-fg-muted" title="d.nguyen — batch queue, throttled overnight">d.nguyen — batch queue, throttled overnight</td>
+        </tr>
+        <tr class="bg-surface even:bg-surface-sunken hover:bg-hover">
+          <td data-sticky-col class="border-r border-border bg-inherit font-mono font-medium text-fg">RK-07-D1</td>
+          <td><span class="inline-flex items-center gap-1.5 text-success"><span class="size-1.5 rounded-full bg-success"></span>OK</span></td>
+          <td class="text-fg-muted">eu-west-1a</td><td class="text-fg-muted">D</td>
+          <td class="text-right font-mono tabular-nums text-fg">28</td>
+          <td class="text-right font-mono tabular-nums text-fg">5.4</td>
+          <td class="text-right font-mono tabular-nums text-fg">20.1</td>
+          <td class="text-right font-mono tabular-nums text-fg">29.8</td>
+          <td class="text-right font-mono tabular-nums text-fg">0.00</td>
+          <td class="font-mono text-sm text-fg-muted">2s ago</td>
+          <td class="ds-truncate text-fg-muted" title="l.santos — edge cache, EU region">l.santos — edge cache, EU region</td>
+        </tr>
+        <tr class="bg-surface even:bg-surface-sunken hover:bg-hover">
+          <td data-sticky-col class="border-r border-border bg-inherit font-mono font-medium text-fg">RK-07-D2</td>
+          <td><span class="inline-flex items-center gap-1.5 text-success"><span class="size-1.5 rounded-full bg-success"></span>OK</span></td>
+          <td class="text-fg-muted">eu-west-1a</td><td class="text-fg-muted">D</td>
+          <td class="text-right font-mono tabular-nums text-fg">34</td>
+          <td class="text-right font-mono tabular-nums text-fg">6.7</td>
+          <td class="text-right font-mono tabular-nums text-fg">21.0</td>
+          <td class="text-right font-mono tabular-nums text-fg">35.6</td>
+          <td class="text-right font-mono tabular-nums text-fg">0.01</td>
+          <td class="font-mono text-sm text-fg-muted">1s ago</td>
+          <td class="ds-truncate text-fg-muted" title="l.santos — replication target for us-east-2">l.santos — replication target for us-east-2</td>
+        </tr>
+        <tr class="bg-surface even:bg-surface-sunken hover:bg-hover">
+          <td data-sticky-col class="border-r border-border bg-inherit font-mono font-medium text-fg">RK-08-E5</td>
+          <td><span class="inline-flex items-center gap-1.5 text-info"><span class="size-1.5 rounded-full bg-info"></span>Maint</span></td>
+          <td class="text-fg-muted">eu-west-1b</td><td class="text-fg-muted">E</td>
+          <td class="text-right font-mono tabular-nums text-fg">0</td>
+          <td class="text-right font-mono tabular-nums text-fg">0.4</td>
+          <td class="text-right font-mono tabular-nums text-fg">18.0</td>
+          <td class="text-right font-mono tabular-nums text-fg">0.0</td>
+          <td class="text-right font-mono tabular-nums text-fg">0.00</td>
+          <td class="font-mono text-sm text-fg-muted">30m ago</td>
+          <td class="ds-truncate text-fg-muted" title="ops — scheduled firmware upgrade, window 02:00–04:00 UTC">ops — scheduled firmware upgrade, window 02:00–04:00 UTC</td>
+        </tr>
+        <tr class="bg-surface even:bg-surface-sunken hover:bg-hover">
+          <td data-sticky-col class="border-r border-border bg-inherit font-mono font-medium text-fg">RK-09-F2</td>
+          <td><span class="inline-flex items-center gap-1.5 text-success"><span class="size-1.5 rounded-full bg-success"></span>OK</span></td>
+          <td class="text-fg-muted">ap-south-1a</td><td class="text-fg-muted">F</td>
+          <td class="text-right font-mono tabular-nums text-fg">39</td>
+          <td class="text-right font-mono tabular-nums text-fg">7.9</td>
+          <td class="text-right font-mono tabular-nums text-fg">24.3</td>
+          <td class="text-right font-mono tabular-nums text-fg">42.0</td>
+          <td class="text-right font-mono tabular-nums text-fg">0.03</td>
+          <td class="font-mono text-sm text-fg-muted">2s ago</td>
+          <td class="ds-truncate text-fg-muted" title="r.kapoor — newest region, highest throughput rack">r.kapoor — newest region, highest throughput rack</td>
+        </tr>
+        <tr class="bg-surface even:bg-surface-sunken hover:bg-hover">
+          <td data-sticky-col class="border-r border-border bg-inherit font-mono font-medium text-fg">RK-09-F3</td>
+          <td><span class="inline-flex items-center gap-1.5 text-success"><span class="size-1.5 rounded-full bg-success"></span>OK</span></td>
+          <td class="text-fg-muted">ap-south-1a</td><td class="text-fg-muted">F</td>
+          <td class="text-right font-mono tabular-nums text-fg">31</td>
+          <td class="text-right font-mono tabular-nums text-fg">6.0</td>
+          <td class="text-right font-mono tabular-nums text-fg">22.8</td>
+          <td class="text-right font-mono tabular-nums text-fg">34.4</td>
+          <td class="text-right font-mono tabular-nums text-fg">0.00</td>
+          <td class="font-mono text-sm text-fg-muted">3s ago</td>
+          <td class="ds-truncate text-fg-muted" title="r.kapoor — staging cluster">r.kapoor — staging cluster</td>
+        </tr>
+        <tr class="bg-surface even:bg-surface-sunken hover:bg-hover">
+          <td data-sticky-col class="border-r border-border bg-inherit font-mono font-medium text-fg">RK-10-G1</td>
+          <td><span class="inline-flex items-center gap-1.5 text-warning"><span class="size-1.5 rounded-full bg-warning"></span>Warm</span></td>
+          <td class="text-fg-muted">ap-south-1b</td><td class="text-fg-muted">G</td>
+          <td class="text-right font-mono tabular-nums text-fg">37</td>
+          <td class="text-right font-mono tabular-nums text-fg">7.6</td>
+          <td class="text-right font-mono tabular-nums text-warning">26.9</td>
+          <td class="text-right font-mono tabular-nums text-fg">36.0</td>
+          <td class="text-right font-mono tabular-nums text-fg">0.05</td>
+          <td class="font-mono text-sm text-fg-muted">7s ago</td>
+          <td class="ds-truncate text-fg-muted" title="d.nguyen — hot aisle sensor flagged, monitoring">d.nguyen — hot aisle sensor flagged, monitoring</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- Feature callouts -->
+  <div class="mt-6 grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
+    <div class="rounded-lg border border-border bg-surface-raised p-3">
+      <h3 class="text-sm font-semibold text-fg">Sticky header &amp; first column</h3>
+      <p class="mt-1 text-xs text-fg-muted">Scroll the table both ways — the header row and the <code class="font-mono text-fg-muted">Rack</code> column stay pinned. The corner cell wins the z-stack.</p>
+      <pre class="mt-2 overflow-x-auto rounded bg-surface-inset px-2 py-1.5 font-mono text-2xs text-fg-muted">&lt;th data-sticky-col&gt;…
+&lt;td data-sticky-col class="bg-inherit"&gt;…</pre>
+    </div>
+    <div class="rounded-lg border border-border bg-surface-raised p-3">
+      <h3 class="text-sm font-semibold text-fg">Sortable headers</h3>
+      <p class="mt-1 text-xs text-fg-muted">Add <code class="font-mono text-fg-muted">aria-sort="none"</code> and a <code class="font-mono text-fg-muted">.ds-caret</code>. <code class="font-mono text-fg-muted">data-sort-type="number"</code> forces numeric ordering; state lives in <code class="font-mono text-fg-muted">aria-sort</code>.</p>
+      <pre class="mt-2 overflow-x-auto rounded bg-surface-inset px-2 py-1.5 font-mono text-2xs text-fg-muted">&lt;th aria-sort="none"
+    data-sort-type="number"&gt;</pre>
+    </div>
+    <div class="rounded-lg border border-border bg-surface-raised p-3">
+      <h3 class="text-sm font-semibold text-fg">Truncation + tooltip</h3>
+      <p class="mt-1 text-xs text-fg-muted"><code class="font-mono text-fg-muted">.ds-truncate</code> ellipsises overflow; pair it with a native <code class="font-mono text-fg-muted">title</code> for the full value on hover.</p>
+      <pre class="mt-2 overflow-x-auto rounded bg-surface-inset px-2 py-1.5 font-mono text-2xs text-fg-muted">&lt;td class="ds-truncate"
+    title="full value"&gt;</pre>
+    </div>
+    <div class="rounded-lg border border-border bg-surface-raised p-3">
+      <h3 class="text-sm font-semibold text-fg">Density variants</h3>
+      <p class="mt-1 text-xs text-fg-muted">Set <code class="font-mono text-fg-muted">data-density</code> on the table — <code class="font-mono text-fg-muted">compact</code> (26px), <code class="font-mono text-fg-muted">default</code> (32px), <code class="font-mono text-fg-muted">comfortable</code> (42px) row heights.</p>
+      <pre class="mt-2 overflow-x-auto rounded bg-surface-inset px-2 py-1.5 font-mono text-2xs text-fg-muted">&lt;table class="ds-table"
+   data-density="compact"&gt;</pre>
+    </div>
+    <div class="rounded-lg border border-border bg-surface-raised p-3">
+      <h3 class="text-sm font-semibold text-fg">Zebra striping</h3>
+      <p class="mt-1 text-xs text-fg-muted">Each row carries an opaque background so the sticky cell stays readable. Stripe with the <code class="font-mono text-fg-muted">even:</code> variant.</p>
+      <pre class="mt-2 overflow-x-auto rounded bg-surface-inset px-2 py-1.5 font-mono text-2xs text-fg-muted">&lt;tr class="bg-surface
+   even:bg-surface-sunken"&gt;</pre>
+    </div>
+    <div class="rounded-lg border border-border bg-surface-raised p-3">
+      <h3 class="text-sm font-semibold text-fg">Horizontal scroll</h3>
+      <p class="mt-1 text-xs text-fg-muted">Wrap the table in an <code class="font-mono text-fg-muted">overflow-auto</code> container with a <code class="font-mono text-fg-muted">max-height</code> to get both axes of scrolling and a contained sticky context.</p>
+      <pre class="mt-2 overflow-x-auto rounded bg-surface-inset px-2 py-1.5 font-mono text-2xs text-fg-muted">&lt;div class="overflow-auto"
+  style="max-height:540px"&gt;</pre>
+    </div>
+  </div>
+</main>
+
+<footer class="border-t border-border bg-surface-sunken">
+  <div class="mx-auto flex max-w-[1480px] items-center gap-2 px-4 py-6 text-sm text-fg-muted">
+    <span class="grid size-5 place-items-center rounded bg-accent text-fg-on-accent text-2xs font-bold">DC</span>
+    <span class="font-semibold text-fg">Substrate</span>
+    <a href="index.html" class="ml-auto text-xs text-fg-subtle hover:text-fg">← Back to overview</a>
+  </div>
+</footer>
+
+<script>
+  // Density segmented control (page-local)
+  document.addEventListener('click', function (e) {
+    var btn = e.target.closest('[data-density-set]');
+    if (!btn) return;
+    var table = document.getElementById('rackTable');
+    table.setAttribute('data-density', btn.getAttribute('data-density-set'));
+    document.querySelectorAll('[data-density-set]').forEach(function (b) {
+      var on = b === btn;
+      b.setAttribute('aria-pressed', String(on));
+      b.classList.toggle('bg-accent', on);
+      b.classList.toggle('text-fg-on-accent', on);
+      b.classList.toggle('text-fg-muted', !on);
+      b.classList.toggle('hover:text-fg', !on);
+    });
+  });
+</script>
+</body>
+</html>

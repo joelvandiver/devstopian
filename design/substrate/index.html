@@ -1,0 +1,587 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Substrate — Data Center Design System</title>
+<meta name="description" content="Substrate: a dense, token-driven design system for data center infrastructure tooling. Tailwind CSS v4.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&family=Roboto+Mono:wght@400;500&display=swap" rel="stylesheet">
+<script>(function(){try{var t=localStorage.getItem('ds-theme')||(matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light');document.documentElement.classList.toggle('dark',t==='dark');document.documentElement.setAttribute('data-theme',t);}catch(e){}})();</script>
+<script src="theme.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+<script src="ds.js" defer></script>
+</head>
+<body style="background:var(--color-surface);color:var(--color-fg)" class="bg-surface text-fg min-h-screen antialiased">
+
+<!-- ============================ APP BAR ============================ -->
+<header class="sticky top-0 z-30 border-b border-border bg-surface-raised/90 backdrop-blur">
+  <div class="mx-auto flex h-12 max-w-[1480px] items-center gap-4 px-4">
+    <a href="index.html" class="flex items-center gap-2 font-semibold text-fg">
+      <span class="grid size-6 place-items-center rounded bg-accent text-fg-on-accent text-2xs font-bold tracking-tight">DC</span>
+      <span>Substrate</span>
+      <span class="hidden font-normal text-fg-subtle sm:inline">/ Design System</span>
+    </a>
+    <nav class="ml-3 hidden items-center gap-0.5 text-sm lg:flex">
+      <a href="index.html" class="rounded px-2 py-1 font-medium text-fg hover:bg-hover">Overview</a>
+      <a href="tables.html" class="rounded px-2 py-1 text-fg-muted hover:bg-hover hover:text-fg">Tables</a>
+      <a href="tree.html" class="rounded px-2 py-1 text-fg-muted hover:bg-hover hover:text-fg">Tree</a>
+      <span class="mx-1 h-4 w-px bg-border"></span>
+      <a href="upload.html" class="rounded px-2 py-1 text-fg-muted hover:bg-hover hover:text-fg">Upload</a>
+      <a href="observability.html" class="rounded px-2 py-1 text-fg-muted hover:bg-hover hover:text-fg">Agents</a>
+      <a href="promotion.html" class="rounded px-2 py-1 text-fg-muted hover:bg-hover hover:text-fg">Promote</a>
+      <a href="download.html" class="rounded px-2 py-1 text-fg-muted hover:bg-hover hover:text-fg">Download</a>
+    </nav>
+    <div class="ml-auto flex items-center gap-2">
+      <span class="hidden items-center gap-1.5 rounded-md border border-border bg-surface px-2 py-1 text-2xs font-mono text-fg-subtle md:inline-flex">
+        <span class="size-1.5 rounded-full bg-success"></span>tailwind v4
+      </span>
+      <button data-theme-toggle aria-pressed="false" aria-label="Toggle color theme"
+        class="inline-flex items-center gap-1.5 rounded-md border border-border bg-surface px-2.5 py-1 text-xs font-medium text-fg-muted hover:bg-hover hover:text-fg">
+        <span class="size-2 rounded-full bg-accent"></span>
+        <span data-theme-label>Light</span>
+      </button>
+    </div>
+  </div>
+</header>
+
+<!-- ============================ HERO ============================ -->
+<section class="border-b border-border bg-surface-sunken">
+  <div class="mx-auto max-w-[1480px] px-4 py-10 md:py-14">
+    <div class="max-w-3xl">
+      <div class="mb-3 inline-flex items-center gap-2 rounded-full border border-accent-border bg-accent-muted px-2.5 py-1 text-2xs font-medium text-accent">
+        <span class="size-1.5 rounded-full bg-accent"></span>
+        DATA CENTER INFRASTRUCTURE · DESIGN SYSTEM
+      </div>
+      <h1 class="text-4xl font-bold tracking-tight text-fg">Substrate</h1>
+      <p class="mt-3 text-lg text-fg-muted text-pretty">
+        A dense, token-driven design system for data center control planes — rack inventory,
+        throughput dashboards, cooling telemetry and network topology. Built on
+        <span class="font-medium text-fg">Tailwind CSS v4</span> with a primitive&nbsp;→&nbsp;semantic
+        token model, runtime light/dark theming, and predictable utility markup that small models can parse and extend.
+      </p>
+      <div class="mt-5 flex flex-wrap items-center gap-2">
+        <a href="#components" class="inline-flex items-center gap-1.5 rounded-md bg-accent px-3.5 py-2 text-sm font-medium text-fg-on-accent hover:bg-accent-hover">Browse components</a>
+        <a href="#tokens" class="inline-flex items-center gap-1.5 rounded-md border border-border bg-surface px-3.5 py-2 text-sm font-medium text-fg hover:bg-hover">Design tokens</a>
+        <a href="landing.html" class="inline-flex items-center gap-1.5 rounded-md px-3.5 py-2 text-sm font-medium text-fg-muted hover:bg-hover hover:text-fg">See a full page&nbsp;→</a>
+      </div>
+      <dl class="mt-8 grid max-w-2xl grid-cols-2 gap-px overflow-hidden rounded-lg border border-border bg-border sm:grid-cols-4">
+        <div class="bg-surface px-3 py-2.5">
+          <dt class="text-2xs font-mono uppercase tracking-wide text-fg-subtle">Primitives</dt>
+          <dd class="mt-0.5 text-xl font-semibold tabular-nums text-fg">34</dd>
+        </div>
+        <div class="bg-surface px-3 py-2.5">
+          <dt class="text-2xs font-mono uppercase tracking-wide text-fg-subtle">Semantic tokens</dt>
+          <dd class="mt-0.5 text-xl font-semibold tabular-nums text-fg">38</dd>
+        </div>
+        <div class="bg-surface px-3 py-2.5">
+          <dt class="text-2xs font-mono uppercase tracking-wide text-fg-subtle">Components</dt>
+          <dd class="mt-0.5 text-xl font-semibold tabular-nums text-fg">12</dd>
+        </div>
+        <div class="bg-surface px-3 py-2.5">
+          <dt class="text-2xs font-mono uppercase tracking-wide text-fg-subtle">Build step</dt>
+          <dd class="mt-0.5 text-xl font-semibold text-fg">none</dd>
+        </div>
+      </dl>
+    </div>
+  </div>
+</section>
+
+<!-- ============================ BODY (TOC + content) ============================ -->
+<div class="mx-auto flex max-w-[1480px] gap-8 px-4 py-8">
+
+  <!-- TOC -->
+  <aside class="sticky top-16 hidden h-[calc(100vh-5rem)] w-48 shrink-0 overflow-y-auto xl:block">
+    <p class="mb-2 px-2 text-2xs font-mono uppercase tracking-wide text-fg-subtle">On this page</p>
+    <nav class="flex flex-col gap-0.5 text-sm">
+      <a href="#tokens" class="rounded px-2 py-1 font-medium text-fg hover:bg-hover">Design tokens</a>
+      <a href="#color-primitives" class="rounded px-2 py-1 pl-4 text-fg-muted hover:bg-hover hover:text-fg">Color primitives</a>
+      <a href="#color-semantic" class="rounded px-2 py-1 pl-4 text-fg-muted hover:bg-hover hover:text-fg">Semantic colors</a>
+      <a href="#status" class="rounded px-2 py-1 pl-4 text-fg-muted hover:bg-hover hover:text-fg">Status colors</a>
+      <a href="#type" class="rounded px-2 py-1 pl-4 text-fg-muted hover:bg-hover hover:text-fg">Typography</a>
+      <a href="#scale" class="rounded px-2 py-1 pl-4 text-fg-muted hover:bg-hover hover:text-fg">Spacing · radius · elevation</a>
+      <a href="#components" class="mt-1 rounded px-2 py-1 font-medium text-fg hover:bg-hover">Components</a>
+      <a href="#buttons" class="rounded px-2 py-1 pl-4 text-fg-muted hover:bg-hover hover:text-fg">Buttons</a>
+      <a href="#badges" class="rounded px-2 py-1 pl-4 text-fg-muted hover:bg-hover hover:text-fg">Badges &amp; status</a>
+      <a href="#forms" class="rounded px-2 py-1 pl-4 text-fg-muted hover:bg-hover hover:text-fg">Form controls</a>
+      <a href="#meta" class="rounded px-2 py-1 pl-4 text-fg-muted hover:bg-hover hover:text-fg">Inline metadata</a>
+      <a href="#cards" class="rounded px-2 py-1 pl-4 text-fg-muted hover:bg-hover hover:text-fg">Cards</a>
+      <a href="#banners" class="rounded px-2 py-1 pl-4 text-fg-muted hover:bg-hover hover:text-fg">Banners</a>
+      <a href="#data" class="rounded px-2 py-1 pl-4 text-fg-muted hover:bg-hover hover:text-fg">Table &amp; tree</a>
+    </nav>
+  </aside>
+
+  <main class="min-w-0 flex-1">
+
+    <!-- ===================== TOKENS ===================== -->
+    <section id="tokens" class="scroll-mt-16">
+      <div class="mb-4 border-b border-border pb-3">
+        <h2 class="text-2xl font-bold tracking-tight text-fg">Design tokens</h2>
+        <p class="mt-1 max-w-2xl text-base text-fg-muted text-pretty">
+          Tokens are declared with Tailwind v4's <code class="rounded bg-surface-inset px-1 py-0.5 font-mono text-xs text-accent">@theme</code> directive.
+          Primitives generate static utilities; semantic tokens are CSS variables in <code class="rounded bg-surface-inset px-1 py-0.5 font-mono text-xs text-accent">:root</code> /
+          <code class="rounded bg-surface-inset px-1 py-0.5 font-mono text-xs text-accent">.dark</code>, mapped to live utilities via
+          <code class="rounded bg-surface-inset px-1 py-0.5 font-mono text-xs text-accent">@theme inline</code>. Toggle the theme (top-right) to watch semantic tokens swap.
+        </p>
+      </div>
+
+      <!-- Color primitives -->
+      <div id="color-primitives" class="scroll-mt-16">
+        <h3 class="mb-1 text-md font-semibold text-fg">Color primitives</h3>
+        <p class="mb-3 text-sm text-fg-subtle">Fixed brand &amp; neutral scales. Utilities: <code class="font-mono text-xs text-fg-muted">bg-gray-700</code>, <code class="font-mono text-xs text-fg-muted">text-brand-500</code>.</p>
+        <p class="mb-1.5 text-2xs font-mono uppercase tracking-wide text-fg-subtle">Neutral (cool gray)</p>
+        <div class="mb-4 grid grid-cols-3 gap-1.5 sm:grid-cols-6 lg:grid-cols-11">
+          <div><div class="h-12 rounded border border-border bg-gray-50"></div><p class="mt-1 font-mono text-2xs text-fg-subtle">50</p></div>
+          <div><div class="h-12 rounded border border-border bg-gray-100"></div><p class="mt-1 font-mono text-2xs text-fg-subtle">100</p></div>
+          <div><div class="h-12 rounded border border-border bg-gray-200"></div><p class="mt-1 font-mono text-2xs text-fg-subtle">200</p></div>
+          <div><div class="h-12 rounded border border-border bg-gray-300"></div><p class="mt-1 font-mono text-2xs text-fg-subtle">300</p></div>
+          <div><div class="h-12 rounded bg-gray-400"></div><p class="mt-1 font-mono text-2xs text-fg-subtle">400</p></div>
+          <div><div class="h-12 rounded bg-gray-500"></div><p class="mt-1 font-mono text-2xs text-fg-subtle">500</p></div>
+          <div><div class="h-12 rounded bg-gray-600"></div><p class="mt-1 font-mono text-2xs text-fg-subtle">600</p></div>
+          <div><div class="h-12 rounded bg-gray-700"></div><p class="mt-1 font-mono text-2xs text-fg-subtle">700</p></div>
+          <div><div class="h-12 rounded bg-gray-800"></div><p class="mt-1 font-mono text-2xs text-fg-subtle">800</p></div>
+          <div><div class="h-12 rounded bg-gray-900"></div><p class="mt-1 font-mono text-2xs text-fg-subtle">900</p></div>
+          <div><div class="h-12 rounded bg-gray-950"></div><p class="mt-1 font-mono text-2xs text-fg-subtle">950</p></div>
+        </div>
+        <p class="mb-1.5 text-2xs font-mono uppercase tracking-wide text-fg-subtle">Brand (cyan · uptime)</p>
+        <div class="grid grid-cols-3 gap-1.5 sm:grid-cols-6 lg:grid-cols-11">
+          <div><div class="h-12 rounded border border-border bg-brand-50"></div><p class="mt-1 font-mono text-2xs text-fg-subtle">50</p></div>
+          <div><div class="h-12 rounded bg-brand-100"></div><p class="mt-1 font-mono text-2xs text-fg-subtle">100</p></div>
+          <div><div class="h-12 rounded bg-brand-200"></div><p class="mt-1 font-mono text-2xs text-fg-subtle">200</p></div>
+          <div><div class="h-12 rounded bg-brand-300"></div><p class="mt-1 font-mono text-2xs text-fg-subtle">300</p></div>
+          <div><div class="h-12 rounded bg-brand-400"></div><p class="mt-1 font-mono text-2xs text-fg-subtle">400</p></div>
+          <div><div class="h-12 rounded bg-brand-500"></div><p class="mt-1 font-mono text-2xs text-fg-subtle">500</p></div>
+          <div><div class="h-12 rounded bg-brand-600"></div><p class="mt-1 font-mono text-2xs text-fg-subtle">600</p></div>
+          <div><div class="h-12 rounded bg-brand-700"></div><p class="mt-1 font-mono text-2xs text-fg-subtle">700</p></div>
+          <div><div class="h-12 rounded bg-brand-800"></div><p class="mt-1 font-mono text-2xs text-fg-subtle">800</p></div>
+          <div><div class="h-12 rounded bg-brand-900"></div><p class="mt-1 font-mono text-2xs text-fg-subtle">900</p></div>
+          <div><div class="h-12 rounded bg-brand-950"></div><p class="mt-1 font-mono text-2xs text-fg-subtle">950</p></div>
+        </div>
+      </div>
+
+      <!-- Semantic colors -->
+      <div id="color-semantic" class="mt-8 scroll-mt-16">
+        <h3 class="mb-1 text-md font-semibold text-fg">Semantic colors</h3>
+        <p class="mb-3 text-sm text-fg-subtle">Theme-aware. Components reference <em>only</em> these — never primitives — so light/dark just works.</p>
+        <div class="grid grid-cols-2 gap-2 sm:grid-cols-3 lg:grid-cols-4">
+          <div class="overflow-hidden rounded-lg border border-border">
+            <div class="h-12 bg-surface"></div>
+            <div class="border-t border-border px-2 py-1.5"><p class="font-mono text-2xs text-fg">bg-surface</p><p class="font-mono text-2xs text-fg-subtle">page</p></div>
+          </div>
+          <div class="overflow-hidden rounded-lg border border-border">
+            <div class="h-12 bg-surface-raised"></div>
+            <div class="border-t border-border px-2 py-1.5"><p class="font-mono text-2xs text-fg">bg-surface-raised</p><p class="font-mono text-2xs text-fg-subtle">card / header</p></div>
+          </div>
+          <div class="overflow-hidden rounded-lg border border-border">
+            <div class="h-12 bg-surface-sunken"></div>
+            <div class="border-t border-border px-2 py-1.5"><p class="font-mono text-2xs text-fg">bg-surface-sunken</p><p class="font-mono text-2xs text-fg-subtle">inset / stripe</p></div>
+          </div>
+          <div class="overflow-hidden rounded-lg border border-border">
+            <div class="h-12 bg-surface-overlay"></div>
+            <div class="border-t border-border px-2 py-1.5"><p class="font-mono text-2xs text-fg">bg-surface-overlay</p><p class="font-mono text-2xs text-fg-subtle">menu / tooltip</p></div>
+          </div>
+          <div class="overflow-hidden rounded-lg border border-border">
+            <div class="h-12 bg-accent"></div>
+            <div class="border-t border-border px-2 py-1.5"><p class="font-mono text-2xs text-fg">bg-accent</p><p class="font-mono text-2xs text-fg-subtle">primary action</p></div>
+          </div>
+          <div class="overflow-hidden rounded-lg border border-border">
+            <div class="grid h-12 place-items-center bg-surface"><span class="text-fg text-sm">Aa</span></div>
+            <div class="border-t border-border px-2 py-1.5"><p class="font-mono text-2xs text-fg">text-fg</p><p class="font-mono text-2xs text-fg-subtle">primary text</p></div>
+          </div>
+          <div class="overflow-hidden rounded-lg border border-border">
+            <div class="grid h-12 place-items-center bg-surface"><span class="text-fg-muted text-sm">Aa</span></div>
+            <div class="border-t border-border px-2 py-1.5"><p class="font-mono text-2xs text-fg">text-fg-muted</p><p class="font-mono text-2xs text-fg-subtle">secondary</p></div>
+          </div>
+          <div class="overflow-hidden rounded-lg border border-border">
+            <div class="grid h-12 place-items-center bg-surface"><span class="text-fg-subtle text-sm">Aa</span></div>
+            <div class="border-t border-border px-2 py-1.5"><p class="font-mono text-2xs text-fg">text-fg-subtle</p><p class="font-mono text-2xs text-fg-subtle">tertiary</p></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Status colors -->
+      <div id="status" class="mt-8 scroll-mt-16">
+        <h3 class="mb-1 text-md font-semibold text-fg">Status colors</h3>
+        <p class="mb-3 text-sm text-fg-subtle">Each ships an <code class="font-mono text-xs text-fg-muted">fg</code> / <code class="font-mono text-xs text-fg-muted">bg</code> / <code class="font-mono text-xs text-fg-muted">border</code> triad with light- and dark-tuned values. Mapped to infrastructure states.</p>
+        <div class="grid grid-cols-2 gap-2 lg:grid-cols-4">
+          <div class="rounded-lg border border-info-border bg-info-bg px-3 py-2.5">
+            <p class="text-sm font-semibold text-info">Info</p>
+            <p class="mt-0.5 text-xs text-info/80">Scheduled maintenance</p>
+            <p class="mt-2 font-mono text-2xs text-info/70">text-info · bg-info-bg</p>
+          </div>
+          <div class="rounded-lg border border-success-border bg-success-bg px-3 py-2.5">
+            <p class="text-sm font-semibold text-success">Success</p>
+            <p class="mt-0.5 text-xs text-success/80">Rack operational</p>
+            <p class="mt-2 font-mono text-2xs text-success/70">text-success · bg-success-bg</p>
+          </div>
+          <div class="rounded-lg border border-warning-border bg-warning-bg px-3 py-2.5">
+            <p class="text-sm font-semibold text-warning">Warning</p>
+            <p class="mt-0.5 text-xs text-warning/80">Cooling threshold near</p>
+            <p class="mt-2 font-mono text-2xs text-warning/70">text-warning · bg-warning-bg</p>
+          </div>
+          <div class="rounded-lg border border-danger-border bg-danger-bg px-3 py-2.5">
+            <p class="text-sm font-semibold text-danger">Danger</p>
+            <p class="mt-0.5 text-xs text-danger/80">Node offline</p>
+            <p class="mt-2 font-mono text-2xs text-danger/70">text-danger · bg-danger-bg</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Typography -->
+      <div id="type" class="mt-8 scroll-mt-16">
+        <h3 class="mb-1 text-md font-semibold text-fg">Typography</h3>
+        <p class="mb-3 text-sm text-fg-subtle">Roboto for UI, Roboto Mono for identifiers &amp; metrics. Compact scale tuned for dense screens.</p>
+        <div class="divide-y divide-border overflow-hidden rounded-lg border border-border">
+          <div class="flex items-baseline gap-4 px-3 py-2"><code class="w-16 shrink-0 font-mono text-2xs text-fg-subtle">4xl</code><span class="text-4xl font-bold text-fg">Rack RK-04</span></div>
+          <div class="flex items-baseline gap-4 px-3 py-2"><code class="w-16 shrink-0 font-mono text-2xs text-fg-subtle">3xl</code><span class="text-3xl font-semibold text-fg">Throughput 41.2 Gb/s</span></div>
+          <div class="flex items-baseline gap-4 px-3 py-2"><code class="w-16 shrink-0 font-mono text-2xs text-fg-subtle">2xl</code><span class="text-2xl font-semibold text-fg">Cooling loop B</span></div>
+          <div class="flex items-baseline gap-4 px-3 py-2"><code class="w-16 shrink-0 font-mono text-2xs text-fg-subtle">xl</code><span class="text-xl font-medium text-fg">Network topology</span></div>
+          <div class="flex items-baseline gap-4 px-3 py-2"><code class="w-16 shrink-0 font-mono text-2xs text-fg-subtle">lg</code><span class="text-lg text-fg">Power draw summary</span></div>
+          <div class="flex items-baseline gap-4 px-3 py-2"><code class="w-16 shrink-0 font-mono text-2xs text-fg-subtle">base</code><span class="text-base text-fg">Default body — 14px, the workhorse size for tables and forms.</span></div>
+          <div class="flex items-baseline gap-4 px-3 py-2"><code class="w-16 shrink-0 font-mono text-2xs text-fg-subtle">sm</code><span class="text-sm text-fg-muted">Secondary — 13px metadata and helper text.</span></div>
+          <div class="flex items-baseline gap-4 px-3 py-2"><code class="w-16 shrink-0 font-mono text-2xs text-fg-subtle">xs</code><span class="text-xs text-fg-muted">12px — labels, captions.</span></div>
+          <div class="flex items-baseline gap-4 px-3 py-2"><code class="w-16 shrink-0 font-mono text-2xs text-fg-subtle">2xs</code><span class="text-2xs font-mono uppercase tracking-wide text-fg-subtle">11px · overline / tags</span></div>
+        </div>
+      </div>
+
+      <!-- Spacing / radius / elevation -->
+      <div id="scale" class="mt-8 scroll-mt-16 grid gap-4 md:grid-cols-3">
+        <div>
+          <h3 class="mb-1 text-md font-semibold text-fg">Spacing</h3>
+          <p class="mb-3 text-sm text-fg-subtle">0.25rem base. Default tight; <code class="font-mono text-xs text-fg-muted">data-density</code> opens it up.</p>
+          <div class="space-y-1.5">
+            <div class="flex items-center gap-2"><code class="w-8 font-mono text-2xs text-fg-subtle">1</code><div class="h-3 w-1 bg-accent"></div><span class="text-xs text-fg-muted">4px</span></div>
+            <div class="flex items-center gap-2"><code class="w-8 font-mono text-2xs text-fg-subtle">2</code><div class="h-3 w-2 bg-accent"></div><span class="text-xs text-fg-muted">8px</span></div>
+            <div class="flex items-center gap-2"><code class="w-8 font-mono text-2xs text-fg-subtle">3</code><div class="h-3 w-3 bg-accent"></div><span class="text-xs text-fg-muted">12px</span></div>
+            <div class="flex items-center gap-2"><code class="w-8 font-mono text-2xs text-fg-subtle">4</code><div class="h-3 w-4 bg-accent"></div><span class="text-xs text-fg-muted">16px</span></div>
+            <div class="flex items-center gap-2"><code class="w-8 font-mono text-2xs text-fg-subtle">6</code><div class="h-3 w-6 bg-accent"></div><span class="text-xs text-fg-muted">24px</span></div>
+            <div class="flex items-center gap-2"><code class="w-8 font-mono text-2xs text-fg-subtle">8</code><div class="h-3 w-8 bg-accent"></div><span class="text-xs text-fg-muted">32px</span></div>
+          </div>
+        </div>
+        <div>
+          <h3 class="mb-1 text-md font-semibold text-fg">Radius</h3>
+          <p class="mb-3 text-sm text-fg-subtle">Tight corners suit data-dense surfaces.</p>
+          <div class="flex flex-wrap gap-2">
+            <div class="text-center"><div class="size-12 rounded-xs border border-border bg-surface-inset"></div><p class="mt-1 font-mono text-2xs text-fg-subtle">xs 2</p></div>
+            <div class="text-center"><div class="size-12 rounded-sm border border-border bg-surface-inset"></div><p class="mt-1 font-mono text-2xs text-fg-subtle">sm 3</p></div>
+            <div class="text-center"><div class="size-12 rounded-md border border-border bg-surface-inset"></div><p class="mt-1 font-mono text-2xs text-fg-subtle">md 5</p></div>
+            <div class="text-center"><div class="size-12 rounded-lg border border-border bg-surface-inset"></div><p class="mt-1 font-mono text-2xs text-fg-subtle">lg 8</p></div>
+            <div class="text-center"><div class="size-12 rounded-xl border border-border bg-surface-inset"></div><p class="mt-1 font-mono text-2xs text-fg-subtle">xl 12</p></div>
+          </div>
+        </div>
+        <div>
+          <h3 class="mb-1 text-md font-semibold text-fg">Elevation</h3>
+          <p class="mb-3 text-sm text-fg-subtle">Subtle — dense UIs lean on borders.</p>
+          <div class="grid grid-cols-2 gap-3">
+            <div class="rounded-lg bg-surface-raised p-3 shadow-xs"><p class="font-mono text-2xs text-fg-subtle">shadow-xs</p></div>
+            <div class="rounded-lg bg-surface-raised p-3 shadow-sm"><p class="font-mono text-2xs text-fg-subtle">shadow-sm</p></div>
+            <div class="rounded-lg bg-surface-raised p-3 shadow-md"><p class="font-mono text-2xs text-fg-subtle">shadow-md</p></div>
+            <div class="rounded-lg bg-surface-raised p-3 shadow-lg"><p class="font-mono text-2xs text-fg-subtle">shadow-lg</p></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===================== COMPONENTS ===================== -->
+    <section id="components" class="mt-12 scroll-mt-16">
+      <div class="mb-4 border-b border-border pb-3">
+        <h2 class="text-2xl font-bold tracking-tight text-fg">Components</h2>
+        <p class="mt-1 max-w-2xl text-base text-fg-muted text-pretty">
+          Every component is plain semantic markup composed from utilities — no component classes to learn.
+          Each block mirrors its live markup below; hit <span class="font-medium text-fg">Copy</span> to lift it verbatim.
+        </p>
+      </div>
+
+      <!-- Buttons -->
+      <div id="buttons" class="mb-8 scroll-mt-16">
+        <h3 class="mb-2 text-md font-semibold text-fg">Buttons</h3>
+        <div data-example class="overflow-hidden rounded-lg border border-border">
+          <div data-preview class="flex flex-wrap items-center gap-2 bg-surface p-4">
+            <button class="inline-flex items-center gap-1.5 rounded-md bg-accent px-3 py-1.5 text-sm font-medium text-fg-on-accent hover:bg-accent-hover">Provision rack</button>
+            <button class="inline-flex items-center gap-1.5 rounded-md border border-border bg-surface px-3 py-1.5 text-sm font-medium text-fg hover:bg-hover">Secondary</button>
+            <button class="inline-flex items-center gap-1.5 rounded-md px-3 py-1.5 text-sm font-medium text-fg-muted hover:bg-hover hover:text-fg">Ghost</button>
+            <button class="inline-flex items-center gap-1.5 rounded-md border border-danger-border bg-danger-bg px-3 py-1.5 text-sm font-medium text-danger hover:bg-danger-bg/70">Decommission</button>
+            <button class="inline-flex items-center gap-1.5 rounded-md bg-accent px-2.5 py-1 text-xs font-medium text-fg-on-accent hover:bg-accent-hover">Small</button>
+            <button disabled class="inline-flex cursor-not-allowed items-center gap-1.5 rounded-md bg-disabled-bg px-3 py-1.5 text-sm font-medium text-disabled-fg">Disabled</button>
+          </div>
+          <div class="flex items-center justify-between border-t border-border bg-surface-sunken px-3 py-1.5">
+            <span class="font-mono text-2xs uppercase tracking-wide text-fg-subtle">markup</span>
+            <button data-copy class="rounded px-2 py-0.5 text-2xs font-medium text-fg-muted hover:bg-hover hover:text-fg"><span data-copy-label>Copy</span></button>
+          </div>
+          <pre class="overflow-x-auto bg-surface-inset px-3 py-2 text-2xs leading-relaxed"><code data-code class="font-mono text-fg-muted"></code></pre>
+        </div>
+      </div>
+
+      <!-- Badges / status -->
+      <div id="badges" class="mb-8 scroll-mt-16">
+        <h3 class="mb-2 text-md font-semibold text-fg">Badges &amp; status</h3>
+        <div data-example class="overflow-hidden rounded-lg border border-border">
+          <div data-preview class="flex flex-wrap items-center gap-2 bg-surface p-4">
+            <span class="inline-flex items-center gap-1 rounded-sm border border-success-border bg-success-bg px-1.5 py-0.5 text-2xs font-medium text-success"><span class="size-1.5 rounded-full bg-success"></span>OPERATIONAL</span>
+            <span class="inline-flex items-center gap-1 rounded-sm border border-warning-border bg-warning-bg px-1.5 py-0.5 text-2xs font-medium text-warning"><span class="size-1.5 rounded-full bg-warning"></span>DEGRADED</span>
+            <span class="inline-flex items-center gap-1 rounded-sm border border-danger-border bg-danger-bg px-1.5 py-0.5 text-2xs font-medium text-danger"><span class="size-1.5 rounded-full bg-danger"></span>OFFLINE</span>
+            <span class="inline-flex items-center gap-1 rounded-sm border border-info-border bg-info-bg px-1.5 py-0.5 text-2xs font-medium text-info"><span class="size-1.5 rounded-full bg-info"></span>MAINTENANCE</span>
+            <span class="inline-flex items-center rounded-sm border border-border bg-surface-sunken px-1.5 py-0.5 font-mono text-2xs text-fg-muted">us-east-2b</span>
+            <span class="inline-flex items-center rounded-full bg-accent-muted px-2 py-0.5 text-2xs font-medium text-accent">12 nodes</span>
+            <span class="inline-flex items-center gap-1 rounded-full border border-border bg-surface px-2 py-0.5 text-2xs font-medium text-fg-muted"><span class="size-1.5 rounded-full bg-gray-400"></span>standby</span>
+          </div>
+          <div class="flex items-center justify-between border-t border-border bg-surface-sunken px-3 py-1.5">
+            <span class="font-mono text-2xs uppercase tracking-wide text-fg-subtle">markup</span>
+            <button data-copy class="rounded px-2 py-0.5 text-2xs font-medium text-fg-muted hover:bg-hover hover:text-fg"><span data-copy-label>Copy</span></button>
+          </div>
+          <pre class="overflow-x-auto bg-surface-inset px-3 py-2 text-2xs leading-relaxed"><code data-code class="font-mono text-fg-muted"></code></pre>
+        </div>
+      </div>
+
+      <!-- Forms -->
+      <div id="forms" class="mb-8 scroll-mt-16">
+        <h3 class="mb-2 text-md font-semibold text-fg">Form controls</h3>
+        <div data-example class="overflow-hidden rounded-lg border border-border">
+          <div data-preview class="grid gap-3 bg-surface p-4 sm:grid-cols-2 lg:grid-cols-3">
+            <label class="block">
+              <span class="mb-1 block text-xs font-medium text-fg-muted">Rack label</span>
+              <input type="text" value="RK-04-B12" class="w-full rounded-md border border-border bg-surface px-2.5 py-1.5 text-sm text-fg placeholder:text-fg-subtle focus:border-accent focus:outline-none focus:ring-2 focus:ring-ring/40">
+            </label>
+            <label class="block">
+              <span class="mb-1 block text-xs font-medium text-fg-muted">Region</span>
+              <select class="w-full rounded-md border border-border bg-surface px-2.5 py-1.5 text-sm text-fg focus:border-accent focus:outline-none focus:ring-2 focus:ring-ring/40">
+                <option>us-east-2</option><option>eu-west-1</option><option>ap-south-1</option>
+              </select>
+            </label>
+            <label class="block">
+              <span class="mb-1 block text-xs font-medium text-fg-muted">Power cap (kW)</span>
+              <input type="number" value="8.5" step="0.1" class="w-full rounded-md border border-border bg-surface px-2.5 py-1.5 text-sm text-fg tabular-nums focus:border-accent focus:outline-none focus:ring-2 focus:ring-ring/40">
+            </label>
+            <label class="flex items-center gap-2 text-sm text-fg">
+              <input type="checkbox" checked class="size-4 rounded border-border text-accent focus:ring-ring/40">
+              Redundant PSU
+            </label>
+            <label class="flex items-center gap-2 text-sm text-fg">
+              <input type="radio" name="cool" checked class="size-4 border-border text-accent focus:ring-ring/40">
+              Liquid cooling
+            </label>
+            <label class="flex items-center gap-2 text-sm text-fg">
+              <input type="radio" name="cool" class="size-4 border-border text-accent focus:ring-ring/40">
+              Air cooling
+            </label>
+          </div>
+          <div class="flex items-center justify-between border-t border-border bg-surface-sunken px-3 py-1.5">
+            <span class="font-mono text-2xs uppercase tracking-wide text-fg-subtle">markup</span>
+            <button data-copy class="rounded px-2 py-0.5 text-2xs font-medium text-fg-muted hover:bg-hover hover:text-fg"><span data-copy-label>Copy</span></button>
+          </div>
+          <pre class="overflow-x-auto bg-surface-inset px-3 py-2 text-2xs leading-relaxed"><code data-code class="font-mono text-fg-muted"></code></pre>
+        </div>
+      </div>
+
+      <!-- Inline metadata -->
+      <div id="meta" class="mb-8 scroll-mt-16">
+        <h3 class="mb-2 text-md font-semibold text-fg">Inline metadata</h3>
+        <div data-example class="overflow-hidden rounded-lg border border-border">
+          <div data-preview class="bg-surface p-4">
+            <dl class="flex flex-wrap items-center gap-x-5 gap-y-2 text-sm">
+              <div class="flex items-center gap-1.5"><dt class="text-fg-subtle">Uptime</dt><dd class="font-mono font-medium text-success tabular-nums">99.992%</dd></div>
+              <div class="flex items-center gap-1.5"><dt class="text-fg-subtle">Throughput</dt><dd class="font-mono font-medium text-fg tabular-nums">41.2 Gb/s</dd></div>
+              <div class="flex items-center gap-1.5"><dt class="text-fg-subtle">Inlet temp</dt><dd class="font-mono font-medium text-warning tabular-nums">27.4 °C</dd></div>
+              <div class="flex items-center gap-1.5"><dt class="text-fg-subtle">Power</dt><dd class="font-mono font-medium text-fg tabular-nums">7.8 / 8.5 kW</dd></div>
+              <div class="flex items-center gap-1.5"><dt class="text-fg-subtle">PUE</dt><dd class="font-mono font-medium text-fg tabular-nums">1.18</dd></div>
+            </dl>
+          </div>
+          <div class="flex items-center justify-between border-t border-border bg-surface-sunken px-3 py-1.5">
+            <span class="font-mono text-2xs uppercase tracking-wide text-fg-subtle">markup</span>
+            <button data-copy class="rounded px-2 py-0.5 text-2xs font-medium text-fg-muted hover:bg-hover hover:text-fg"><span data-copy-label>Copy</span></button>
+          </div>
+          <pre class="overflow-x-auto bg-surface-inset px-3 py-2 text-2xs leading-relaxed"><code data-code class="font-mono text-fg-muted"></code></pre>
+        </div>
+      </div>
+
+      <!-- Cards -->
+      <div id="cards" class="mb-8 scroll-mt-16">
+        <h3 class="mb-2 text-md font-semibold text-fg">Cards</h3>
+        <div data-example class="overflow-hidden rounded-lg border border-border">
+          <div data-preview class="grid gap-3 bg-surface p-4 sm:grid-cols-2 lg:grid-cols-3">
+            <div class="rounded-lg border border-border bg-surface-raised shadow-sm">
+              <div class="flex items-center justify-between border-b border-border px-3 py-2">
+                <h4 class="text-sm font-semibold text-fg">Rack RK-04</h4>
+                <span class="inline-flex items-center gap-1 rounded-sm border border-success-border bg-success-bg px-1.5 py-0.5 text-2xs font-medium text-success"><span class="size-1.5 rounded-full bg-success"></span>OK</span>
+              </div>
+              <div class="px-3 py-2.5">
+                <p class="text-xs text-fg-muted">42U · us-east-2b · row C</p>
+                <div class="mt-2 flex items-baseline gap-1"><span class="text-2xl font-semibold tabular-nums text-fg">38</span><span class="text-xs text-fg-subtle">/ 42U used</span></div>
+                <div class="mt-2 h-1.5 overflow-hidden rounded-full bg-surface-inset"><div class="h-full w-[90%] rounded-full bg-accent"></div></div>
+              </div>
+            </div>
+            <div class="rounded-lg border border-border bg-surface-raised shadow-sm">
+              <div class="flex items-center justify-between border-b border-border px-3 py-2">
+                <h4 class="text-sm font-semibold text-fg">Cooling loop B</h4>
+                <span class="inline-flex items-center gap-1 rounded-sm border border-warning-border bg-warning-bg px-1.5 py-0.5 text-2xs font-medium text-warning"><span class="size-1.5 rounded-full bg-warning"></span>WARM</span>
+              </div>
+              <div class="px-3 py-2.5">
+                <p class="text-xs text-fg-muted">Chilled water · 2 CRAH units</p>
+                <div class="mt-2 flex items-baseline gap-1"><span class="text-2xl font-semibold tabular-nums text-warning">27.4</span><span class="text-xs text-fg-subtle">°C inlet</span></div>
+                <div class="mt-2 h-1.5 overflow-hidden rounded-full bg-surface-inset"><div class="h-full w-[78%] rounded-full bg-warning"></div></div>
+              </div>
+            </div>
+            <div class="rounded-lg border border-border bg-surface-raised shadow-sm">
+              <div class="flex items-center justify-between border-b border-border px-3 py-2">
+                <h4 class="text-sm font-semibold text-fg">Spine sw-core-01</h4>
+                <span class="inline-flex items-center gap-1 rounded-sm border border-danger-border bg-danger-bg px-1.5 py-0.5 text-2xs font-medium text-danger"><span class="size-1.5 rounded-full bg-danger"></span>DOWN</span>
+              </div>
+              <div class="px-3 py-2.5">
+                <p class="text-xs text-fg-muted">100GbE · port 14 flapping</p>
+                <div class="mt-2 flex items-baseline gap-1"><span class="text-2xl font-semibold tabular-nums text-danger">0</span><span class="text-xs text-fg-subtle">Gb/s</span></div>
+                <div class="mt-2 h-1.5 overflow-hidden rounded-full bg-surface-inset"><div class="h-full w-[4%] rounded-full bg-danger"></div></div>
+              </div>
+            </div>
+          </div>
+          <div class="flex items-center justify-between border-t border-border bg-surface-sunken px-3 py-1.5">
+            <span class="font-mono text-2xs uppercase tracking-wide text-fg-subtle">markup</span>
+            <button data-copy class="rounded px-2 py-0.5 text-2xs font-medium text-fg-muted hover:bg-hover hover:text-fg"><span data-copy-label>Copy</span></button>
+          </div>
+          <pre class="overflow-x-auto bg-surface-inset px-3 py-2 text-2xs leading-relaxed"><code data-code class="font-mono text-fg-muted"></code></pre>
+        </div>
+      </div>
+
+      <!-- Banners -->
+      <div id="banners" class="mb-8 scroll-mt-16">
+        <h3 class="mb-2 text-md font-semibold text-fg">Banners</h3>
+        <div data-example class="overflow-hidden rounded-lg border border-border">
+          <div data-preview class="space-y-3 bg-surface p-4">
+            <!-- announcement bar -->
+            <div class="flex items-center gap-3 rounded-md bg-accent px-3 py-2 text-fg-on-accent">
+              <span class="rounded-sm bg-white/20 px-1.5 py-0.5 text-2xs font-semibold uppercase tracking-wide">New</span>
+              <p class="text-sm">Region <span class="font-semibold">ap-south-1</span> is now live — 3 availability zones, 1,200 racks.</p>
+              <a href="#" class="ml-auto shrink-0 text-sm font-medium underline underline-offset-2 hover:opacity-90">Details</a>
+            </div>
+            <!-- warning alert banner -->
+            <div class="flex items-start gap-3 rounded-md border border-warning-border bg-warning-bg px-3 py-2.5 text-warning">
+              <span class="mt-0.5 grid size-4 shrink-0 place-items-center rounded-full border border-warning text-2xs font-bold">!</span>
+              <div class="min-w-0">
+                <p class="text-sm font-semibold">Cooling threshold approaching in row C</p>
+                <p class="text-xs text-warning/80">Inlet temperature 27.4 °C, 2 °C below shutdown. CRAH-B2 running at 94% capacity.</p>
+              </div>
+              <button class="ml-auto shrink-0 rounded px-2 py-0.5 text-xs font-medium hover:bg-warning/10">Acknowledge</button>
+            </div>
+            <!-- danger alert banner -->
+            <div class="flex items-start gap-3 rounded-md border border-danger-border bg-danger-bg px-3 py-2.5 text-danger">
+              <span class="mt-0.5 grid size-4 shrink-0 place-items-center rounded-full border border-danger text-2xs font-bold">!</span>
+              <div class="min-w-0">
+                <p class="text-sm font-semibold">Spine switch sw-core-01 unreachable</p>
+                <p class="text-xs text-danger/80">Failover to sw-core-02 active. 14 racks on degraded north-south path.</p>
+              </div>
+              <button class="ml-auto shrink-0 rounded bg-danger px-2 py-0.5 text-xs font-medium text-white hover:opacity-90">Open incident</button>
+            </div>
+          </div>
+          <div class="flex items-center justify-between border-t border-border bg-surface-sunken px-3 py-1.5">
+            <span class="font-mono text-2xs uppercase tracking-wide text-fg-subtle">markup</span>
+            <button data-copy class="rounded px-2 py-0.5 text-2xs font-medium text-fg-muted hover:bg-hover hover:text-fg"><span data-copy-label>Copy</span></button>
+          </div>
+          <pre class="overflow-x-auto bg-surface-inset px-3 py-2 text-2xs leading-relaxed"><code data-code class="font-mono text-fg-muted"></code></pre>
+        </div>
+      </div>
+
+      <!-- Data: table + tree links -->
+      <div id="data" class="mb-4 scroll-mt-16 grid gap-3 md:grid-cols-2">
+        <a href="tables.html" class="group rounded-lg border border-border bg-surface-raised p-4 shadow-sm hover:border-accent-border">
+          <div class="flex items-center justify-between">
+            <h3 class="text-md font-semibold text-fg">Condensed tables</h3>
+            <span class="text-fg-subtle group-hover:text-accent">→</span>
+          </div>
+          <p class="mt-1 text-sm text-fg-muted text-pretty">Sticky header &amp; first column, sortable affordances, zebra striping, truncation tooltips, and compact / default / comfortable density.</p>
+          <div class="mt-3 overflow-hidden rounded border border-border">
+            <table class="ds-table w-full text-left text-xs" data-density="compact">
+              <thead class="bg-surface-sunken text-fg-muted">
+                <tr><th class="font-medium">Rack</th><th class="font-medium">Status</th><th class="text-right font-medium">Gb/s</th></tr>
+              </thead>
+              <tbody class="divide-y divide-border">
+                <tr><td class="font-mono text-fg">RK-04</td><td><span class="text-success">●</span> OK</td><td class="text-right font-mono tabular-nums text-fg">41.2</td></tr>
+                <tr class="bg-surface-sunken"><td class="font-mono text-fg">RK-05</td><td><span class="text-warning">●</span> Warm</td><td class="text-right font-mono tabular-nums text-fg">38.7</td></tr>
+                <tr><td class="font-mono text-fg">RK-06</td><td><span class="text-danger">●</span> Down</td><td class="text-right font-mono tabular-nums text-fg">0.0</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </a>
+        <a href="tree.html" class="group rounded-lg border border-border bg-surface-raised p-4 shadow-sm hover:border-accent-border">
+          <div class="flex items-center justify-between">
+            <h3 class="text-md font-semibold text-fg">Infrastructure tree</h3>
+            <span class="text-fg-subtle group-hover:text-accent">→</span>
+          </div>
+          <p class="mt-1 text-sm text-fg-muted text-pretty">Expand/collapse, keyboard navigation, and native drag-and-drop reordering &amp; nesting with drop affordances and invalid-drop states.</p>
+          <div class="mt-3 rounded border border-border bg-surface p-2 font-mono text-xs text-fg-muted">
+            <div class="flex items-center gap-1"><span class="text-fg-subtle">▾</span> region us-east-2</div>
+            <div class="ml-4 border-l border-border pl-2">
+              <div class="flex items-center gap-1"><span class="text-fg-subtle">▾</span> dc iad-7</div>
+              <div class="ml-4 border-l border-border pl-2">
+                <div class="flex items-center gap-1"><span class="invisible">▾</span> hall A · 240 racks</div>
+                <div class="flex items-center gap-1"><span class="invisible">▾</span> hall B · 240 racks</div>
+              </div>
+            </div>
+          </div>
+        </a>
+        <a href="upload.html" class="group rounded-lg border border-border bg-surface-raised p-4 shadow-sm hover:border-accent-border">
+          <div class="flex items-center justify-between">
+            <h3 class="text-md font-semibold text-fg">File upload</h3>
+            <span class="text-fg-subtle group-hover:text-accent">→</span>
+          </div>
+          <p class="mt-1 text-sm text-fg-muted text-pretty">Drag-and-drop drop zone with a live upload queue — per-file progress, status badges, and error states.</p>
+          <div class="mt-3 grid place-items-center rounded border-2 border-dashed border-border bg-surface px-3 py-5 text-center">
+            <span class="grid size-8 place-items-center rounded-lg border border-border bg-surface-raised text-accent">↑</span>
+            <p class="mt-2 text-xs font-medium text-fg">Drop files here</p>
+            <p class="text-2xs text-fg-subtle">or browse</p>
+          </div>
+        </a>
+        <a href="observability.html" class="group rounded-lg border border-border bg-surface-raised p-4 shadow-sm hover:border-accent-border">
+          <div class="flex items-center justify-between">
+            <h3 class="text-md font-semibold text-fg">Agent pipeline</h3>
+            <span class="text-fg-subtle group-hover:text-accent">→</span>
+          </div>
+          <p class="mt-1 text-sm text-fg-muted text-pretty">Agentic observability — live trace waterfalls, span timings, an agent roster, and a streaming event log as files are processed in turn.</p>
+          <div class="mt-3 space-y-1.5 rounded border border-border bg-surface p-2.5">
+            <div class="flex items-center gap-2 text-xs"><span class="w-14 shrink-0 font-mono text-fg-muted">ingest</span><div class="h-2 flex-1 rounded bg-surface-inset"><div class="h-full w-full rounded bg-success"></div></div></div>
+            <div class="flex items-center gap-2 text-xs"><span class="w-14 shrink-0 font-mono text-fg-muted">parse</span><div class="h-2 flex-1 rounded bg-surface-inset"><div class="h-full w-3/4 rounded bg-accent"></div></div></div>
+            <div class="flex items-center gap-2 text-xs"><span class="w-14 shrink-0 font-mono text-fg-muted">classify</span><div class="h-2 flex-1 rounded bg-surface-inset"><div class="h-full w-1/3 rounded bg-info"></div></div></div>
+          </div>
+        </a>
+        <a href="promotion.html" class="group rounded-lg border border-border bg-surface-raised p-4 shadow-sm hover:border-accent-border">
+          <div class="flex items-center justify-between">
+            <h3 class="text-md font-semibold text-fg">Promotion (HITL)</h3>
+            <span class="text-fg-subtle group-hover:text-accent">→</span>
+          </div>
+          <p class="mt-1 text-sm text-fg-muted text-pretty">Human-in-the-loop review of the mapped information model — field provenance, conflict resolution, gap detection, and a customer survey builder.</p>
+          <div class="mt-3 space-y-1.5 rounded border border-border bg-surface p-2.5 text-xs">
+            <div class="flex items-center gap-2"><span class="flex-1 text-fg">PUE</span><span class="font-mono text-fg-muted">1.18</span><span class="inline-flex items-center rounded-sm border border-success-border bg-success-bg px-1 text-2xs font-medium text-success">CONFIRMED</span></div>
+            <div class="flex items-center gap-2"><span class="flex-1 text-fg">Uptime tier</span><span class="inline-flex items-center rounded-sm border border-danger-border bg-danger-bg px-1 text-2xs font-medium text-danger">CONFLICT</span></div>
+            <div class="flex items-center gap-2"><span class="flex-1 text-fg">Asset tag</span><span class="inline-flex items-center rounded-sm border border-border bg-surface-sunken px-1 text-2xs font-medium text-fg-subtle">GAP</span></div>
+          </div>
+        </a>
+        <a href="download.html" class="group rounded-lg border border-border bg-surface-raised p-4 shadow-sm hover:border-accent-border">
+          <div class="flex items-center justify-between">
+            <h3 class="text-md font-semibold text-fg">Download model</h3>
+            <span class="text-fg-subtle group-hover:text-accent">→</span>
+          </div>
+          <p class="mt-1 text-sm text-fg-muted text-pretty">The sealed final information model with a completeness seal, provenance summary, and export to JSON, YAML, CSV or NDJSON.</p>
+          <div class="mt-3 flex items-center gap-3 rounded border border-border bg-surface p-2.5">
+            <div class="grid size-11 shrink-0 place-items-center rounded-full" style="background:conic-gradient(var(--color-accent) 54%, var(--color-surface-inset) 0)"><div class="grid size-8 place-items-center rounded-full bg-surface"><span class="text-2xs font-semibold text-fg">54%</span></div></div>
+            <div class="font-mono text-2xs text-fg-muted"><div class="text-fg">fleet-information-model</div><div class="text-fg-subtle">json · yaml · csv · ndjson</div></div>
+          </div>
+        </a>
+      </div>
+    </section>
+
+  </main>
+</div>
+
+<!-- ============================ FOOTER ============================ -->
+<footer class="border-t border-border bg-surface-sunken">
+  <div class="mx-auto flex max-w-[1480px] flex-col gap-2 px-4 py-6 text-sm text-fg-muted sm:flex-row sm:items-center">
+    <div class="flex items-center gap-2">
+      <span class="grid size-5 place-items-center rounded bg-accent text-fg-on-accent text-2xs font-bold">DC</span>
+      <span class="font-semibold text-fg">Substrate</span>
+      <span class="text-fg-subtle">— data center design system</span>
+    </div>
+    <p class="text-xs text-fg-subtle sm:ml-auto">Tailwind CSS v4 · tokens in <code class="font-mono">tokens.css</code> · behavior in <code class="font-mono">ds.js</code></p>
+  </div>
+</footer>
+
+</body>
+</html>

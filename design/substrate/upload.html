@@ -1,0 +1,317 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Substrate — Upload</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&family=Roboto+Mono:wght@400;500&display=swap" rel="stylesheet">
+<script>(function(){try{var t=localStorage.getItem('ds-theme')||(matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light');document.documentElement.classList.toggle('dark',t==='dark');document.documentElement.setAttribute('data-theme',t);}catch(e){}})();</script>
+<script src="theme.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+<script src="ds.js" defer></script>
+</head>
+<body style="background:var(--color-surface);color:var(--color-fg)" class="bg-surface text-fg min-h-screen antialiased">
+
+<!-- APP BAR -->
+<header class="sticky top-0 z-30 border-b border-border bg-surface-raised/90 backdrop-blur">
+  <div class="mx-auto flex h-12 max-w-[1480px] items-center gap-4 px-4">
+    <a href="index.html" class="flex items-center gap-2 font-semibold text-fg">
+      <span class="grid size-6 place-items-center rounded bg-accent text-fg-on-accent text-2xs font-bold tracking-tight">DC</span>
+      <span>Substrate</span><span class="hidden font-normal text-fg-subtle sm:inline">/ Design System</span>
+    </a>
+    <nav class="ml-3 hidden items-center gap-0.5 text-sm lg:flex">
+      <a href="index.html" class="rounded px-2 py-1 text-fg-muted hover:bg-hover hover:text-fg">Overview</a>
+      <a href="tables.html" class="rounded px-2 py-1 text-fg-muted hover:bg-hover hover:text-fg">Tables</a>
+      <a href="tree.html" class="rounded px-2 py-1 text-fg-muted hover:bg-hover hover:text-fg">Tree</a>
+      <span class="mx-1 h-4 w-px bg-border"></span>
+      <a href="upload.html" class="rounded px-2 py-1 font-medium text-fg hover:bg-hover">Upload</a>
+      <a href="observability.html" class="rounded px-2 py-1 text-fg-muted hover:bg-hover hover:text-fg">Agents</a>
+      <a href="promotion.html" class="rounded px-2 py-1 text-fg-muted hover:bg-hover hover:text-fg">Promote</a>
+      <a href="download.html" class="rounded px-2 py-1 text-fg-muted hover:bg-hover hover:text-fg">Download</a>
+    </nav>
+    <div class="ml-auto flex items-center gap-2">
+      <button data-theme-toggle aria-pressed="false" aria-label="Toggle color theme"
+        class="inline-flex items-center gap-1.5 rounded-md border border-border bg-surface px-2.5 py-1 text-xs font-medium text-fg-muted hover:bg-hover hover:text-fg">
+        <span class="size-2 rounded-full bg-accent"></span><span data-theme-label>Light</span>
+      </button>
+    </div>
+  </div>
+</header>
+
+<main class="mx-auto max-w-[1100px] px-4 py-8">
+
+  <div class="mb-5 border-b border-border pb-3">
+    <h1 class="text-2xl font-bold tracking-tight text-fg">Upload infrastructure files</h1>
+    <p class="mt-1 max-w-3xl text-base text-fg-muted text-pretty">
+      Drag rack manifests, telemetry dumps, topology graphs or firmware bundles from your desktop onto the
+      drop zone. Files are queued, then handed to the processing
+      <a href="observability.html" class="font-medium text-accent hover:underline">agent pipeline</a>.
+    </p>
+  </div>
+
+  <div class="grid gap-5 lg:grid-cols-[1fr_360px]">
+
+    <!-- LEFT: dropzone + queue -->
+    <div class="space-y-4">
+
+      <!-- DROP ZONE -->
+      <div id="dropzone" role="button" tabindex="0" aria-label="Upload files: drag and drop or activate to browse"
+        class="group relative grid cursor-pointer place-items-center rounded-xl border-2 border-dashed border-border bg-surface-raised px-6 py-12 text-center transition-colors hover:border-accent-border hover:bg-accent-muted/30 focus:outline-none focus-visible:border-accent">
+        <div class="pointer-events-none flex flex-col items-center gap-3">
+          <span class="grid size-12 place-items-center rounded-xl border border-border bg-surface text-xl text-accent transition-transform group-hover:-translate-y-0.5">↑</span>
+          <div>
+            <p class="text-md font-semibold text-fg"><span id="dz-headline">Drag &amp; drop files here</span></p>
+            <p class="mt-1 text-sm text-fg-muted">or <span class="font-medium text-accent">browse</span> — CSV, JSON, YAML, GraphML, XLSX, TAR · up to 2&nbsp;GB each</p>
+          </div>
+        </div>
+        <input id="fileInput" type="file" multiple class="sr-only" aria-hidden="true">
+      </div>
+
+      <!-- QUEUE -->
+      <div class="rounded-lg border border-border bg-surface-raised shadow-sm">
+        <div class="flex items-center gap-3 border-b border-border px-3 py-2">
+          <h2 class="text-sm font-semibold text-fg">Upload queue</h2>
+          <span id="queueCount" class="inline-flex items-center rounded-full bg-accent-muted px-2 py-0.5 text-2xs font-medium text-accent">0 files</span>
+          <div class="ml-auto flex items-center gap-2">
+            <button id="addSample" class="rounded-md border border-border bg-surface px-2.5 py-1 text-xs font-medium text-fg hover:bg-hover">Add sample file</button>
+            <button id="clearAll" class="rounded-md px-2.5 py-1 text-xs font-medium text-fg-muted hover:bg-hover hover:text-danger">Clear all</button>
+          </div>
+        </div>
+        <ul id="queue" class="divide-y divide-border" aria-live="polite"></ul>
+        <!-- empty state -->
+        <div id="emptyState" class="hidden px-3 py-10 text-center">
+          <p class="text-sm text-fg-muted">No files queued yet.</p>
+          <p class="mt-0.5 text-xs text-fg-subtle">Drop files above or add a sample to see the flow.</p>
+        </div>
+        <div class="flex items-center gap-3 border-t border-border bg-surface-sunken px-3 py-2">
+          <span class="font-mono text-2xs text-fg-subtle">Total: <span id="totalSize" class="text-fg-muted">0 B</span></span>
+          <span id="readyMeta" class="font-mono text-2xs text-fg-subtle">· <span id="readyCount" class="text-success">0</span> ready</span>
+          <a id="processBtn" href="observability.html" class="pointer-events-none ml-auto inline-flex items-center gap-1.5 rounded-md bg-accent px-3 py-1.5 text-sm font-medium text-fg-on-accent opacity-50 hover:bg-accent-hover">Process <span id="processCount">0</span> files&nbsp;→</a>
+        </div>
+      </div>
+    </div>
+
+    <!-- RIGHT: side info -->
+    <aside class="space-y-4">
+      <div class="rounded-lg border border-border bg-surface-raised p-3 shadow-sm">
+        <h3 class="text-sm font-semibold text-fg">Accepted formats</h3>
+        <ul class="mt-2 grid grid-cols-2 gap-1.5 text-xs">
+          <li class="flex items-center gap-2 text-fg-muted"><span class="grid size-5 place-items-center rounded bg-surface-inset text-fg-subtle">⌗</span> .csv manifests</li>
+          <li class="flex items-center gap-2 text-fg-muted"><span class="grid size-5 place-items-center rounded bg-surface-inset text-fg-subtle">{ }</span> .json telemetry</li>
+          <li class="flex items-center gap-2 text-fg-muted"><span class="grid size-5 place-items-center rounded bg-surface-inset text-fg-subtle">▤</span> .yaml configs</li>
+          <li class="flex items-center gap-2 text-fg-muted"><span class="grid size-5 place-items-center rounded bg-surface-inset text-fg-subtle">◇</span> .graphml topo</li>
+          <li class="flex items-center gap-2 text-fg-muted"><span class="grid size-5 place-items-center rounded bg-surface-inset text-fg-subtle">▦</span> .xlsx audits</li>
+          <li class="flex items-center gap-2 text-fg-muted"><span class="grid size-5 place-items-center rounded bg-surface-inset text-fg-subtle">▣</span> .tar.gz bundles</li>
+        </ul>
+      </div>
+      <div class="rounded-lg border border-border bg-surface-raised p-3 shadow-sm">
+        <h3 class="text-sm font-semibold text-fg">What happens next</h3>
+        <ol class="mt-2 space-y-2 text-xs text-fg-muted">
+          <li class="flex gap-2"><span class="grid size-4 shrink-0 place-items-center rounded-full bg-accent-muted font-mono text-2xs text-accent">1</span> Files upload &amp; are checksummed on arrival.</li>
+          <li class="flex gap-2"><span class="grid size-4 shrink-0 place-items-center rounded-full bg-accent-muted font-mono text-2xs text-accent">2</span> Each is queued to the agent pipeline.</li>
+          <li class="flex gap-2"><span class="grid size-4 shrink-0 place-items-center rounded-full bg-accent-muted font-mono text-2xs text-accent">3</span> Agents parse, classify, validate &amp; index in turn.</li>
+        </ol>
+        <a href="observability.html" class="mt-3 inline-flex items-center gap-1.5 text-xs font-medium text-accent hover:underline">Watch the pipeline&nbsp;→</a>
+      </div>
+      <div class="rounded-lg border border-info-border bg-info-bg p-3">
+        <p class="text-xs font-medium text-info">Tip</p>
+        <p class="mt-1 text-xs text-info/80">Drag a whole folder of telemetry — every file is queued individually and processed in order.</p>
+      </div>
+    </aside>
+  </div>
+</main>
+
+<footer class="border-t border-border bg-surface-sunken">
+  <div class="mx-auto flex max-w-[1480px] items-center gap-2 px-4 py-6 text-sm text-fg-muted">
+    <span class="grid size-5 place-items-center rounded bg-accent text-fg-on-accent text-2xs font-bold">DC</span>
+    <span class="font-semibold text-fg">Substrate</span>
+    <a href="index.html" class="ml-auto text-xs text-fg-subtle hover:text-fg">← Back to overview</a>
+  </div>
+</footer>
+
+<!-- file-row template -->
+<template id="rowTpl">
+  <li class="flex items-center gap-3 px-3 py-2" data-file-row>
+    <span data-glyph class="grid size-8 shrink-0 place-items-center rounded-md bg-surface-inset font-mono text-sm text-fg-muted"></span>
+    <div class="min-w-0 flex-1">
+      <div class="flex items-center gap-2">
+        <span data-name class="truncate text-sm font-medium text-fg"></span>
+        <span data-size class="shrink-0 font-mono text-2xs text-fg-subtle"></span>
+        <span data-status class="ml-auto shrink-0"></span>
+      </div>
+      <div class="mt-1.5 h-1 overflow-hidden rounded-full bg-surface-inset">
+        <div data-bar class="h-full w-0 rounded-full bg-accent transition-[width] duration-200 ease-out"></div>
+      </div>
+    </div>
+    <button data-remove class="shrink-0 rounded p-1 text-fg-subtle hover:bg-hover hover:text-danger" aria-label="Remove file">✕</button>
+  </li>
+</template>
+
+<script>
+(function () {
+  "use strict";
+  var queue = document.getElementById('queue');
+  var emptyState = document.getElementById('emptyState');
+  var dropzone = document.getElementById('dropzone');
+  var fileInput = document.getElementById('fileInput');
+  var rowTpl = document.getElementById('rowTpl');
+  var files = []; // {id,name,size,status,progress,el}
+  var seq = 0;
+
+  var SAMPLES = [
+    { name: 'rack-manifest-iad7.csv', size: 184320 },
+    { name: 'telemetry-us-east-2.json', size: 5872026 },
+    { name: 'cooling-loop-b.yaml', size: 12480 },
+    { name: 'topology-spine-leaf.graphml', size: 942080 },
+    { name: 'power-audit-q2.xlsx', size: 2310144 },
+    { name: 'firmware-bundle-v4.2.tar.gz', size: 268435456 }
+  ];
+  var sampleIdx = 0;
+
+  function glyphFor(name) {
+    var n = name.toLowerCase();
+    if (n.endsWith('.csv')) return '⌗';
+    if (n.endsWith('.json')) return '{ }';
+    if (n.endsWith('.yaml') || n.endsWith('.yml')) return '▤';
+    if (n.endsWith('.graphml') || n.endsWith('.xml')) return '◇';
+    if (n.endsWith('.xlsx') || n.endsWith('.xls')) return '▦';
+    if (/\.(tar|gz|zip|tgz)$/.test(n)) return '▣';
+    return '▪';
+  }
+  function fmtBytes(b) {
+    if (b < 1024) return b + ' B';
+    var u = ['KB','MB','GB','TB'], i = -1;
+    do { b /= 1024; i++; } while (b >= 1024 && i < u.length - 1);
+    return (b >= 100 ? b.toFixed(0) : b.toFixed(1)) + ' ' + u[i];
+  }
+  var STATUS = {
+    uploading: '<span class="inline-flex items-center gap-1 rounded-sm border border-info-border bg-info-bg px-1.5 py-0.5 text-2xs font-medium text-info"><span class="size-1.5 rounded-full bg-info"></span>UPLOADING</span>',
+    ready: '<span class="inline-flex items-center gap-1 rounded-sm border border-success-border bg-success-bg px-1.5 py-0.5 text-2xs font-medium text-success"><span class="size-1.5 rounded-full bg-success"></span>READY</span>',
+    error: '<span class="inline-flex items-center gap-1 rounded-sm border border-danger-border bg-danger-bg px-1.5 py-0.5 text-2xs font-medium text-danger"><span class="size-1.5 rounded-full bg-danger"></span>FAILED</span>'
+  };
+
+  function render() {
+    var n = files.length;
+    document.getElementById('queueCount').textContent = n + (n === 1 ? ' file' : ' files');
+    emptyState.classList.toggle('hidden', n !== 0);
+    var total = files.reduce(function (s, f) { return s + f.size; }, 0);
+    document.getElementById('totalSize').textContent = fmtBytes(total);
+    var ready = files.filter(function (f) { return f.status === 'ready'; }).length;
+    document.getElementById('readyCount').textContent = ready;
+    document.getElementById('processCount').textContent = ready;
+    var btn = document.getElementById('processBtn');
+    var on = ready > 0;
+    btn.classList.toggle('pointer-events-none', !on);
+    btn.classList.toggle('opacity-50', !on);
+  }
+
+  function addFile(meta) {
+    var id = ++seq;
+    var node = rowTpl.content.firstElementChild.cloneNode(true);
+    node.querySelector('[data-glyph]').textContent = glyphFor(meta.name);
+    node.querySelector('[data-name]').textContent = meta.name;
+    node.querySelector('[data-name]').title = meta.name;
+    node.querySelector('[data-size]').textContent = fmtBytes(meta.size);
+    node.querySelector('[data-status]').innerHTML = STATUS.uploading;
+    node.querySelector('[data-remove]').addEventListener('click', function () { removeFile(id); });
+    queue.appendChild(node);
+    var f = { id: id, name: meta.name, size: meta.size, status: 'uploading', progress: 0, el: node };
+    files.push(f);
+    render();
+    simulateUpload(f);
+  }
+
+  function simulateUpload(f) {
+    var bar = f.el.querySelector('[data-bar]');
+    var statusEl = f.el.querySelector('[data-status]');
+    // larger files "take longer"; small random chance of failure
+    var willFail = Math.random() < 0.10;
+    var steps = 0, cap = willFail ? (40 + Math.random() * 40) : 100;
+    var tick = setInterval(function () {
+      steps += 6 + Math.random() * 16;
+      f.progress = Math.min(steps, cap);
+      bar.style.width = f.progress.toFixed(0) + '%';
+      if (f.progress >= cap) {
+        clearInterval(tick);
+        if (willFail) {
+          f.status = 'error';
+          statusEl.innerHTML = STATUS.error;
+          bar.classList.remove('bg-accent'); bar.classList.add('bg-danger');
+        } else {
+          f.status = 'ready';
+          statusEl.innerHTML = STATUS.ready;
+          bar.classList.remove('bg-accent'); bar.classList.add('bg-success');
+        }
+        render();
+      }
+    }, 140 + Math.random() * 120);
+  }
+
+  function removeFile(id) {
+    var i = files.findIndex(function (f) { return f.id === id; });
+    if (i < 0) return;
+    files[i].el.remove();
+    files.splice(i, 1);
+    render();
+  }
+
+  // ---- drag & drop ----
+  ['dragenter', 'dragover'].forEach(function (ev) {
+    dropzone.addEventListener(ev, function (e) {
+      e.preventDefault(); e.stopPropagation();
+      dropzone.classList.add('border-accent', 'bg-accent-muted');
+      dropzone.classList.remove('border-border');
+      document.getElementById('dz-headline').textContent = 'Release to upload';
+    });
+  });
+  ['dragleave', 'dragend'].forEach(function (ev) {
+    dropzone.addEventListener(ev, function (e) {
+      e.preventDefault(); e.stopPropagation();
+      if (ev === 'dragleave' && dropzone.contains(e.relatedTarget)) return;
+      resetDz();
+    });
+  });
+  dropzone.addEventListener('drop', function (e) {
+    e.preventDefault(); e.stopPropagation();
+    resetDz();
+    var list = e.dataTransfer && e.dataTransfer.files;
+    if (list && list.length) {
+      Array.prototype.forEach.call(list, function (file) {
+        addFile({ name: file.name, size: file.size });
+      });
+    }
+  });
+  function resetDz() {
+    dropzone.classList.remove('border-accent', 'bg-accent-muted');
+    dropzone.classList.add('border-border');
+    document.getElementById('dz-headline').textContent = 'Drag & drop files here';
+  }
+  dropzone.addEventListener('click', function () { fileInput.click(); });
+  dropzone.addEventListener('keydown', function (e) {
+    if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); fileInput.click(); }
+  });
+  fileInput.addEventListener('change', function () {
+    Array.prototype.forEach.call(fileInput.files, function (file) {
+      addFile({ name: file.name, size: file.size });
+    });
+    fileInput.value = '';
+  });
+
+  document.getElementById('addSample').addEventListener('click', function () {
+    addFile(SAMPLES[sampleIdx % SAMPLES.length]);
+    sampleIdx++;
+  });
+  document.getElementById('clearAll').addEventListener('click', function () {
+    files.slice().forEach(function (f) { removeFile(f.id); });
+  });
+
+  // seed a couple so the view isn't empty
+  addFile(SAMPLES[0]); sampleIdx = 1;
+  addFile(SAMPLES[1]); sampleIdx = 2;
+  render();
+})();
+</script>
+</body>
+</html>

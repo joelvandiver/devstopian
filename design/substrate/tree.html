@@ -1,0 +1,282 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Substrate — Tree</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&family=Roboto+Mono:wght@400;500&display=swap" rel="stylesheet">
+<script>(function(){try{var t=localStorage.getItem('ds-theme')||(matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light');document.documentElement.classList.toggle('dark',t==='dark');document.documentElement.setAttribute('data-theme',t);}catch(e){}})();</script>
+<script src="theme.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+<script src="ds.js" defer></script>
+</head>
+<body style="background:var(--color-surface);color:var(--color-fg)" class="bg-surface text-fg min-h-screen antialiased">
+
+<!-- APP BAR -->
+<header class="sticky top-0 z-30 border-b border-border bg-surface-raised/90 backdrop-blur">
+  <div class="mx-auto flex h-12 max-w-[1480px] items-center gap-4 px-4">
+    <a href="index.html" class="flex items-center gap-2 font-semibold text-fg">
+      <span class="grid size-6 place-items-center rounded bg-accent text-fg-on-accent text-2xs font-bold tracking-tight">DC</span>
+      <span>Substrate</span><span class="hidden font-normal text-fg-subtle sm:inline">/ Design System</span>
+    </a>
+    <nav class="ml-3 hidden items-center gap-0.5 text-sm lg:flex">
+      <a href="index.html" class="rounded px-2 py-1 text-fg-muted hover:bg-hover hover:text-fg">Overview</a>
+      <a href="tables.html" class="rounded px-2 py-1 text-fg-muted hover:bg-hover hover:text-fg">Tables</a>
+      <a href="tree.html" class="rounded px-2 py-1 font-medium text-fg hover:bg-hover">Tree</a>
+      <span class="mx-1 h-4 w-px bg-border"></span>
+      <a href="upload.html" class="rounded px-2 py-1 text-fg-muted hover:bg-hover hover:text-fg">Upload</a>
+      <a href="observability.html" class="rounded px-2 py-1 text-fg-muted hover:bg-hover hover:text-fg">Agents</a>
+      <a href="promotion.html" class="rounded px-2 py-1 text-fg-muted hover:bg-hover hover:text-fg">Promote</a>
+      <a href="download.html" class="rounded px-2 py-1 text-fg-muted hover:bg-hover hover:text-fg">Download</a>
+    </nav>
+    <div class="ml-auto flex items-center gap-2">
+      <button data-theme-toggle aria-pressed="false" aria-label="Toggle color theme"
+        class="inline-flex items-center gap-1.5 rounded-md border border-border bg-surface px-2.5 py-1 text-xs font-medium text-fg-muted hover:bg-hover hover:text-fg">
+        <span class="size-2 rounded-full bg-accent"></span><span data-theme-label>Light</span>
+      </button>
+    </div>
+  </div>
+</header>
+
+<main class="mx-auto max-w-[1480px] px-4 py-8">
+
+  <div class="mb-5 border-b border-border pb-3">
+    <h1 class="text-2xl font-bold tracking-tight text-fg">Infrastructure tree</h1>
+    <p class="mt-1 max-w-3xl text-base text-fg-muted text-pretty">
+      Expand/collapse, full keyboard navigation, and native HTML drag-and-drop for reordering &amp; re-nesting —
+      no framework. State stays in the DOM (<code class="font-mono text-xs text-accent">role="tree"</code>,
+      <code class="font-mono text-xs text-accent">aria-expanded</code>, <code class="font-mono text-xs text-accent">data-depth</code>) so it's fully observable.
+    </p>
+  </div>
+
+  <div class="grid gap-5 lg:grid-cols-[1fr_300px]">
+
+    <!-- TREE -->
+    <div class="rounded-lg border border-border bg-surface-raised shadow-sm">
+      <div class="flex items-center justify-between border-b border-border px-3 py-2">
+        <h2 class="text-sm font-semibold text-fg">Fleet topology</h2>
+        <span class="font-mono text-2xs text-fg-subtle">drag the <span class="text-fg-muted">⠿</span> handle to move nodes</span>
+      </div>
+      <div class="p-2">
+        <ul role="tree" data-tree aria-label="Data center infrastructure" class="select-none text-base">
+
+          <!-- REGION us-east-2 -->
+          <li role="treeitem" aria-expanded="true" data-depth="0">
+            <div class="ds-tree-row group flex items-center gap-1.5 rounded-md px-1.5 py-1 hover:bg-hover" tabindex="0">
+              <button data-tree-toggle class="grid size-4 place-items-center" aria-label="Toggle"><span class="ds-chev text-2xs text-fg-subtle">▸</span></button>
+              <span class="ds-drag-handle grid size-4 place-items-center rounded text-fg-subtle hover:bg-active" data-drag-handle draggable="true" aria-label="Drag to move" title="Drag to move">⠿</span>
+              <span class="grid size-4 place-items-center text-2xs text-accent">◈</span>
+              <span class="font-medium text-fg">us-east-2</span>
+              <span class="text-xs text-fg-subtle">region</span>
+              <span class="ml-auto inline-flex items-center gap-2">
+                <span class="inline-flex items-center gap-1 rounded-sm border border-success-border bg-success-bg px-1.5 py-0.5 text-2xs font-medium text-success"><span class="size-1.5 rounded-full bg-success"></span>healthy</span>
+                <span class="font-mono text-2xs tabular-nums text-fg-subtle">1,240 racks</span>
+              </span>
+            </div>
+            <ul role="group">
+              <!-- DC iad-7 -->
+              <li role="treeitem" aria-expanded="true" data-depth="1">
+                <div class="ds-tree-row group flex items-center gap-1.5 rounded-md px-1.5 py-1 hover:bg-hover" tabindex="-1">
+                  <button data-tree-toggle class="grid size-4 place-items-center" aria-label="Toggle"><span class="ds-chev text-2xs text-fg-subtle">▸</span></button>
+                  <span class="ds-drag-handle grid size-4 place-items-center rounded text-fg-subtle hover:bg-active" data-drag-handle draggable="true" aria-label="Drag to move" title="Drag to move">⠿</span>
+                  <span class="grid size-4 place-items-center text-2xs text-fg-muted">▣</span>
+                  <span class="font-medium text-fg">iad-7</span><span class="text-xs text-fg-subtle">data center</span>
+                  <span class="ml-auto font-mono text-2xs tabular-nums text-fg-subtle">PUE 1.18</span>
+                </div>
+                <ul role="group">
+                  <!-- Hall A -->
+                  <li role="treeitem" aria-expanded="true" data-depth="2">
+                    <div class="ds-tree-row group flex items-center gap-1.5 rounded-md px-1.5 py-1 hover:bg-hover" tabindex="-1">
+                      <button data-tree-toggle class="grid size-4 place-items-center" aria-label="Toggle"><span class="ds-chev text-2xs text-fg-subtle">▸</span></button>
+                      <span class="ds-drag-handle grid size-4 place-items-center rounded text-fg-subtle hover:bg-active" data-drag-handle draggable="true" aria-label="Drag to move" title="Drag to move">⠿</span>
+                      <span class="grid size-4 place-items-center text-2xs text-fg-muted">▤</span>
+                      <span class="font-medium text-fg">Hall A</span><span class="text-xs text-fg-subtle">240 racks</span>
+                    </div>
+                    <ul role="group">
+                      <li role="treeitem" aria-expanded="true" data-depth="3">
+                        <div class="ds-tree-row group flex items-center gap-1.5 rounded-md px-1.5 py-1 hover:bg-hover" tabindex="-1">
+                          <button data-tree-toggle class="grid size-4 place-items-center" aria-label="Toggle"><span class="ds-chev text-2xs text-fg-subtle">▸</span></button>
+                          <span class="ds-drag-handle grid size-4 place-items-center rounded text-fg-subtle hover:bg-active" data-drag-handle draggable="true" aria-label="Drag to move" title="Drag to move">⠿</span>
+                          <span class="grid size-4 place-items-center text-2xs text-fg-muted">▥</span>
+                          <span class="font-mono font-medium text-fg">RK-04-A1</span>
+                          <span class="ml-auto inline-flex items-center gap-2">
+                            <span class="inline-flex items-center gap-1 rounded-sm border border-success-border bg-success-bg px-1.5 py-0.5 text-2xs font-medium text-success"><span class="size-1.5 rounded-full bg-success"></span>OK</span>
+                            <span class="font-mono text-2xs tabular-nums text-fg-subtle">41.2 Gb/s</span>
+                          </span>
+                        </div>
+                        <ul role="group">
+                          <li role="treeitem" data-depth="4">
+                            <div class="ds-tree-row group flex items-center gap-1.5 rounded-md px-1.5 py-1 hover:bg-hover" tabindex="-1">
+                              <button data-tree-toggle class="grid size-4 place-items-center" aria-label="Toggle"><span class="ds-chev text-2xs">▸</span></button>
+                              <span class="ds-drag-handle grid size-4 place-items-center rounded text-fg-subtle hover:bg-active" data-drag-handle draggable="true" aria-label="Drag to move" title="Drag to move">⠿</span>
+                              <span class="grid size-4 place-items-center text-2xs text-success">●</span>
+                              <span class="font-mono text-fg">srv-gpu-0142</span><span class="text-xs text-fg-subtle">8× H100</span>
+                            </div>
+                          </li>
+                          <li role="treeitem" data-depth="4">
+                            <div class="ds-tree-row group flex items-center gap-1.5 rounded-md px-1.5 py-1 hover:bg-hover" tabindex="-1">
+                              <button data-tree-toggle class="grid size-4 place-items-center" aria-label="Toggle"><span class="ds-chev text-2xs">▸</span></button>
+                              <span class="ds-drag-handle grid size-4 place-items-center rounded text-fg-subtle hover:bg-active" data-drag-handle draggable="true" aria-label="Drag to move" title="Drag to move">⠿</span>
+                              <span class="grid size-4 place-items-center text-2xs text-success">●</span>
+                              <span class="font-mono text-fg">srv-gpu-0143</span><span class="text-xs text-fg-subtle">8× H100</span>
+                            </div>
+                          </li>
+                          <li role="treeitem" data-depth="4">
+                            <div class="ds-tree-row group flex items-center gap-1.5 rounded-md px-1.5 py-1 hover:bg-hover" tabindex="-1">
+                              <button data-tree-toggle class="grid size-4 place-items-center" aria-label="Toggle"><span class="ds-chev text-2xs">▸</span></button>
+                              <span class="ds-drag-handle grid size-4 place-items-center rounded text-fg-subtle hover:bg-active" data-drag-handle draggable="true" aria-label="Drag to move" title="Drag to move">⠿</span>
+                              <span class="grid size-4 place-items-center text-2xs text-fg-subtle">▪</span>
+                              <span class="font-mono text-fg">tor-sw-a1</span><span class="text-xs text-fg-subtle">top-of-rack</span>
+                            </div>
+                          </li>
+                        </ul>
+                      </li>
+                      <li role="treeitem" data-depth="3">
+                        <div class="ds-tree-row group flex items-center gap-1.5 rounded-md px-1.5 py-1 hover:bg-hover" tabindex="-1">
+                          <button data-tree-toggle class="grid size-4 place-items-center" aria-label="Toggle"><span class="ds-chev text-2xs">▸</span></button>
+                          <span class="ds-drag-handle grid size-4 place-items-center rounded text-fg-subtle hover:bg-active" data-drag-handle draggable="true" aria-label="Drag to move" title="Drag to move">⠿</span>
+                          <span class="grid size-4 place-items-center text-2xs text-fg-muted">▥</span>
+                          <span class="font-mono font-medium text-fg">RK-04-A2</span>
+                          <span class="ml-auto inline-flex items-center gap-2">
+                            <span class="inline-flex items-center gap-1 rounded-sm border border-warning-border bg-warning-bg px-1.5 py-0.5 text-2xs font-medium text-warning"><span class="size-1.5 rounded-full bg-warning"></span>WARM</span>
+                            <span class="font-mono text-2xs tabular-nums text-fg-subtle">27.4 °C</span>
+                          </span>
+                        </div>
+                      </li>
+                    </ul>
+                  </li>
+                  <!-- Hall B collapsed -->
+                  <li role="treeitem" aria-expanded="false" data-depth="2">
+                    <div class="ds-tree-row group flex items-center gap-1.5 rounded-md px-1.5 py-1 hover:bg-hover" tabindex="-1">
+                      <button data-tree-toggle class="grid size-4 place-items-center" aria-label="Toggle"><span class="ds-chev text-2xs text-fg-subtle">▸</span></button>
+                      <span class="ds-drag-handle grid size-4 place-items-center rounded text-fg-subtle hover:bg-active" data-drag-handle draggable="true" aria-label="Drag to move" title="Drag to move">⠿</span>
+                      <span class="grid size-4 place-items-center text-2xs text-fg-muted">▤</span>
+                      <span class="font-medium text-fg">Hall B</span><span class="text-xs text-fg-subtle">240 racks</span>
+                      <span class="ml-auto font-mono text-2xs text-fg-subtle">collapsed</span>
+                    </div>
+                    <ul role="group">
+                      <li role="treeitem" data-depth="3">
+                        <div class="ds-tree-row group flex items-center gap-1.5 rounded-md px-1.5 py-1 hover:bg-hover" tabindex="-1">
+                          <button data-tree-toggle class="grid size-4 place-items-center" aria-label="Toggle"><span class="ds-chev text-2xs">▸</span></button>
+                          <span class="ds-drag-handle grid size-4 place-items-center rounded text-fg-subtle hover:bg-active" data-drag-handle draggable="true" aria-label="Drag to move" title="Drag to move">⠿</span>
+                          <span class="grid size-4 place-items-center text-2xs text-fg-muted">▥</span>
+                          <span class="font-mono font-medium text-fg">RK-05-B7</span>
+                          <span class="ml-auto inline-flex items-center gap-1 rounded-sm border border-danger-border bg-danger-bg px-1.5 py-0.5 text-2xs font-medium text-danger"><span class="size-1.5 rounded-full bg-danger"></span>DOWN</span>
+                        </div>
+                      </li>
+                    </ul>
+                  </li>
+                </ul>
+              </li>
+              <!-- Cooling group sibling -->
+              <li role="treeitem" aria-expanded="false" data-depth="1">
+                <div class="ds-tree-row group flex items-center gap-1.5 rounded-md px-1.5 py-1 hover:bg-hover" tabindex="-1">
+                  <button data-tree-toggle class="grid size-4 place-items-center" aria-label="Toggle"><span class="ds-chev text-2xs text-fg-subtle">▸</span></button>
+                  <span class="ds-drag-handle grid size-4 place-items-center rounded text-fg-subtle hover:bg-active" data-drag-handle draggable="true" aria-label="Drag to move" title="Drag to move">⠿</span>
+                  <span class="grid size-4 place-items-center text-2xs text-fg-muted">❄</span>
+                  <span class="font-medium text-fg">Cooling plant</span><span class="text-xs text-fg-subtle">2 loops</span>
+                </div>
+                <ul role="group">
+                  <li role="treeitem" data-depth="2">
+                    <div class="ds-tree-row group flex items-center gap-1.5 rounded-md px-1.5 py-1 hover:bg-hover" tabindex="-1">
+                      <button data-tree-toggle class="grid size-4 place-items-center" aria-label="Toggle"><span class="ds-chev text-2xs">▸</span></button>
+                      <span class="ds-drag-handle grid size-4 place-items-center rounded text-fg-subtle hover:bg-active" data-drag-handle draggable="true" aria-label="Drag to move" title="Drag to move">⠿</span>
+                      <span class="grid size-4 place-items-center text-2xs text-fg-subtle">▪</span>
+                      <span class="font-mono text-fg">loop-A · CRAH-A1</span>
+                    </div>
+                  </li>
+                  <li role="treeitem" data-depth="2">
+                    <div class="ds-tree-row group flex items-center gap-1.5 rounded-md px-1.5 py-1 hover:bg-hover" tabindex="-1">
+                      <button data-tree-toggle class="grid size-4 place-items-center" aria-label="Toggle"><span class="ds-chev text-2xs">▸</span></button>
+                      <span class="ds-drag-handle grid size-4 place-items-center rounded text-fg-subtle hover:bg-active" data-drag-handle draggable="true" aria-label="Drag to move" title="Drag to move">⠿</span>
+                      <span class="grid size-4 place-items-center text-2xs text-warning">▪</span>
+                      <span class="font-mono text-fg">loop-B · CRAH-B2</span><span class="text-xs text-warning">94% load</span>
+                    </div>
+                  </li>
+                </ul>
+              </li>
+            </ul>
+          </li>
+
+          <!-- REGION eu-west-1 collapsed -->
+          <li role="treeitem" aria-expanded="false" data-depth="0">
+            <div class="ds-tree-row group flex items-center gap-1.5 rounded-md px-1.5 py-1 hover:bg-hover" tabindex="-1">
+              <button data-tree-toggle class="grid size-4 place-items-center" aria-label="Toggle"><span class="ds-chev text-2xs text-fg-subtle">▸</span></button>
+              <span class="ds-drag-handle grid size-4 place-items-center rounded text-fg-subtle hover:bg-active" data-drag-handle draggable="true" aria-label="Drag to move" title="Drag to move">⠿</span>
+              <span class="grid size-4 place-items-center text-2xs text-accent">◈</span>
+              <span class="font-medium text-fg">eu-west-1</span><span class="text-xs text-fg-subtle">region</span>
+              <span class="ml-auto inline-flex items-center gap-2">
+                <span class="inline-flex items-center gap-1 rounded-sm border border-success-border bg-success-bg px-1.5 py-0.5 text-2xs font-medium text-success"><span class="size-1.5 rounded-full bg-success"></span>healthy</span>
+                <span class="font-mono text-2xs tabular-nums text-fg-subtle">880 racks</span>
+              </span>
+            </div>
+            <ul role="group">
+              <li role="treeitem" data-depth="1">
+                <div class="ds-tree-row group flex items-center gap-1.5 rounded-md px-1.5 py-1 hover:bg-hover" tabindex="-1">
+                  <button data-tree-toggle class="grid size-4 place-items-center" aria-label="Toggle"><span class="ds-chev text-2xs">▸</span></button>
+                  <span class="ds-drag-handle grid size-4 place-items-center rounded text-fg-subtle hover:bg-active" data-drag-handle draggable="true" aria-label="Drag to move" title="Drag to move">⠿</span>
+                  <span class="grid size-4 place-items-center text-2xs text-fg-muted">▣</span>
+                  <span class="font-medium text-fg">dub-3</span><span class="text-xs text-fg-subtle">data center</span>
+                </div>
+              </li>
+              <li role="treeitem" data-depth="1">
+                <div class="ds-tree-row group flex items-center gap-1.5 rounded-md px-1.5 py-1 hover:bg-hover" tabindex="-1">
+                  <button data-tree-toggle class="grid size-4 place-items-center" aria-label="Toggle"><span class="ds-chev text-2xs">▸</span></button>
+                  <span class="ds-drag-handle grid size-4 place-items-center rounded text-fg-subtle hover:bg-active" data-drag-handle draggable="true" aria-label="Drag to move" title="Drag to move">⠿</span>
+                  <span class="grid size-4 place-items-center text-2xs text-fg-muted">▣</span>
+                  <span class="font-medium text-fg">dub-4</span><span class="text-xs text-fg-subtle">data center</span>
+                </div>
+              </li>
+            </ul>
+          </li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- SIDE: legend + keyboard + code -->
+    <aside class="space-y-4">
+      <div class="rounded-lg border border-border bg-surface-raised p-3 shadow-sm">
+        <h3 class="text-sm font-semibold text-fg">Drag &amp; drop</h3>
+        <ul class="mt-2 space-y-2 text-xs text-fg-muted">
+          <li class="flex items-start gap-2"><span class="mt-px font-mono text-fg-subtle">⠿</span> Grab a handle (appears on row hover) and drag.</li>
+          <li class="flex items-start gap-2"><span class="mt-0.5 h-0.5 w-4 shrink-0 rounded bg-accent"></span> Line above/below a row = drop as a sibling.</li>
+          <li class="flex items-start gap-2"><span class="mt-0.5 size-3 shrink-0 rounded-sm outline-2 outline-accent" style="outline-style:solid"></span> Outlined row = drop <em>inside</em> as a child.</li>
+          <li class="flex items-start gap-2"><span class="mt-0.5 size-3 shrink-0 rounded-sm bg-danger-bg outline-2 outline-danger" style="outline-style:solid"></span> Red = invalid (into itself / a descendant).</li>
+        </ul>
+      </div>
+      <div class="rounded-lg border border-border bg-surface-raised p-3 shadow-sm">
+        <h3 class="text-sm font-semibold text-fg">Keyboard</h3>
+        <dl class="mt-2 space-y-1.5 text-xs">
+          <div class="flex items-center gap-2"><dt><kbd class="rounded border border-border bg-surface-inset px-1.5 py-0.5 font-mono text-2xs text-fg-muted">↑</kbd> <kbd class="rounded border border-border bg-surface-inset px-1.5 py-0.5 font-mono text-2xs text-fg-muted">↓</kbd></dt><dd class="text-fg-muted">move between rows</dd></div>
+          <div class="flex items-center gap-2"><dt><kbd class="rounded border border-border bg-surface-inset px-1.5 py-0.5 font-mono text-2xs text-fg-muted">→</kbd></dt><dd class="text-fg-muted">expand / enter child</dd></div>
+          <div class="flex items-center gap-2"><dt><kbd class="rounded border border-border bg-surface-inset px-1.5 py-0.5 font-mono text-2xs text-fg-muted">←</kbd></dt><dd class="text-fg-muted">collapse / go to parent</dd></div>
+          <div class="flex items-center gap-2"><dt><kbd class="rounded border border-border bg-surface-inset px-1.5 py-0.5 font-mono text-2xs text-fg-muted">Enter</kbd></dt><dd class="text-fg-muted">toggle expanded</dd></div>
+          <div class="flex items-center gap-2"><dt><kbd class="rounded border border-border bg-surface-inset px-1.5 py-0.5 font-mono text-2xs text-fg-muted">Home</kbd> <kbd class="rounded border border-border bg-surface-inset px-1.5 py-0.5 font-mono text-2xs text-fg-muted">End</kbd></dt><dd class="text-fg-muted">first / last row</dd></div>
+        </dl>
+      </div>
+      <div class="rounded-lg border border-border bg-surface-raised p-3 shadow-sm">
+        <h3 class="text-sm font-semibold text-fg">DOM contract</h3>
+        <p class="mt-1 text-xs text-fg-muted">Observable state — query it directly.</p>
+        <pre class="mt-2 overflow-x-auto rounded bg-surface-inset px-2 py-1.5 font-mono text-2xs leading-relaxed text-fg-muted">&lt;ul role="tree" data-tree&gt;
+  &lt;li role="treeitem"
+      aria-expanded="true"
+      data-depth="0"&gt;
+    &lt;div class="ds-tree-row"&gt;…
+    &lt;ul role="group"&gt;…</pre>
+      </div>
+    </aside>
+  </div>
+</main>
+
+<footer class="border-t border-border bg-surface-sunken">
+  <div class="mx-auto flex max-w-[1480px] items-center gap-2 px-4 py-6 text-sm text-fg-muted">
+    <span class="grid size-5 place-items-center rounded bg-accent text-fg-on-accent text-2xs font-bold">DC</span>
+    <span class="font-semibold text-fg">Substrate</span>
+    <a href="index.html" class="ml-auto text-xs text-fg-subtle hover:text-fg">← Back to overview</a>
+  </div>
+</footer>
+
+</body>
+</html>

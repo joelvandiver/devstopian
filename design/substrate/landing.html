@@ -1,0 +1,291 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Helios DCIM — built on Substrate</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&family=Roboto+Mono:wght@400;500&display=swap" rel="stylesheet">
+<script>(function(){try{var t=localStorage.getItem('ds-theme')||(matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light');document.documentElement.classList.toggle('dark',t==='dark');document.documentElement.setAttribute('data-theme',t);}catch(e){}})();</script>
+<script src="theme.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+<script src="ds.js" defer></script>
+</head>
+<body style="background:var(--color-surface);color:var(--color-fg)" class="bg-surface text-fg min-h-screen antialiased">
+
+<!-- ANNOUNCEMENT BAR -->
+<div class="flex items-center justify-center gap-2 bg-accent px-4 py-1.5 text-center text-fg-on-accent">
+  <span class="rounded-sm bg-white/20 px-1.5 py-0.5 text-2xs font-semibold uppercase tracking-wide">New region</span>
+  <p class="text-xs sm:text-sm"><span class="font-semibold">ap-south-1</span> is live — 3 zones, 1,200 racks, sub-2ms intra-AZ.</p>
+  <a href="#" class="hidden text-xs font-medium underline underline-offset-2 hover:opacity-90 sm:inline">Read the rollout&nbsp;→</a>
+</div>
+
+<!-- NAV -->
+<header class="sticky top-0 z-30 border-b border-border bg-surface-raised/90 backdrop-blur">
+  <div class="mx-auto flex h-12 max-w-[1240px] items-center gap-4 px-4">
+    <a href="#" class="flex items-center gap-2 font-semibold text-fg">
+      <span class="grid size-6 place-items-center rounded bg-accent text-fg-on-accent text-2xs font-bold">H</span>
+      <span>Helios</span><span class="hidden font-normal text-fg-subtle sm:inline">DCIM</span>
+    </a>
+    <nav class="ml-3 hidden items-center gap-0.5 text-sm md:flex">
+      <a href="#features" class="rounded px-2 py-1 text-fg-muted hover:bg-hover hover:text-fg">Platform</a>
+      <a href="#fleet" class="rounded px-2 py-1 text-fg-muted hover:bg-hover hover:text-fg">Fleet</a>
+      <a href="#topology" class="rounded px-2 py-1 text-fg-muted hover:bg-hover hover:text-fg">Topology</a>
+      <a href="index.html" class="rounded px-2 py-1 text-fg-muted hover:bg-hover hover:text-fg">Design system</a>
+    </nav>
+    <div class="ml-auto flex items-center gap-2">
+      <button data-theme-toggle aria-pressed="false" aria-label="Toggle color theme"
+        class="inline-flex items-center gap-1.5 rounded-md border border-border bg-surface px-2.5 py-1 text-xs font-medium text-fg-muted hover:bg-hover hover:text-fg">
+        <span class="size-2 rounded-full bg-accent"></span><span data-theme-label>Light</span>
+      </button>
+      <a href="#" class="hidden rounded-md px-3 py-1.5 text-sm font-medium text-fg-muted hover:bg-hover hover:text-fg sm:inline-block">Sign in</a>
+      <a href="#" class="rounded-md bg-accent px-3 py-1.5 text-sm font-medium text-fg-on-accent hover:bg-accent-hover">Get a demo</a>
+    </div>
+  </div>
+</header>
+
+<!-- HERO -->
+<section class="border-b border-border bg-surface-sunken">
+  <div class="mx-auto grid max-w-[1240px] gap-10 px-4 py-12 lg:grid-cols-[1.05fr_1fr] lg:py-16">
+    <div class="max-w-xl">
+      <div class="mb-3 inline-flex items-center gap-2 rounded-full border border-accent-border bg-accent-muted px-2.5 py-1 text-2xs font-medium text-accent">
+        <span class="size-1.5 rounded-full bg-accent"></span>DATA CENTER INFRASTRUCTURE MANAGEMENT
+      </div>
+      <h1 class="text-4xl font-bold tracking-tight text-fg text-balance">Every rack, loop and link — on one dense screen.</h1>
+      <p class="mt-4 text-lg text-fg-muted text-pretty">
+        Helios unifies inventory, power, cooling and network telemetry across regions so your NOC sees
+        problems before customers do. Real-time at the density operators actually want.
+      </p>
+      <div class="mt-6 flex flex-wrap items-center gap-2">
+        <a href="#" class="inline-flex items-center gap-1.5 rounded-md bg-accent px-4 py-2 text-sm font-medium text-fg-on-accent hover:bg-accent-hover">Start free trial</a>
+        <a href="#fleet" class="inline-flex items-center gap-1.5 rounded-md border border-border bg-surface px-4 py-2 text-sm font-medium text-fg hover:bg-hover">See a live fleet&nbsp;→</a>
+      </div>
+      <dl class="mt-9 grid grid-cols-3 gap-px overflow-hidden rounded-lg border border-border bg-border">
+        <div class="bg-surface px-3 py-3">
+          <dt class="text-2xs font-mono uppercase tracking-wide text-fg-subtle">Racks managed</dt>
+          <dd class="mt-1 text-2xl font-semibold tabular-nums text-fg">48,200</dd>
+        </div>
+        <div class="bg-surface px-3 py-3">
+          <dt class="text-2xs font-mono uppercase tracking-wide text-fg-subtle">Fleet uptime</dt>
+          <dd class="mt-1 text-2xl font-semibold tabular-nums text-success">99.992%</dd>
+        </div>
+        <div class="bg-surface px-3 py-3">
+          <dt class="text-2xs font-mono uppercase tracking-wide text-fg-subtle">Avg PUE</dt>
+          <dd class="mt-1 text-2xl font-semibold tabular-nums text-fg">1.18</dd>
+        </div>
+      </dl>
+    </div>
+
+    <!-- CONSOLE MOCKUP (composed from components) -->
+    <div class="rounded-xl border border-border bg-surface-raised shadow-lg">
+      <div class="flex items-center gap-2 border-b border-border px-3 py-2">
+        <div class="flex gap-1.5"><span class="size-2.5 rounded-full bg-danger/70"></span><span class="size-2.5 rounded-full bg-warning/70"></span><span class="size-2.5 rounded-full bg-success/70"></span></div>
+        <span class="ml-2 font-mono text-2xs text-fg-subtle">helios — fleet / us-east-2</span>
+        <span class="ml-auto inline-flex items-center gap-1 rounded-sm border border-success-border bg-success-bg px-1.5 py-0.5 text-2xs font-medium text-success"><span class="size-1.5 rounded-full bg-success"></span>LIVE</span>
+      </div>
+      <div class="grid grid-cols-3 gap-px border-b border-border bg-border">
+        <div class="bg-surface-raised px-3 py-2.5"><p class="text-2xs font-mono uppercase tracking-wide text-fg-subtle">Throughput</p><p class="mt-0.5 text-lg font-semibold tabular-nums text-fg">41.2 <span class="text-xs font-normal text-fg-subtle">Gb/s</span></p></div>
+        <div class="bg-surface-raised px-3 py-2.5"><p class="text-2xs font-mono uppercase tracking-wide text-fg-subtle">Inlet temp</p><p class="mt-0.5 text-lg font-semibold tabular-nums text-warning">27.4 <span class="text-xs font-normal text-fg-subtle">°C</span></p></div>
+        <div class="bg-surface-raised px-3 py-2.5"><p class="text-2xs font-mono uppercase tracking-wide text-fg-subtle">Power</p><p class="mt-0.5 text-lg font-semibold tabular-nums text-fg">7.8 <span class="text-xs font-normal text-fg-subtle">/ 8.5 kW</span></p></div>
+      </div>
+      <!-- mini throughput bars -->
+      <div class="border-b border-border px-3 py-3">
+        <div class="mb-1.5 flex items-center justify-between"><span class="text-2xs font-mono uppercase tracking-wide text-fg-subtle">North-south, last 24h</span><span class="font-mono text-2xs text-fg-subtle">Gb/s</span></div>
+        <div class="flex h-16 items-end gap-1">
+          <div class="w-full rounded-t-sm bg-accent/30" style="height:40%"></div>
+          <div class="w-full rounded-t-sm bg-accent/30" style="height:55%"></div>
+          <div class="w-full rounded-t-sm bg-accent/40" style="height:48%"></div>
+          <div class="w-full rounded-t-sm bg-accent/40" style="height:70%"></div>
+          <div class="w-full rounded-t-sm bg-accent/50" style="height:62%"></div>
+          <div class="w-full rounded-t-sm bg-accent/50" style="height:80%"></div>
+          <div class="w-full rounded-t-sm bg-accent/60" style="height:74%"></div>
+          <div class="w-full rounded-t-sm bg-accent/70" style="height:90%"></div>
+          <div class="w-full rounded-t-sm bg-accent/80" style="height:85%"></div>
+          <div class="w-full rounded-t-sm bg-accent" style="height:100%"></div>
+          <div class="w-full rounded-t-sm bg-accent/80" style="height:88%"></div>
+          <div class="w-full rounded-t-sm bg-accent/70" style="height:76%"></div>
+        </div>
+      </div>
+      <!-- mini table -->
+      <table class="ds-table w-full text-left text-xs" data-density="compact">
+        <thead class="bg-surface-sunken text-2xs font-mono uppercase tracking-wide text-fg-subtle">
+          <tr><th class="font-medium">Rack</th><th class="font-medium">Status</th><th class="text-right font-medium">Gb/s</th><th class="text-right font-medium">°C</th></tr>
+        </thead>
+        <tbody class="divide-y divide-border">
+          <tr><td class="font-mono text-fg">RK-04-A1</td><td><span class="text-success">●</span> <span class="text-fg-muted">OK</span></td><td class="text-right font-mono tabular-nums text-fg">41.2</td><td class="text-right font-mono tabular-nums text-fg">22.1</td></tr>
+          <tr class="bg-surface-sunken"><td class="font-mono text-fg">RK-04-A2</td><td><span class="text-warning">●</span> <span class="text-fg-muted">Warm</span></td><td class="text-right font-mono tabular-nums text-fg">38.7</td><td class="text-right font-mono tabular-nums text-warning">27.4</td></tr>
+          <tr><td class="font-mono text-fg">RK-05-B7</td><td><span class="text-danger">●</span> <span class="text-fg-muted">Down</span></td><td class="text-right font-mono tabular-nums text-danger">0.0</td><td class="text-right font-mono tabular-nums text-fg">19.8</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+<!-- TRUST STRIP -->
+<section class="border-b border-border">
+  <div class="mx-auto flex max-w-[1240px] flex-wrap items-center gap-x-6 gap-y-2 px-4 py-4">
+    <span class="text-2xs font-mono uppercase tracking-wide text-fg-subtle">Operating across</span>
+    <div class="flex flex-wrap items-center gap-2 text-sm font-mono text-fg-muted">
+      <span class="rounded-sm border border-border bg-surface-sunken px-2 py-0.5">us-east-2</span>
+      <span class="rounded-sm border border-border bg-surface-sunken px-2 py-0.5">us-west-1</span>
+      <span class="rounded-sm border border-border bg-surface-sunken px-2 py-0.5">eu-west-1</span>
+      <span class="rounded-sm border border-border bg-surface-sunken px-2 py-0.5">eu-central-1</span>
+      <span class="rounded-sm border border-border bg-surface-sunken px-2 py-0.5">ap-south-1</span>
+      <span class="rounded-sm border border-border bg-surface-sunken px-2 py-0.5">ap-northeast-1</span>
+    </div>
+  </div>
+</section>
+
+<!-- FEATURES -->
+<section id="features" class="mx-auto max-w-[1240px] px-4 py-12">
+  <div class="mb-6 max-w-2xl">
+    <h2 class="text-2xl font-bold tracking-tight text-fg">One control plane for physical infrastructure</h2>
+    <p class="mt-2 text-base text-fg-muted text-pretty">From the rack unit up to cross-region topology — Helios keeps inventory, power, thermal and network in a single, queryable model.</p>
+  </div>
+  <div class="grid gap-3 md:grid-cols-2 lg:grid-cols-4">
+    <div class="rounded-lg border border-border bg-surface-raised p-4 shadow-sm">
+      <div class="mb-3 grid size-8 place-items-center rounded-md bg-accent-muted text-accent">▥</div>
+      <h3 class="text-sm font-semibold text-fg">Rack inventory</h3>
+      <p class="mt-1 text-sm text-fg-muted text-pretty">U-level asset tracking with live capacity, power budgets and ownership. Reconciled against discovery.</p>
+    </div>
+    <div class="rounded-lg border border-border bg-surface-raised p-4 shadow-sm">
+      <div class="mb-3 grid size-8 place-items-center rounded-md bg-accent-muted text-accent">❄</div>
+      <h3 class="text-sm font-semibold text-fg">Thermal &amp; power</h3>
+      <p class="mt-1 text-sm text-fg-muted text-pretty">Per-loop cooling telemetry and PDU draw with threshold alerts before you hit a shutdown envelope.</p>
+    </div>
+    <div class="rounded-lg border border-border bg-surface-raised p-4 shadow-sm">
+      <div class="mb-3 grid size-8 place-items-center rounded-md bg-accent-muted text-accent">◇</div>
+      <h3 class="text-sm font-semibold text-fg">Network topology</h3>
+      <p class="mt-1 text-sm text-fg-muted text-pretty">Spine-leaf maps with link state, loss and failover paths. Trace a flow from port to region.</p>
+    </div>
+    <div class="rounded-lg border border-border bg-surface-raised p-4 shadow-sm">
+      <div class="mb-3 grid size-8 place-items-center rounded-md bg-accent-muted text-accent">◷</div>
+      <h3 class="text-sm font-semibold text-fg">Uptime &amp; SLOs</h3>
+      <p class="mt-1 text-sm text-fg-muted text-pretty">Throughput and availability SLOs per region with burn-rate alerting wired to your on-call.</p>
+    </div>
+  </div>
+</section>
+
+<!-- IN-CONTEXT ALERT BANNER -->
+<section class="mx-auto max-w-[1240px] px-4 pb-2">
+  <div class="flex items-start gap-3 rounded-md border border-warning-border bg-warning-bg px-3 py-2.5 text-warning">
+    <span class="mt-0.5 grid size-4 shrink-0 place-items-center rounded-full border border-warning text-2xs font-bold">!</span>
+    <div class="min-w-0">
+      <p class="text-sm font-semibold">Cooling threshold approaching in iad-7, row C</p>
+      <p class="text-xs text-warning/80">Inlet 27.4 °C, 2 °C below shutdown. CRAH-B2 at 94% capacity — failover loop on standby.</p>
+    </div>
+    <button class="ml-auto shrink-0 rounded px-2 py-0.5 text-xs font-medium hover:bg-warning/10">Acknowledge</button>
+  </div>
+</section>
+
+<!-- FLEET TABLE -->
+<section id="fleet" class="mx-auto max-w-[1240px] px-4 py-10">
+  <div class="mb-4 flex flex-wrap items-end justify-between gap-3">
+    <div>
+      <h2 class="text-2xl font-bold tracking-tight text-fg">Live fleet</h2>
+      <p class="mt-1 text-base text-fg-muted">Condensed, sortable, dense — the same table component documented in the system.</p>
+    </div>
+    <a href="tables.html" class="inline-flex items-center gap-1.5 rounded-md border border-border bg-surface px-3 py-1.5 text-sm font-medium text-fg hover:bg-hover">Full table demo&nbsp;→</a>
+  </div>
+  <div class="overflow-auto rounded-lg border border-border shadow-sm">
+    <table class="ds-table w-full text-left text-base" data-density="default">
+      <thead class="bg-surface-sunken text-2xs font-mono uppercase tracking-wide text-fg-muted">
+        <tr class="border-b border-border">
+          <th class="text-left font-medium">Rack</th>
+          <th class="text-left font-medium">Status</th>
+          <th class="text-left font-medium">Region</th>
+          <th class="text-right font-medium">Gb/s</th>
+          <th class="text-right font-medium">Power kW</th>
+          <th class="text-right font-medium">Inlet °C</th>
+          <th class="text-left font-medium">Owner</th>
+        </tr>
+      </thead>
+      <tbody class="divide-y divide-border">
+        <tr class="bg-surface even:bg-surface-sunken hover:bg-hover"><td class="font-mono font-medium text-fg">RK-04-A1</td><td><span class="inline-flex items-center gap-1.5 text-success"><span class="size-1.5 rounded-full bg-success"></span>OK</span></td><td class="text-fg-muted">us-east-2b</td><td class="text-right font-mono tabular-nums text-fg">41.2</td><td class="text-right font-mono tabular-nums text-fg">7.8</td><td class="text-right font-mono tabular-nums text-fg">22.1</td><td class="text-fg-muted">m.okafor</td></tr>
+        <tr class="bg-surface even:bg-surface-sunken hover:bg-hover"><td class="font-mono font-medium text-fg">RK-04-A2</td><td><span class="inline-flex items-center gap-1.5 text-warning"><span class="size-1.5 rounded-full bg-warning"></span>Warm</span></td><td class="text-fg-muted">us-east-2b</td><td class="text-right font-mono tabular-nums text-fg">38.7</td><td class="text-right font-mono tabular-nums text-fg">8.3</td><td class="text-right font-mono tabular-nums text-warning">27.4</td><td class="text-fg-muted">m.okafor</td></tr>
+        <tr class="bg-surface even:bg-surface-sunken hover:bg-hover"><td class="font-mono font-medium text-fg">RK-05-B7</td><td><span class="inline-flex items-center gap-1.5 text-danger"><span class="size-1.5 rounded-full bg-danger"></span>Down</span></td><td class="text-fg-muted">us-east-2b</td><td class="text-right font-mono tabular-nums text-danger">0.0</td><td class="text-right font-mono tabular-nums text-fg">0.0</td><td class="text-right font-mono tabular-nums text-fg">19.8</td><td class="text-fg-muted">ops</td></tr>
+        <tr class="bg-surface even:bg-surface-sunken hover:bg-hover"><td class="font-mono font-medium text-fg">RK-09-F2</td><td><span class="inline-flex items-center gap-1.5 text-success"><span class="size-1.5 rounded-full bg-success"></span>OK</span></td><td class="text-fg-muted">ap-south-1a</td><td class="text-right font-mono tabular-nums text-fg">42.0</td><td class="text-right font-mono tabular-nums text-fg">7.9</td><td class="text-right font-mono tabular-nums text-fg">24.3</td><td class="text-fg-muted">r.kapoor</td></tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<!-- TOPOLOGY + CTA -->
+<section id="topology" class="border-t border-border bg-surface-sunken">
+  <div class="mx-auto grid max-w-[1240px] gap-8 px-4 py-12 lg:grid-cols-2 lg:items-center">
+    <div>
+      <h2 class="text-2xl font-bold tracking-tight text-fg">Navigate the whole fleet as a tree</h2>
+      <p class="mt-2 text-base text-fg-muted text-pretty">Region → data center → hall → rack → device. Expand, search, and re-parent with drag-and-drop — keyboard accessible end to end.</p>
+      <a href="tree.html" class="mt-5 inline-flex items-center gap-1.5 rounded-md bg-accent px-4 py-2 text-sm font-medium text-fg-on-accent hover:bg-accent-hover">Explore the tree&nbsp;→</a>
+    </div>
+    <div class="rounded-lg border border-border bg-surface-raised p-3 font-mono text-sm shadow-sm">
+      <div class="flex items-center gap-1.5 px-1 py-1"><span class="text-fg-subtle">▾</span> <span class="text-accent">◈</span> <span class="text-fg">us-east-2</span> <span class="ml-auto text-2xs text-fg-subtle">1,240 racks</span></div>
+      <div class="ml-3 border-l border-border pl-3">
+        <div class="flex items-center gap-1.5 px-1 py-1"><span class="text-fg-subtle">▾</span> <span class="text-fg-muted">▣</span> <span class="text-fg">iad-7</span></div>
+        <div class="ml-3 border-l border-border pl-3">
+          <div class="flex items-center gap-1.5 px-1 py-1"><span class="text-fg-subtle">▾</span> <span class="text-fg-muted">▤</span> <span class="text-fg">Hall A</span></div>
+          <div class="ml-3 border-l border-border pl-3">
+            <div class="flex items-center gap-1.5 px-1 py-1"><span class="invisible">▾</span> <span class="text-fg-muted">▥</span> <span class="text-fg">RK-04-A1</span> <span class="ml-auto inline-flex items-center gap-1 text-success"><span class="size-1.5 rounded-full bg-success"></span><span class="not-italic">OK</span></span></div>
+            <div class="flex items-center gap-1.5 px-1 py-1"><span class="invisible">▾</span> <span class="text-fg-muted">▥</span> <span class="text-fg">RK-04-A2</span> <span class="ml-auto inline-flex items-center gap-1 text-warning"><span class="size-1.5 rounded-full bg-warning"></span>WARM</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FINAL CTA -->
+<section class="border-t border-border">
+  <div class="mx-auto flex max-w-[1240px] flex-col items-start gap-4 px-4 py-12 sm:flex-row sm:items-center">
+    <div>
+      <h2 class="text-2xl font-bold tracking-tight text-fg">See your fleet in Helios</h2>
+      <p class="mt-1 text-base text-fg-muted">Connect a region in minutes. No agents on the critical path.</p>
+    </div>
+    <div class="flex flex-wrap items-center gap-2 sm:ml-auto">
+      <a href="#" class="inline-flex items-center gap-1.5 rounded-md bg-accent px-4 py-2 text-sm font-medium text-fg-on-accent hover:bg-accent-hover">Start free trial</a>
+      <a href="index.html" class="inline-flex items-center gap-1.5 rounded-md border border-border bg-surface px-4 py-2 text-sm font-medium text-fg hover:bg-hover">View the design system</a>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer class="border-t border-border bg-surface-sunken">
+  <div class="mx-auto grid max-w-[1240px] gap-6 px-4 py-10 sm:grid-cols-2 lg:grid-cols-4">
+    <div>
+      <div class="flex items-center gap-2"><span class="grid size-6 place-items-center rounded bg-accent text-fg-on-accent text-2xs font-bold">H</span><span class="font-semibold text-fg">Helios</span><span class="text-fg-subtle">DCIM</span></div>
+      <p class="mt-2 text-xs text-fg-subtle text-pretty">A reference product built entirely on the Substrate design system.</p>
+    </div>
+    <div>
+      <p class="text-2xs font-mono uppercase tracking-wide text-fg-subtle">Platform</p>
+      <ul class="mt-2 space-y-1 text-sm text-fg-muted">
+        <li><a href="#features" class="hover:text-fg">Inventory</a></li>
+        <li><a href="#features" class="hover:text-fg">Thermal &amp; power</a></li>
+        <li><a href="#topology" class="hover:text-fg">Topology</a></li>
+      </ul>
+    </div>
+    <div>
+      <p class="text-2xs font-mono uppercase tracking-wide text-fg-subtle">Design system</p>
+      <ul class="mt-2 space-y-1 text-sm text-fg-muted">
+        <li><a href="index.html#tokens" class="hover:text-fg">Tokens</a></li>
+        <li><a href="index.html#components" class="hover:text-fg">Components</a></li>
+        <li><a href="tables.html" class="hover:text-fg">Tables</a></li>
+        <li><a href="tree.html" class="hover:text-fg">Tree</a></li>
+        <li><a href="upload.html" class="hover:text-fg">Upload</a></li>
+        <li><a href="observability.html" class="hover:text-fg">Agent pipeline</a></li>
+        <li><a href="promotion.html" class="hover:text-fg">Promotion (HITL)</a></li>
+        <li><a href="download.html" class="hover:text-fg">Download model</a></li>
+      </ul>
+    </div>
+    <div>
+      <p class="text-2xs font-mono uppercase tracking-wide text-fg-subtle">Status</p>
+      <div class="mt-2 inline-flex items-center gap-1 rounded-sm border border-success-border bg-success-bg px-1.5 py-0.5 text-2xs font-medium text-success"><span class="size-1.5 rounded-full bg-success"></span>All systems operational</div>
+    </div>
+  </div>
+  <div class="border-t border-border">
+    <div class="mx-auto max-w-[1240px] px-4 py-4 text-xs text-fg-subtle">© 2026 Helios — example product · Built on Substrate · Tailwind CSS v4</div>
+  </div>
+</footer>
+
+</body>
+</html>
