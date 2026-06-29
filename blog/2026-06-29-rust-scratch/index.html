@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Scratch: Images | Dev·stopian</title>
+    
+    
+    <meta name="description" content="Build Rust images FROM scratch">
+    
+    
+    <meta name="keywords" content="Rust, Docker, Kubernetes">
+    
+    
+    <link rel="canonical" href="https:&#x2F;&#x2F;devstopian.com&#x2F;blog&#x2F;2026-06-29-rust-scratch&#x2F;" />
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Spectral:ital,wght@0,300;0,400;0,500;0,600;1,400;1,500&family=JetBrains+Mono:wght@400;500;700&display=swap">
+    <link rel="stylesheet" href="https://devstopian.com/style.css">
+    
+  </head>
+  <body>
+    
+    
+    <header class="site-header">
+      <a class="brand" href="/" aria-label="Dev·stopian home">
+        <img src="/assets/logo-mark.svg" width="34" height="34" alt="">
+        <span class="wordmark">Dev<span class="dot">·</span>stopian</span>
+      </a>
+      <nav class="site-nav">
+        <a class="nav-link" href="/">home</a>
+        
+        
+        
+        <a class="nav-link is-active" href="https:&#x2F;&#x2F;devstopian.com&#x2F;blog&#x2F;">blog</a>
+        
+        
+        
+        
+        <a class="nav-link" href="https:&#x2F;&#x2F;devstopian.com&#x2F;about&#x2F;">about</a>
+        
+      </nav>
+    </header>
+
+    <main class="site-main">
+      
+<article class="wrap prose">
+  <header class="post-head">
+    
+    <div class="eyebrow">// originally published · 2026-06-29</div>
+    
+    <h1>Scratch: Images</h1>
+    
+    <div class="post-meta">
+      
+      <a class="tag tag--sm" href="https://devstopian.com/tags/rust/"><span class="hash">#</span>Rust</a>
+      
+      <a class="tag tag--sm" href="https://devstopian.com/tags/docker/"><span class="hash">#</span>Docker</a>
+      
+      <a class="tag tag--sm" href="https://devstopian.com/tags/kubernetes/"><span class="hash">#</span>Kubernetes</a>
+      
+    </div>
+    
+    <hr>
+  </header>
+
+  <div class="post-body">
+    <p>There's a little fact about Rust that obliterated all other tech stacks I work within containerized environments (Kubernetes):</p>
+<blockquote>
+<p>You can build Rust container images <a rel="external" href="https://hub.docker.com/_/scratch/"><code>FROM scratch</code></a>!</p>
+</blockquote>
+<p>Yes, you heard me right. Just drop a statically linked Rust binary in a scratch image, and voila!, the application is deployable to Kubernetes. At first glance, this might seem like an insignificant idea, but it's impact is priceless.</p>
+<h2 id="scratch-secure">Scratch: Secure</h2>
+<p>All software should be safe and secure, but what does that mean, exactly? I mean Rust is secure by default, right? Well, technically more secure than most programming languages, but the environment you deploy it to will have a greater impact on the security posture. Deploying a Rust application to any *nix-based distro will have the user-space programs to contend with for security.</p>
+<p>So, why deploy the user-space programs at all? I mean, your statically linked Rust binary can just work directly with the kernel. Why drop a shell such as bash or ash or _____? Does your app really need to shell-out in production to implement the feature? Or, even worse, does your app really need to update packages in the running container with <code>apt</code>, <code>apk</code>, ...? Could you imagine if a hacker said, "Na, use my super-safe-apt-registry for your application needs"? I mean, this is insanity!</p>
+<h2 id="scratch-build">Scratch: Build</h2>
+<p>You get a few other benefits with switching to <code>scratch</code> image builds.</p>
+<ol>
+<li>You can build your binary once in you CI/CD pipelines. Then, you can deploy the statically linked binary to different hosts.</li>
+<li>Your image builds can be focused on just copying the final binary and any relevant config files.</li>
+<li>Your images are super small; they contain only your app after all!</li>
+</ol>
+<p>The primary drawback is libary code (<code>*.so</code> on Linux) can't be shared when deployed to the same host. But, this isn't usually relevant in containerized workloads.</p>
+<h2 id="scratch-example">Scratch: Example</h2>
+<p>Here's an example to get you going. I built a sample GitLab CI/CD to show the <code>Build</code> is separated from the <code>Publish</code> jobs.</p>
+<pre class="giallo" style="color: #CDD6F4; background-color: #1E1E2E;"><code data-lang="yaml"><span class="giallo-l"><span style="color: #89B4FA;">stages</span><span style="color: #94E2D5;">:</span></span>
+<span class="giallo-l"><span style="color: #9399B2;">  -</span><span style="color: #A6E3A1;"> build</span></span>
+<span class="giallo-l"><span style="color: #9399B2;">  -</span><span style="color: #A6E3A1;"> publish</span></span>
+<span class="giallo-l"></span>
+<span class="giallo-l"><span style="color: #89B4FA;">variables</span><span style="color: #94E2D5;">:</span></span>
+<span class="giallo-l"><span style="color: #89B4FA;">  TARGET</span><span style="color: #94E2D5;">:</span><span style="color: #A6E3A1;"> x86_64-unknown-linux-musl</span></span>
+<span class="giallo-l"><span style="color: #89B4FA;">  BINARY</span><span style="color: #94E2D5;">:</span><span style="color: #A6E3A1;"> my_app</span></span>
+<span class="giallo-l"><span style="color: #89B4FA;">  IMAGE</span><span style="color: #94E2D5;">:</span><span style="color: #A6E3A1;"> $CI_REGISTRY_IMAGE:$CI_COMMIT_SHORT_SHA</span></span>
+<span class="giallo-l"></span>
+<span class="giallo-l"><span style="color: #9399B2;font-style: italic;"># Compile a statically linked musl binary and hand it off as an artifact.</span></span>
+<span class="giallo-l"><span style="color: #89B4FA;">Build</span><span style="color: #94E2D5;">:</span></span>
+<span class="giallo-l"><span style="color: #89B4FA;">  stage</span><span style="color: #94E2D5;">:</span><span style="color: #A6E3A1;"> build</span></span>
+<span class="giallo-l"><span style="color: #89B4FA;">  image</span><span style="color: #94E2D5;">:</span><span style="color: #A6E3A1;"> rust:latest</span></span>
+<span class="giallo-l"><span style="color: #89B4FA;">  before_script</span><span style="color: #94E2D5;">:</span></span>
+<span class="giallo-l"><span style="color: #9399B2;">    -</span><span style="color: #A6E3A1;"> rustup target add $TARGET</span></span>
+<span class="giallo-l"><span style="color: #9399B2;">    -</span><span style="color: #A6E3A1;"> apt-get update &amp;&amp; apt-get install -y musl-tools</span></span>
+<span class="giallo-l"><span style="color: #89B4FA;">  script</span><span style="color: #94E2D5;">:</span></span>
+<span class="giallo-l"><span style="color: #9399B2;">    -</span><span style="color: #A6E3A1;"> cargo build --release --target $TARGET</span></span>
+<span class="giallo-l"><span style="color: #89B4FA;">  artifacts</span><span style="color: #94E2D5;">:</span></span>
+<span class="giallo-l"><span style="color: #89B4FA;">    paths</span><span style="color: #94E2D5;">:</span></span>
+<span class="giallo-l"><span style="color: #9399B2;">      -</span><span style="color: #A6E3A1;"> target/$TARGET/release/$BINARY</span></span>
+<span class="giallo-l"><span style="color: #89B4FA;">    expire_in</span><span style="color: #94E2D5;">:</span><span style="color: #A6E3A1;"> 1 hour</span></span>
+<span class="giallo-l"></span>
+<span class="giallo-l"><span style="color: #9399B2;font-style: italic;"># Build a scratch image around that binary, then tag and push it.</span></span>
+<span class="giallo-l"><span style="color: #89B4FA;">Publish</span><span style="color: #94E2D5;">:</span></span>
+<span class="giallo-l"><span style="color: #89B4FA;">  stage</span><span style="color: #94E2D5;">:</span><span style="color: #A6E3A1;"> publish</span></span>
+<span class="giallo-l"><span style="color: #89B4FA;">  image</span><span style="color: #94E2D5;">:</span><span style="color: #A6E3A1;"> docker:latest</span></span>
+<span class="giallo-l"><span style="color: #89B4FA;">  services</span><span style="color: #94E2D5;">:</span></span>
+<span class="giallo-l"><span style="color: #9399B2;">    -</span><span style="color: #A6E3A1;"> docker:dind</span></span>
+<span class="giallo-l"><span style="color: #89B4FA;">  needs</span><span style="color: #94E2D5;">:</span></span>
+<span class="giallo-l"><span style="color: #9399B2;">    -</span><span style="color: #89B4FA;"> job</span><span style="color: #94E2D5;">:</span><span style="color: #A6E3A1;"> Build</span></span>
+<span class="giallo-l"><span style="color: #89B4FA;">      artifacts</span><span style="color: #94E2D5;">:</span><span style="color: #FAB387;"> true</span></span>
+<span class="giallo-l"><span style="color: #89B4FA;">  before_script</span><span style="color: #94E2D5;">:</span></span>
+<span class="giallo-l"><span style="color: #9399B2;">    -</span><span style="color: #A6E3A1;"> echo &quot;$CI_REGISTRY_PASSWORD&quot; | docker login -u &quot;$CI_REGISTRY_USER&quot; --password-stdin &quot;$CI_REGISTRY&quot;</span></span>
+<span class="giallo-l"><span style="color: #89B4FA;">  script</span><span style="color: #94E2D5;">:</span></span>
+<span class="giallo-l"><span style="color: #9399B2;">    -</span><span style="color: #A6E3A1;"> docker build -t &quot;$IMAGE&quot; .</span></span>
+<span class="giallo-l"><span style="color: #9399B2;">    -</span><span style="color: #A6E3A1;"> docker tag &quot;$IMAGE&quot; &quot;$CI_REGISTRY_IMAGE:latest&quot;</span></span>
+<span class="giallo-l"><span style="color: #9399B2;">    -</span><span style="color: #A6E3A1;"> docker push &quot;$IMAGE&quot;</span></span>
+<span class="giallo-l"><span style="color: #9399B2;">    -</span><span style="color: #A6E3A1;"> docker push &quot;$CI_REGISTRY_IMAGE:latest&quot;</span></span></code></pre>
+<blockquote>
+<p>Dirt-simple Dockerfile:</p>
+</blockquote>
+<pre class="giallo" style="color: #CDD6F4; background-color: #1E1E2E;"><code data-lang="docker"><span class="giallo-l"><span style="color: #CBA6F7;">FROM</span><span> scratch</span></span>
+<span class="giallo-l"><span style="color: #CBA6F7;">COPY</span><span> target/x86_64-unknown-linux-musl/release/my_app /app/my_app</span></span>
+<span class="giallo-l"><span style="color: #CBA6F7;">ENTRYPOINT</span><span> [</span><span style="color: #A6E3A1;">&quot;/app/my_app&quot;</span><span>]</span></span></code></pre>
+  </div>
+</article>
+
+    </main>
+
+    <footer class="site-footer">
+      <div class="footer-brand">
+        <img src="/assets/logo-mark.svg" width="22" height="22" alt="">
+        <span>© 2026 Joel Vandiver · the future for devs in the age of AI</span>
+      </div>
+      <div class="footer-links">
+        <a href="https://www.linkedin.com/in/joelvandiver/" target="_blank" rel="noreferrer">LinkedIn</a>
+        <a href="https://github.com/joelvandiver" target="_blank" rel="noreferrer">GitHub</a>
+      </div>
+    </footer>
+  </body>
+</html>
