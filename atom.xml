@@ -5,8 +5,61 @@
     <link rel="self" type="application/atom+xml" href="https://devstopian.com/atom.xml"/>
     <link rel="alternate" type="text/html" href="https://devstopian.com"/>
     <generator uri="https://www.getzola.org/">Zola</generator>
-    <updated>2026-06-29T00:00:00+00:00</updated>
+    <updated>2026-07-08T00:00:00+00:00</updated>
     <id>https://devstopian.com/atom.xml</id>
+    <entry xml:lang="en">
+        <title>Everything is an artifact!</title>
+        <published>2026-07-08T00:00:00+00:00</published>
+        <updated>2026-07-08T00:00:00+00:00</updated>
+        
+        <author>
+          <name>
+            
+              Unknown
+            
+          </name>
+        </author>
+        
+        <link rel="alternate" type="text/html" href="https://devstopian.com/blog/2026-07-08-artifact-everything/"/>
+        <id>https://devstopian.com/blog/2026-07-08-artifact-everything/</id>
+        
+        <content type="html" xml:base="https://devstopian.com/blog/2026-07-08-artifact-everything/">&lt;p&gt;Artifacts have always been a part of software delivery; I mean software itself is an artifact. But, with the ever acceleration of AI into our workflows, it is becoming clear that artifacts must take absolute precedence.&lt;&#x2F;p&gt;
+&lt;p&gt;My journey to seeing the importance of artifacts has expanded throughout my career:&lt;&#x2F;p&gt;
+&lt;ul&gt;
+&lt;li&gt;Software is an artifact, duh!&lt;&#x2F;li&gt;
+&lt;li&gt;Software tickets are artifacts.&lt;&#x2F;li&gt;
+&lt;li&gt;Git commits are artifacts! Yeah!&lt;&#x2F;li&gt;
+&lt;li&gt;Automated test results are artifacts.&lt;&#x2F;li&gt;
+&lt;li&gt;Documentation is an artifact.&lt;&#x2F;li&gt;
+&lt;li&gt;GitLab merge requests are artifacts!&lt;&#x2F;li&gt;
+&lt;li&gt;PROMPTs are artifacts!&lt;&#x2F;li&gt;
+&lt;li&gt;&lt;strong&gt;Everything is an artifact!&lt;&#x2F;strong&gt;&lt;&#x2F;li&gt;
+&lt;&#x2F;ul&gt;
+&lt;p&gt;I&#x27;ve gotten to a point in my career where I&#x27;m not certain I&#x27;ve done any &lt;em&gt;meaningful&lt;&#x2F;em&gt; work if there isn&#x27;t an artifact left behind showing that work. This conclusion has led to some interesting results of late.&lt;&#x2F;p&gt;
+&lt;h2 id=&quot;tokenomics&quot;&gt;Tokenomics&lt;&#x2F;h2&gt;
+&lt;p&gt;&lt;code&gt;token + economics = token·omics&lt;&#x2F;code&gt;&lt;&#x2F;p&gt;
+&lt;p&gt;For instance, I&#x27;ve been receiving pressure to justify the use of AI tokens in my workflow. At first, I found this daunting; I mean, wouldn&#x27;t I want the best model at all times? However, I see the point that we should be good stewards of the resources we spend for the business.&lt;&#x2F;p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;&lt;strong&gt;My Solution:&lt;&#x2F;strong&gt; Build a &lt;code&gt;tokenomics&lt;&#x2F;code&gt; artifact. Include:&lt;&#x2F;p&gt;
+&lt;&#x2F;blockquote&gt;
+&lt;ol&gt;
+&lt;li&gt;The model I chose&lt;&#x2F;li&gt;
+&lt;li&gt;The reason I chose that model&lt;&#x2F;li&gt;
+&lt;li&gt;The amount of tokens (credits) I have remaining&lt;&#x2F;li&gt;
+&lt;li&gt;The cost of that model&lt;&#x2F;li&gt;
+&lt;li&gt;The amount spent on the model&lt;&#x2F;li&gt;
+&lt;li&gt;The time spent on the task&lt;&#x2F;li&gt;
+&lt;li&gt;The level of engagement (1-10) that I had with the model&lt;&#x2F;li&gt;
+&lt;&#x2F;ol&gt;
+&lt;h3 id=&quot;change-log&quot;&gt;Change Log&lt;&#x2F;h3&gt;
+&lt;p&gt;My next AHA came with merging that artifact with the change log! Our stakeholders want to know what changed &lt;em&gt;and&lt;&#x2F;em&gt; what model was used to produce that change. It&#x27;s crazy to me that I can now just drop a link to a change log to stakeholders and that artifact takes on a life of its own. My software changes &lt;em&gt;and&lt;&#x2F;em&gt; its &lt;code&gt;tokenomics&lt;&#x2F;code&gt; are being actively discussed in meetings I had no knowledge about.&lt;&#x2F;p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;&lt;strong&gt;Side Note:&lt;&#x2F;strong&gt; I cannot overly stress the importance of setting up the automation to publish your artifacts in your pipelines. The pipelines that deploy the versioned software should also publish the change log.&lt;&#x2F;p&gt;
+&lt;&#x2F;blockquote&gt;
+&lt;p&gt;It might sound daunting at first, but keeping tabs on your changes with &lt;code&gt;tokenomics&lt;&#x2F;code&gt; has been very satisifying. I mean, I leave work everyday with the confidence that my work was solid because of it!&lt;&#x2F;p&gt;
+</content>
+        
+    </entry>
     <entry xml:lang="en">
         <title>Scratch: Images</title>
         <published>2026-06-29T00:00:00+00:00</published>
@@ -666,74 +719,6 @@ chatbot and see how it goes.&lt;&#x2F;p&gt;
 &lt;p&gt;Update 2026-02-13&lt;&#x2F;p&gt;
 &lt;&#x2F;blockquote&gt;
 &lt;p&gt;My original post about the &lt;code&gt;devstack&lt;&#x2F;code&gt; left off the importance of working locally with a single service. In my drive for rigor over the last several years, I have since placed greater emphasis on local development. The &lt;code&gt;devstack&lt;&#x2F;code&gt; is still critical to my overall flow, but it&#x27;s importance has been lowered.&lt;&#x2F;p&gt;
-</content>
-        
-    </entry>
-    <entry xml:lang="en">
-        <title>Resilient Gateway</title>
-        <published>2024-04-23T00:00:00+00:00</published>
-        <updated>2024-04-23T00:00:00+00:00</updated>
-        
-        <author>
-          <name>
-            
-              Unknown
-            
-          </name>
-        </author>
-        
-        <link rel="alternate" type="text/html" href="https://devstopian.com/blog/2024-04-23-resilient-gateway/"/>
-        <id>https://devstopian.com/blog/2024-04-23-resilient-gateway/</id>
-        
-        <content type="html" xml:base="https://devstopian.com/blog/2024-04-23-resilient-gateway/">&lt;p&gt;Creating a &quot;Resilient Gateway&quot; using Nginx as a reverse proxy is a great way to ensure that your web infrastructure can handle failures gracefully. Let&#x27;s explore how to configure Nginx to start up and remain operational even if the backend services are down. This setup enhances the resilience and availability of your web applications, making them more robust against backend instabilities.&lt;&#x2F;p&gt;
-&lt;h2 id=&quot;understand-the-challenge&quot;&gt;Understand: The Challenge&lt;&#x2F;h2&gt;
-&lt;p&gt;Typically, when Nginx is configured to proxy to a backend service and that service is unavailable at startup, Nginx will not come up!&lt;&#x2F;p&gt;
-&lt;p&gt;Let&#x27;s take this &lt;code&gt;nginx.conf&lt;&#x2F;code&gt; as an example:&lt;&#x2F;p&gt;
-&lt;pre class=&quot;giallo&quot; style=&quot;color: #CDD6F4; background-color: #1E1E2E;&quot;&gt;&lt;code data-lang=&quot;plain&quot;&gt;&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;events {&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
-&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;    worker_connections 1024;&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
-&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;}&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
-&lt;span class=&quot;giallo-l&quot;&gt;&lt;&#x2F;span&gt;
-&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;http {&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
-&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;    server {&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
-&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;        listen 80;&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
-&lt;span class=&quot;giallo-l&quot;&gt;&lt;&#x2F;span&gt;
-&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;        location &#x2F;flaky {&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
-&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;            proxy_pass http:&#x2F;&#x2F;flaky:8000;&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
-&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;        }&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
-&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;    }&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
-&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;}&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
-&lt;p&gt;If the &lt;code&gt;http:&#x2F;&#x2F;flaky:8000&lt;&#x2F;code&gt; service is not running, then Nginx will not start. By default, Nginx requires all backend services to be up and running when it comes up.&lt;&#x2F;p&gt;
-&lt;h2 id=&quot;the-solution-resilient-gateway&quot;&gt;The Solution: Resilient Gateway&lt;&#x2F;h2&gt;
-&lt;p&gt;To make our Nginx gateway resilient, we can use a combination of configuration strategies that include service discovery and DNS resolution. This setup ensures that Nginx can start up without needing the backend services to be available and can continue to operate if they go down.&lt;&#x2F;p&gt;
-&lt;blockquote&gt;
-&lt;p&gt;Step 1: Defining a Variable&lt;&#x2F;p&gt;
-&lt;&#x2F;blockquote&gt;
-&lt;p&gt;Nginx evaluates variables lazily. This means that the resolution of the hostname happens at the time of the request, allowing for dynamic changes in the backend&#x27;s status.&lt;&#x2F;p&gt;
-&lt;p&gt;&lt;code&gt;set $backend &quot;flaky:8000&quot;;&lt;&#x2F;code&gt;&lt;&#x2F;p&gt;
-&lt;p&gt;Here, &lt;code&gt;$backend&lt;&#x2F;code&gt; is a variable, and its resolution is deferred until a request is made. This setup allows for dynamic reconfiguration if the status of flaky changes.&lt;&#x2F;p&gt;
-&lt;blockquote&gt;
-&lt;p&gt;Step 2: Add the Internal DNS Resolver&lt;&#x2F;p&gt;
-&lt;&#x2F;blockquote&gt;
-&lt;p&gt;&lt;code&gt;resolver 127.0.0.11 valid=30s;  # Docker&#x27;s internal DNS resolver&lt;&#x2F;code&gt;&lt;&#x2F;p&gt;
-&lt;p&gt;The &lt;code&gt;resolver&lt;&#x2F;code&gt; directive defines the DNS server to use for name resolution since the service is discovered at the time of the request.&lt;&#x2F;p&gt;
-&lt;pre class=&quot;giallo&quot; style=&quot;color: #CDD6F4; background-color: #1E1E2E;&quot;&gt;&lt;code data-lang=&quot;plain&quot;&gt;&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;events {&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
-&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;    worker_connections 1024;&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
-&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;}&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
-&lt;span class=&quot;giallo-l&quot;&gt;&lt;&#x2F;span&gt;
-&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;http {&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
-&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;    server {&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
-&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;        listen 80;&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
-&lt;span class=&quot;giallo-l&quot;&gt;&lt;&#x2F;span&gt;
-&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;        set $backend &amp;quot;flaky:8000&amp;quot;;&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
-&lt;span class=&quot;giallo-l&quot;&gt;&lt;&#x2F;span&gt;
-&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;        location &#x2F;flaky {&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
-&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;            proxy_pass http:&#x2F;&#x2F;$backend;&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
-&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;        }&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
-&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;    }&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
-&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;}&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
-&lt;p&gt;In this configuration, if the flaky service is down, users will encounter an error when trying to access it through the gateway. The web server is free to respond with appropriate errors pages (typically 502 Bad Gateway). Serving error pages is by far a better experience than not responding at all. Also, other services may be up and running and can respond to requests even if a particular backend service is down.&lt;&#x2F;p&gt;
-&lt;h2 id=&quot;conclusion&quot;&gt;Conclusion&lt;&#x2F;h2&gt;
-&lt;p&gt;By implementing the dns resolver, your Nginx reverse proxy becomes more resilient and enhances the availability and stability of your applications. This configuration is especially useful in a microservices architectures where individual service availability can vary.&lt;&#x2F;p&gt;
 </content>
         
     </entry>
