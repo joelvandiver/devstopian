@@ -5,6 +5,31 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Polaris – Geometric Vector Graphics</title>
     <style>
+      /* ------------------------------------------------------------------
+         Polaris studio theme
+         Design tokens first; every rule below draws from these so the
+         palette can evolve in one place.
+         ------------------------------------------------------------------ */
+      :root {
+        --bg: #07090f;            /* deep ink behind everything */
+        --canvas: #0a0d16;        /* drawing surface */
+        --panel: #0d1119;         /* chrome panels */
+        --panel-raised: #131826;  /* buttons, inputs */
+        --edge: #1d2536;          /* hairline borders */
+        --edge-soft: #161d2c;
+        --ink: #e9ecf5;           /* primary text */
+        --ink-dim: #98a2bc;       /* secondary text */
+        --ink-faint: #6a7592;     /* tertiary text */
+        --gold: #e3b87e;          /* warm accent — active states */
+        --gold-soft: rgba(227, 184, 126, 0.12);
+        --gold-line: rgba(227, 184, 126, 0.55);
+        --blue: #9fc4ff;          /* cool accent — focus, links */
+        --grid-fine: rgba(64, 84, 128, 0.14);
+        --grid-major: rgba(90, 112, 160, 0.22);
+        --serif: Georgia, "Iowan Old Style", "Times New Roman", serif;
+        --sans: "Avenir Next", "Segoe UI", system-ui, sans-serif;
+      }
+
       * {
         box-sizing: border-box;
         margin: 0;
@@ -12,19 +37,21 @@
       }
 
       body {
-        background: #060814;
-        color: #e6ebf8;
-        font-family: "Segoe UI", system-ui, sans-serif;
+        background: var(--bg);
+        color: var(--ink);
+        font-family: var(--sans);
         display: flex;
         flex-direction: column;
         height: 100vh;
         overflow: hidden;
       }
 
+      /* ---- header ------------------------------------------------------ */
+
       header {
-        background: #0c1020;
-        border-bottom: 1px solid #1c2740;
-        padding: 0.6rem 1.2rem;
+        background: linear-gradient(180deg, #10141f 0%, var(--panel) 100%);
+        border-bottom: 1px solid var(--edge);
+        padding: 0.65rem 1.25rem;
         display: flex;
         align-items: center;
         gap: 1rem;
@@ -33,38 +60,45 @@
       .brand {
         display: flex;
         align-items: center;
-        gap: 0.85rem;
+        gap: 0.9rem;
       }
 
       .brand-mark {
-        width: 2rem;
-        height: 2rem;
+        width: 2.15rem;
+        height: 2.15rem;
         flex: 0 0 auto;
+        filter: drop-shadow(0 0 6px rgba(159, 196, 255, 0.25));
       }
 
       .brand-copy {
         display: flex;
         flex-direction: column;
-        gap: 0.08rem;
+        gap: 0.12rem;
       }
 
       header h1 {
-        font-size: 1.08rem;
-        line-height: 1.05;
-        letter-spacing: 0.02em;
-        color: #edf3ff;
-        font-weight: 650;
+        font-size: 1.02rem;
+        line-height: 1;
+        letter-spacing: 0.34em;
+        text-transform: uppercase;
+        color: var(--ink);
+        font-weight: 600;
       }
 
       header .subtitle {
-        font-size: 0.8rem;
-        color: #8a99bb;
+        font-family: var(--serif);
+        font-style: italic;
+        font-size: 0.82rem;
+        letter-spacing: 0.02em;
+        color: var(--ink-dim);
       }
 
+      /* ---- toolbar ----------------------------------------------------- */
+
       #toolbar {
-        background: #0c1020;
-        border-bottom: 1px solid #1c2740;
-        padding: 0.4rem 1rem;
+        background: var(--panel);
+        border-bottom: 1px solid var(--edge);
+        padding: 0.45rem 1rem;
         display: flex;
         gap: 0.5rem;
         align-items: center;
@@ -72,31 +106,45 @@
       }
 
       #toolbar label {
-        font-size: 0.8rem;
-        color: #97a5c6;
-        margin-left: 0.8rem;
+        font-size: 0.66rem;
+        letter-spacing: 0.14em;
+        text-transform: uppercase;
+        color: var(--ink-faint);
+        margin-left: 0.9rem;
       }
 
       button {
-        background: #121936;
-        color: #d5defa;
-        border: 1px solid #2d3a63;
-        border-radius: 4px;
-        padding: 0.3rem 0.8rem;
+        background: var(--panel-raised);
+        color: var(--ink);
+        border: 1px solid var(--edge);
+        border-radius: 999px;
+        padding: 0.34rem 0.95rem;
         cursor: pointer;
-        font-size: 0.85rem;
-        transition: background 0.15s;
+        font-family: var(--sans);
+        font-size: 0.83rem;
+        letter-spacing: 0.02em;
+        transition: background 0.15s ease, border-color 0.15s ease,
+          color 0.15s ease, box-shadow 0.15s ease;
       }
 
       button:hover {
-        background: #1a2449;
+        background: #1a2135;
+        border-color: #2d3a58;
+      }
+
+      button:focus-visible {
+        outline: 2px solid var(--blue);
+        outline-offset: 2px;
       }
 
       button.active {
-        background: #1f356f;
-        border-color: #7fb5ff;
-        color: #f7fbff;
+        background: var(--gold-soft);
+        border-color: var(--gold-line);
+        color: var(--gold);
+        box-shadow: 0 0 10px rgba(227, 184, 126, 0.16);
       }
+
+      /* ---- layout ------------------------------------------------------ */
 
       #main {
         flex: 1;
@@ -104,30 +152,44 @@
         overflow: hidden;
       }
 
+      /* ---- tool palette ------------------------------------------------ */
+
       #tool-palette {
-        width: 64px;
-        background: #09101f;
-        border-right: 1px solid #1c2740;
-        padding: 0.7rem 0.45rem;
+        width: 66px;
+        background: var(--panel);
+        border-right: 1px solid var(--edge);
+        padding: 0.75rem 0.5rem;
         display: flex;
         flex-direction: column;
         align-items: stretch;
-        gap: 0.45rem;
+        gap: 0.5rem;
       }
 
       #tool-palette button {
         width: 100%;
         min-height: 44px;
         padding: 0;
+        border-radius: 10px;
+        color: var(--ink-dim);
         display: inline-flex;
         align-items: center;
         justify-content: center;
       }
 
-      #tool-palette button svg {
-        width: 1.05rem;
-        height: 1.05rem;
+      #tool-palette button:hover {
+        color: var(--ink);
       }
+
+      #tool-palette button.active {
+        color: var(--gold);
+      }
+
+      #tool-palette button svg {
+        width: 1.1rem;
+        height: 1.1rem;
+      }
+
+      /* ---- viewport ---------------------------------------------------- */
 
       #viewport {
         flex: 1;
@@ -135,10 +197,31 @@
         overflow: hidden;
         cursor: crosshair;
         background:
-          linear-gradient(#11182d 1px, transparent 1px),
-          linear-gradient(90deg, #11182d 1px, transparent 1px);
-        background-size: 40px 40px;
+          linear-gradient(var(--grid-major) 1px, transparent 1px),
+          linear-gradient(90deg, var(--grid-major) 1px, transparent 1px),
+          linear-gradient(var(--grid-fine) 1px, transparent 1px),
+          linear-gradient(90deg, var(--grid-fine) 1px, transparent 1px),
+          var(--canvas);
+        background-size:
+          200px 200px,
+          200px 200px,
+          40px 40px,
+          40px 40px,
+          auto;
         background-position: 0 0;
+      }
+
+      /* gentle vignette so the eye settles on the construction */
+      #viewport::after {
+        content: "";
+        position: absolute;
+        inset: 0;
+        pointer-events: none;
+        background: radial-gradient(
+          ellipse 120% 100% at 50% 45%,
+          transparent 58%,
+          rgba(4, 6, 11, 0.42) 100%
+        );
       }
 
       svg {
@@ -147,55 +230,100 @@
         height: 100%;
       }
 
+      /* ---- sidebar ----------------------------------------------------- */
+
       #sidebar {
-        width: 220px;
-        background: #0c1020;
-        border-left: 1px solid #1c2740;
-        padding: 0.8rem;
+        width: 232px;
+        background: var(--panel);
+        border-left: 1px solid var(--edge);
+        padding: 0.9rem;
         overflow-y: auto;
         font-size: 0.82rem;
+        scrollbar-width: thin;
+        scrollbar-color: var(--edge) transparent;
       }
 
       #sidebar h2 {
-        font-size: 0.9rem;
-        color: #b9d7ff;
-        margin-bottom: 0.6rem;
-        border-bottom: 1px solid #1c2740;
-        padding-bottom: 0.3rem;
+        font-size: 0.68rem;
+        letter-spacing: 0.16em;
+        text-transform: uppercase;
+        font-weight: 600;
+        color: var(--ink-faint);
+        margin-bottom: 0.7rem;
+        border-bottom: 1px solid var(--edge-soft);
+        padding-bottom: 0.45rem;
       }
 
       .element-item {
-        padding: 0.25rem 0.4rem;
-        border-radius: 3px;
-        color: #cad3ed;
+        padding: 0.3rem 0.5rem;
+        border-radius: 6px;
+        border-left: 2px solid transparent;
+        color: var(--ink-dim);
         cursor: pointer;
+        transition: background 0.12s ease, border-color 0.12s ease,
+          color 0.12s ease;
       }
 
       .element-item:hover {
-        background: #121936;
+        background: var(--panel-raised);
+        border-left-color: var(--gold-line);
+        color: var(--ink);
       }
+
+      .element-item strong {
+        color: var(--gold);
+        font-weight: 600;
+      }
+
+      /* ---- status bar -------------------------------------------------- */
 
       #status {
-        font-size: 0.75rem;
-        color: #7f8eb2;
-        padding: 0.3rem 1rem;
-        background: #070b17;
-        border-top: 1px solid #151d33;
+        font-family: var(--serif);
+        font-style: italic;
+        font-size: 0.78rem;
+        color: var(--ink-dim);
+        padding: 0.35rem 1.1rem;
+        background: var(--panel);
+        border-top: 1px solid var(--edge-soft);
       }
 
+      /* ---- inputs ------------------------------------------------------ */
+
       input[type="color"] {
-        width: 2rem;
-        height: 1.6rem;
-        border: none;
+        width: 1.7rem;
+        height: 1.7rem;
+        border: 1px solid var(--edge);
+        border-radius: 50%;
         background: none;
         cursor: pointer;
-        padding: 0;
+        padding: 2px;
         vertical-align: middle;
+        transition: border-color 0.15s ease;
+      }
+
+      input[type="color"]:hover {
+        border-color: var(--gold-line);
+      }
+
+      input[type="color"]::-webkit-color-swatch-wrapper {
+        padding: 0;
+      }
+
+      input[type="color"]::-webkit-color-swatch {
+        border: none;
+        border-radius: 50%;
+      }
+
+      input[type="color"]::-moz-color-swatch {
+        border: none;
+        border-radius: 50%;
       }
 
       input[type="range"] {
-        width: 70px;
+        width: 74px;
         vertical-align: middle;
+        accent-color: var(--gold);
+        cursor: pointer;
       }
     </style>
   </head>
@@ -233,6 +361,8 @@
       <input type="color" id="fill-color" value="#6b4fa3" />
       <label>Width</label>
       <input type="range" id="stroke-width" min="0.5" max="8" step="0.5" value="1.5" />
+      <button id="btn-intersect" title="Add points at every line/circle and circle/circle intersection">Intersect</button>
+      <button id="btn-midpoint" title="Add a point at the midpoint of every segment">Midpoint</button>
       <button id="btn-clear">Clear</button>
       <button id="btn-export-svg" title="Open the current SVG in a new tab">Open SVG</button>
     </div>
@@ -259,6 +389,16 @@
         <button id="btn-line" title="Draw an infinite line" aria-label="Draw an infinite line">
           <svg viewBox="0 0 24 24" aria-hidden="true">
             <path d="M4 20L20 4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" />
+          </svg>
+        </button>
+        <button id="btn-perpendicular" title="Perpendicular line: click a reference line, then a point" aria-label="Draw a perpendicular line">
+          <svg viewBox="0 0 24 24" aria-hidden="true">
+            <path d="M4 19h16M12 19V5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" />
+          </svg>
+        </button>
+        <button id="btn-parallel" title="Parallel line: click a reference line, then a point" aria-label="Draw a parallel line">
+          <svg viewBox="0 0 24 24" aria-hidden="true">
+            <path d="M5 20L15 4M9 20L19 4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" />
           </svg>
         </button>
       </div>

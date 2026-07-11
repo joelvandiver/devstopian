@@ -45,6 +45,8 @@ const toolButtons = {
   segment: document.getElementById("btn-segment"),
   circle: document.getElementById("btn-circle"),
   line: document.getElementById("btn-line"),
+  perpendicular: document.getElementById("btn-perpendicular"),
+  parallel: document.getElementById("btn-parallel"),
 };
 
 Object.entries(toolButtons).forEach(([name, button]) => {
@@ -56,6 +58,20 @@ Object.entries(toolButtons).forEach(([name, button]) => {
     render();
     setStatus(status);
   });
+});
+
+document.getElementById("btn-intersect").addEventListener("click", () => {
+  const status = editor.add_intersections(currentStyle());
+  syncState();
+  render();
+  setStatus(status);
+});
+
+document.getElementById("btn-midpoint").addEventListener("click", () => {
+  const status = editor.add_midpoints(currentStyle());
+  syncState();
+  render();
+  setStatus(status);
 });
 
 document.getElementById("btn-clear").addEventListener("click", () => {
@@ -104,13 +120,13 @@ viewportEl.addEventListener("click", (event) => {
 });
 
 viewportEl.addEventListener("mousemove", (event) => {
-  if (!appState?.pending_point) return;
+  if (!appState?.pending_point && !appState?.pending_reference) return;
   const point = scenePoint(event);
   render(point);
 });
 
 viewportEl.addEventListener("mouseleave", () => {
-  if (!appState?.pending_point) return;
+  if (!appState?.pending_point && !appState?.pending_reference) return;
   render();
 });
 
@@ -139,6 +155,15 @@ function render(previewPoint = null) {
 
   if (appState.pending_point && previewPoint) {
     sceneEl.appendChild(renderPreview(appState.pending_point, previewPoint, appState.tool));
+  }
+
+  if (appState.pending_reference) {
+    sceneEl.appendChild(renderReferenceHighlight(appState.pending_reference));
+    if (previewPoint) {
+      sceneEl.appendChild(
+        renderDirectedPreview(appState.pending_reference, previewPoint, appState.tool)
+      );
+    }
   }
 }
 
@@ -198,22 +223,22 @@ function renderCircle({ circle, style }) {
   });
 }
 
-function renderLine({ line, style }) {
-  const s = styleFromEl(style);
-  const width = viewportEl.clientWidth;
-  const height = viewportEl.clientHeight;
-  const dx = line.p2.x - line.p1.x;
-  const dy = line.p2.y - line.p1.y;
-  const scale = Math.max(width, height) * 10;
+// Endpoint attributes for an infinite line through (px, py) with direction
+// (dx, dy), extended far beyond the viewport in both directions.
+function extendedLineAttrs(px, py, dx, dy) {
+  const scale = Math.max(viewportEl.clientWidth, viewportEl.clientHeight) * 10;
   const len = Math.hypot(dx, dy) || 1;
   const ux = (dx / len) * scale;
   const uy = (dy / len) * scale;
 
+  return { x1: px - ux, y1: py - uy, x2: px + ux, y2: py + uy };
+}
+
+function renderLine({ line, style }) {
+  const s = styleFromEl(style);
+
   return createSvgElement("line", {
-    x1: line.p1.x - ux,
-    y1: line.p1.y - uy,
-    x2: line.p1.x + ux,
-    y2: line.p1.y + uy,
+    ...extendedLineAttrs(line.p1.x, line.p1.y, line.p2.x - line.p1.x, line.p2.y - line.p1.y),
     stroke: s.stroke,
     "stroke-width": s.lineWidth,
     "stroke-linecap": "round",
@@ -247,6 +272,39 @@ function renderPreview(start, current, tool) {
     y1: start.y,
     x2: current.x,
     y2: current.y,
+    stroke: "#a0c4ff88",
+    "stroke-width": 1,
+    "stroke-dasharray": "4 4",
+    "stroke-linecap": "round",
+  });
+}
+
+// Emphasise the line/segment chosen as the reference for the
+// perpendicular/parallel tools while the second click is pending.
+function renderReferenceHighlight(reference) {
+  const { p1, p2 } = reference.line;
+  const endpoints = reference.is_segment
+    ? { x1: p1.x, y1: p1.y, x2: p2.x, y2: p2.y }
+    : extendedLineAttrs(p1.x, p1.y, p2.x - p1.x, p2.y - p1.y);
+
+  return createSvgElement("line", {
+    ...endpoints,
+    stroke: "#ffc47866",
+    "stroke-width": 4,
+    "stroke-linecap": "round",
+  });
+}
+
+// Dashed preview of the perpendicular/parallel line through the cursor.
+function renderDirectedPreview(reference, current, tool) {
+  let dx = reference.line.p2.x - reference.line.p1.x;
+  let dy = reference.line.p2.y - reference.line.p1.y;
+  if (tool === "perpendicular") {
+    [dx, dy] = [-dy, dx];
+  }
+
+  return createSvgElement("line", {
+    ...extendedLineAttrs(current.x, current.y, dx, dy),
     stroke: "#a0c4ff88",
     "stroke-width": 1,
     "stroke-dasharray": "4 4",

@@ -41,6 +41,20 @@ export class Circle {
         return ret !== 0;
     }
     /**
+     * Intersection points of two circles: two points when they cross, one
+     * when they touch, and none when they are separate, nested, or share a
+     * centre (concentric circles either miss or overlap everywhere).
+     * @param {Circle} other
+     * @returns {Point[]}
+     */
+    intersect_circle(other) {
+        _assertClass(other, Circle);
+        const ret = wasm.circle_intersect_circle(this.__wbg_ptr, other.__wbg_ptr);
+        var v1 = getArrayJsValueFromWasm0(ret[0], ret[1]).slice();
+        wasm.__wbindgen_free(ret[0], ret[1] * 4, 4);
+        return v1;
+    }
+    /**
      * Returns `true` if two circles intersect.
      * @param {Circle} other
      * @returns {boolean}
@@ -211,6 +225,48 @@ export class Editor {
         wasm.__wbg_editor_free(ptr, 0);
     }
     /**
+     * Find every line/circle and circle/circle intersection in the scene and
+     * add the intersection points as styled point elements. Points that
+     * already exist in the scene are skipped so the action is idempotent.
+     * @param {Style} style
+     * @returns {string}
+     */
+    add_intersections(style) {
+        let deferred2_0;
+        let deferred2_1;
+        try {
+            _assertClass(style, Style);
+            var ptr0 = style.__destroy_into_raw();
+            const ret = wasm.editor_add_intersections(this.__wbg_ptr, ptr0);
+            deferred2_0 = ret[0];
+            deferred2_1 = ret[1];
+            return getStringFromWasm0(ret[0], ret[1]);
+        } finally {
+            wasm.__wbindgen_free(deferred2_0, deferred2_1, 1);
+        }
+    }
+    /**
+     * Add the midpoint of every segment in the scene as a styled point
+     * element. Midpoints that coincide with an existing point are skipped so
+     * the action is idempotent and can be applied repeatedly.
+     * @param {Style} style
+     * @returns {string}
+     */
+    add_midpoints(style) {
+        let deferred2_0;
+        let deferred2_1;
+        try {
+            _assertClass(style, Style);
+            var ptr0 = style.__destroy_into_raw();
+            const ret = wasm.editor_add_midpoints(this.__wbg_ptr, ptr0);
+            deferred2_0 = ret[0];
+            deferred2_1 = ret[1];
+            return getStringFromWasm0(ret[0], ret[1]);
+        } finally {
+            wasm.__wbindgen_free(deferred2_0, deferred2_1, 1);
+        }
+    }
+    /**
      * @returns {string}
      */
     clear() {
@@ -329,6 +385,13 @@ if (Symbol.dispose) Editor.prototype[Symbol.dispose] = Editor.prototype.free;
  * An infinite line passing through two distinct points.
  */
 export class Line {
+    static __wrap(ptr) {
+        ptr = ptr >>> 0;
+        const obj = Object.create(Line.prototype);
+        obj.__wbg_ptr = ptr;
+        LineFinalization.register(obj, obj.__wbg_ptr, obj);
+        return obj;
+    }
     __destroy_into_raw() {
         const ptr = this.__wbg_ptr;
         this.__wbg_ptr = 0;
@@ -364,6 +427,20 @@ export class Line {
         return ret;
     }
     /**
+     * Intersection points of this (infinite) line with a circle: two points
+     * when the line is a secant, one when it is tangent, and none when it
+     * misses the circle or the line is degenerate (`p1 == p2`).
+     * @param {Circle} circle
+     * @returns {Point[]}
+     */
+    intersect_circle(circle) {
+        _assertClass(circle, Circle);
+        const ret = wasm.line_intersect_circle(this.__wbg_ptr, circle.__wbg_ptr);
+        var v1 = getArrayJsValueFromWasm0(ret[0], ret[1]).slice();
+        wasm.__wbindgen_free(ret[0], ret[1] * 4, 4);
+        return v1;
+    }
+    /**
      * Length of the direction vector (distance between the two defining points).
      * @returns {number}
      */
@@ -385,6 +462,27 @@ export class Line {
         this.__wbg_ptr = ret >>> 0;
         LineFinalization.register(this, this.__wbg_ptr, this);
         return this;
+    }
+    /**
+     * A line through `p` parallel to this line. Degenerate lines
+     * (`p1 == p2`) have no direction, so the result reuses `p` twice.
+     * @param {Point} p
+     * @returns {Line}
+     */
+    parallel_at(p) {
+        _assertClass(p, Point);
+        const ret = wasm.line_parallel_at(this.__wbg_ptr, p.__wbg_ptr);
+        return Line.__wrap(ret);
+    }
+    /**
+     * A line through `p` perpendicular to this line (direction rotated 90°).
+     * @param {Point} p
+     * @returns {Line}
+     */
+    perpendicular_at(p) {
+        _assertClass(p, Point);
+        const ret = wasm.line_perpendicular_at(this.__wbg_ptr, p.__wbg_ptr);
+        return Line.__wrap(ret);
     }
     /**
      * Slope of the line, or `f64::INFINITY` for vertical lines.
@@ -682,6 +780,17 @@ export class Segment {
         return Point.__wrap(ret);
     }
     /**
+     * Distance from a point to the segment (perpendicular distance to the
+     * nearest point on the segment, clamped to the endpoints).
+     * @param {Point} p
+     * @returns {number}
+     */
+    distance_to_point(p) {
+        _assertClass(p, Point);
+        const ret = wasm.segment_distance_to_point(this.__wbg_ptr, p.__wbg_ptr);
+        return ret;
+    }
+    /**
      * Length of the segment.
      * @returns {number}
      */
@@ -827,6 +936,10 @@ function __wbg_get_imports() {
         __wbg___wbindgen_throw_6b64449b9b9ed33c: function(arg0, arg1) {
             throw new Error(getStringFromWasm0(arg0, arg1));
         },
+        __wbg_point_new: function(arg0) {
+            const ret = Point.__wrap(arg0);
+            return ret;
+        },
         __wbindgen_cast_0000000000000001: function(arg0, arg1) {
             // Cast intrinsic for `Ref(String) -> Externref`.
             const ret = getStringFromWasm0(arg0, arg1);
@@ -877,6 +990,25 @@ function _assertClass(instance, klass) {
     if (!(instance instanceof klass)) {
         throw new Error(`expected instance of ${klass.name}`);
     }
+}
+
+function getArrayJsValueFromWasm0(ptr, len) {
+    ptr = ptr >>> 0;
+    const mem = getDataViewMemory0();
+    const result = [];
+    for (let i = ptr; i < ptr + 4 * len; i += 4) {
+        result.push(wasm.__wbindgen_externrefs.get(mem.getUint32(i, true)));
+    }
+    wasm.__externref_drop_slice(ptr, len);
+    return result;
+}
+
+let cachedDataViewMemory0 = null;
+function getDataViewMemory0() {
+    if (cachedDataViewMemory0 === null || cachedDataViewMemory0.buffer.detached === true || (cachedDataViewMemory0.buffer.detached === undefined && cachedDataViewMemory0.buffer !== wasm.memory.buffer)) {
+        cachedDataViewMemory0 = new DataView(wasm.memory.buffer);
+    }
+    return cachedDataViewMemory0;
 }
 
 function getStringFromWasm0(ptr, len) {
@@ -968,6 +1100,7 @@ let wasmModule, wasm;
 function __wbg_finalize_init(instance, module) {
     wasm = instance.exports;
     wasmModule = module;
+    cachedDataViewMemory0 = null;
     cachedUint8ArrayMemory0 = null;
     wasm.__wbindgen_start();
     return wasm;

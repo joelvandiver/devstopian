@@ -20,6 +20,12 @@ export class Circle {
      */
     contains(p: Point): boolean;
     /**
+     * Intersection points of two circles: two points when they cross, one
+     * when they touch, and none when they are separate, nested, or share a
+     * centre (concentric circles either miss or overlap everywhere).
+     */
+    intersect_circle(other: Circle): Point[];
+    /**
      * Returns `true` if two circles intersect.
      */
     intersects(other: Circle): boolean;
@@ -54,6 +60,18 @@ export class Color {
 export class Editor {
     free(): void;
     [Symbol.dispose](): void;
+    /**
+     * Find every line/circle and circle/circle intersection in the scene and
+     * add the intersection points as styled point elements. Points that
+     * already exist in the scene are skipped so the action is idempotent.
+     */
+    add_intersections(style: Style): string;
+    /**
+     * Add the midpoint of every segment in the scene as a styled point
+     * element. Midpoints that coincide with an existing point are skipped so
+     * the action is idempotent and can be applied repeatedly.
+     */
+    add_midpoints(style: Style): string;
     clear(): string;
     click(x: number, y: number, style: Style): string;
     load_demo_scene(): string;
@@ -74,6 +92,12 @@ export class Line {
      */
     distance_to_point(p: Point): number;
     /**
+     * Intersection points of this (infinite) line with a circle: two points
+     * when the line is a secant, one when it is tangent, and none when it
+     * misses the circle or the line is degenerate (`p1 == p2`).
+     */
+    intersect_circle(circle: Circle): Point[];
+    /**
      * Length of the direction vector (distance between the two defining points).
      */
     length(): number;
@@ -81,6 +105,15 @@ export class Line {
      * Create a new `Line` through `p1` and `p2`.
      */
     constructor(p1: Point, p2: Point);
+    /**
+     * A line through `p` parallel to this line. Degenerate lines
+     * (`p1 == p2`) have no direction, so the result reuses `p` twice.
+     */
+    parallel_at(p: Point): Line;
+    /**
+     * A line through `p` perpendicular to this line (direction rotated 90°).
+     */
+    perpendicular_at(p: Point): Line;
     /**
      * Slope of the line, or `f64::INFINITY` for vertical lines.
      */
@@ -182,6 +215,11 @@ export class Segment {
     free(): void;
     [Symbol.dispose](): void;
     /**
+     * Distance from a point to the segment (perpendicular distance to the
+     * nearest point on the segment, clamped to the endpoints).
+     */
+    distance_to_point(p: Point): number;
+    /**
      * Length of the segment.
      */
     length(): number;
@@ -220,6 +258,16 @@ export type InitInput = RequestInfo | URL | Response | BufferSource | WebAssembl
 
 export interface InitOutput {
     readonly memory: WebAssembly.Memory;
+    readonly __wbg_editor_free: (a: number, b: number) => void;
+    readonly editor_add_intersections: (a: number, b: number) => [number, number];
+    readonly editor_add_midpoints: (a: number, b: number) => [number, number];
+    readonly editor_clear: (a: number) => [number, number];
+    readonly editor_click: (a: number, b: number, c: number, d: number) => [number, number];
+    readonly editor_load_demo_scene: (a: number) => [number, number];
+    readonly editor_new: (a: number, b: number) => number;
+    readonly editor_resize_viewport: (a: number, b: number, c: number) => void;
+    readonly editor_set_tool: (a: number, b: number, c: number) => [number, number, number, number];
+    readonly editor_to_json: (a: number) => [number, number, number, number];
     readonly __wbg_color_free: (a: number, b: number) => void;
     readonly __wbg_get_color_a: (a: number) => number;
     readonly __wbg_get_color_b: (a: number) => number;
@@ -253,51 +301,49 @@ export interface InitOutput {
     readonly scene_width: (a: number) => number;
     readonly style_default_style: () => number;
     readonly style_new: (a: number, b: number, c: number) => number;
-    readonly __wbg_circle_free: (a: number, b: number) => void;
-    readonly __wbg_get_circle_center: (a: number) => number;
-    readonly __wbg_get_circle_radius: (a: number) => number;
+    readonly __wbg_get_line_p1: (a: number) => number;
+    readonly __wbg_get_line_p2: (a: number) => number;
     readonly __wbg_get_point_x: (a: number) => number;
     readonly __wbg_get_point_y: (a: number) => number;
+    readonly __wbg_line_free: (a: number, b: number) => void;
     readonly __wbg_point_free: (a: number, b: number) => void;
-    readonly __wbg_set_circle_center: (a: number, b: number) => void;
-    readonly __wbg_set_circle_radius: (a: number, b: number) => void;
+    readonly __wbg_set_line_p1: (a: number, b: number) => void;
+    readonly __wbg_set_line_p2: (a: number, b: number) => void;
     readonly __wbg_set_point_x: (a: number, b: number) => void;
     readonly __wbg_set_point_y: (a: number, b: number) => void;
-    readonly circle_area: (a: number) => number;
-    readonly circle_circumference: (a: number) => number;
-    readonly circle_contains: (a: number, b: number) => number;
-    readonly circle_intersects: (a: number, b: number) => number;
-    readonly circle_new: (a: number, b: number) => number;
+    readonly line_distance_to_point: (a: number, b: number) => number;
+    readonly line_intersect_circle: (a: number, b: number) => [number, number];
+    readonly line_length: (a: number) => number;
+    readonly line_new: (a: number, b: number) => number;
+    readonly line_parallel_at: (a: number, b: number) => number;
+    readonly line_perpendicular_at: (a: number, b: number) => number;
+    readonly line_slope: (a: number) => number;
     readonly point_distance_to: (a: number, b: number) => number;
     readonly point_midpoint: (a: number, b: number) => number;
     readonly point_new: (a: number, b: number) => number;
     readonly point_translate: (a: number, b: number, c: number) => number;
-    readonly __wbg_editor_free: (a: number, b: number) => void;
-    readonly editor_clear: (a: number) => [number, number];
-    readonly editor_click: (a: number, b: number, c: number, d: number) => [number, number];
-    readonly editor_load_demo_scene: (a: number) => [number, number];
-    readonly editor_new: (a: number, b: number) => number;
-    readonly editor_resize_viewport: (a: number, b: number, c: number) => void;
-    readonly editor_set_tool: (a: number, b: number, c: number) => [number, number, number, number];
-    readonly editor_to_json: (a: number) => [number, number, number, number];
-    readonly __wbg_get_line_p1: (a: number) => number;
-    readonly __wbg_get_line_p2: (a: number) => number;
-    readonly __wbg_line_free: (a: number, b: number) => void;
+    readonly __wbg_circle_free: (a: number, b: number) => void;
+    readonly __wbg_get_circle_center: (a: number) => number;
+    readonly __wbg_get_circle_radius: (a: number) => number;
+    readonly __wbg_get_segment_end: (a: number) => number;
     readonly __wbg_segment_free: (a: number, b: number) => void;
-    readonly __wbg_set_line_p1: (a: number, b: number) => void;
-    readonly __wbg_set_line_p2: (a: number, b: number) => void;
-    readonly line_distance_to_point: (a: number, b: number) => number;
-    readonly line_length: (a: number) => number;
-    readonly line_new: (a: number, b: number) => number;
-    readonly line_slope: (a: number) => number;
+    readonly __wbg_set_circle_center: (a: number, b: number) => void;
+    readonly __wbg_set_circle_radius: (a: number, b: number) => void;
+    readonly __wbg_set_segment_end: (a: number, b: number) => void;
+    readonly circle_area: (a: number) => number;
+    readonly circle_circumference: (a: number) => number;
+    readonly circle_contains: (a: number, b: number) => number;
+    readonly circle_intersect_circle: (a: number, b: number) => [number, number];
+    readonly circle_intersects: (a: number, b: number) => number;
+    readonly circle_new: (a: number, b: number) => number;
+    readonly segment_distance_to_point: (a: number, b: number) => number;
     readonly segment_length: (a: number) => number;
     readonly segment_midpoint: (a: number) => number;
     readonly segment_new: (a: number, b: number) => number;
-    readonly __wbg_set_segment_end: (a: number, b: number) => void;
     readonly __wbg_set_segment_start: (a: number, b: number) => void;
-    readonly __wbg_get_segment_end: (a: number) => number;
     readonly __wbg_get_segment_start: (a: number) => number;
     readonly __wbindgen_externrefs: WebAssembly.Table;
+    readonly __externref_drop_slice: (a: number, b: number) => void;
     readonly __wbindgen_free: (a: number, b: number, c: number) => void;
     readonly __wbindgen_malloc: (a: number, b: number) => number;
     readonly __wbindgen_realloc: (a: number, b: number, c: number, d: number) => number;
